@@ -1,0 +1,1 @@
+c:\xampp\php\php.exe -f c:\xampp\htdocs\makeMigrations.php
