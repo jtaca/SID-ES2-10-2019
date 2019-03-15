@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 06, 2019 at 11:50 PM
+-- Generation Time: Mar 14, 2019 at 03:09 PM
 -- Server version: 10.1.37-MariaDB
 -- PHP Version: 7.2.12
 
@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `estufa`
+-- Database: `ourestufa`
 --
 
 DELIMITER $$
@@ -34,7 +34,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `addTodosPriv` ()  BEGIN
   
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `addUser` (IN `var_nome` VARCHAR(45), IN `var_password` VARCHAR(45), IN `var_role` ENUM('investigador  ','auditor','administrador','sensorLuminosidade','sensorTemperatura'))  BEGIN
+CREATE DEFINER=`root`@`localhost` PROCEDURE `addUser` (IN `var_nome` VARCHAR(45), IN `var_password` VARCHAR(45), IN `var_role` ENUM('investigador  ','administrador','sensorLuminosidade','sensorTemperatura'))  BEGIN
 
 	DROP USER IF EXISTS ''@localhost;
 
@@ -55,16 +55,25 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `addUser` (IN `var_nome` VARCHAR(45)
     
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `criarPrivilegios` ()  BEGIN
-GRANT SELECT ON estufa.cultura TO auditor;
-GRANT SELECT ON estufa.sistema TO auditor;
-GRANT SELECT ON estufa.investigador TO auditor;
-GRANT SELECT ON estufa.medicoes TO auditor;
-GRANT SELECT ON estufa.medicoesluminosidade TO auditor, investigador;
-GRANT SELECT ON estufa.medicoestemperatura TO auditor,investigador;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `alterarLimitesLuz` (IN `limiteInferior` DOUBLE(8,2), IN `limiteSuperior` DOUBLE(8,2))  NO SQL
+UPDATE sistema SET sistema.LimiteInferiorLuz = limiteInferior, sistema.LimiteSuperiorLuz = limiteSuperior WHERE 1$$
 
-GRANT INSERT ON estufa.medicoestemperatura TO sensorTemperatura;
-GRANT INSERT ON estufa.medicoesluminosidade TO sensorLuminosidade;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `alterarLimitesTemperatura` (IN `limiteInferior` DOUBLE(8,2), IN `limiteSuperior` DOUBLE(8,2))  NO SQL
+UPDATE sistema SET sistema.LimiteInferiorTemperatura = limiteInferior, sistema.LimiteSuperiorTemperatura = limiteSuperior WHERE 1$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `alterarValorMedido` (IN `IdVar` INT(11), IN `novoValor` DECIMAL(8,2))  UPDATE medicoes SET medicoes.ValorMedicao = novoValor WHERE medicoes.NumeroMedicao = IdVar$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `criarPrivilegios` ()  BEGIN
+
+GRANT SELECT ON estufa.logs TO phpUser;
+GRANT EXECUTE ON PROCEDURE estufa.selectDadosNaoMigrados TO phpUser;
+GRANT EXECUTE ON PROCEDURE estufa.updateMigrados TO phpUser;
+
+GRANT SELECT ON estufa.medicoes_luminosidade TO investigador;
+GRANT SELECT ON estufa.medicoes_temperatura TO investigador;
+
+GRANT INSERT ON estufa.medicoes_temperatura TO sensorTemperatura;
+GRANT INSERT ON estufa.medicoes_luminosidade TO sensorLuminosidade;
 
 
 GRANT SELECT,INSERT, UPDATE, DELETE ON estufa.sistema TO administrador,investigador;
@@ -75,12 +84,12 @@ GRANT SELECT,INSERT, UPDATE, DELETE ON estufa.sistema TO administrador,investiga
 GRANT SELECT,INSERT, UPDATE, DELETE ON estufa.cultura TO administrador,investigador;
 GRANT SELECT,INSERT, UPDATE, DELETE ON estufa.sistema TO administrador,investigador;
 
-GRANT SELECT,INSERT, UPDATE, DELETE ON estufa.medicoestemperatura TO administrador;
-GRANT SELECT,INSERT, UPDATE, DELETE ON estufa.medicoesluminosidade TO administrador;
+GRANT SELECT,INSERT, UPDATE, DELETE ON estufa.medicoes_temperatura TO administrador;
+GRANT SELECT,INSERT, UPDATE, DELETE ON estufa.medicoes_luminosidade TO administrador;
 
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `criarRoles` ()  CREATE ROLE investigador, administrador, sensorLuminosidade,  sensorTemperatura, auditor$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `criarRoles` ()  CREATE ROLE investigador, administrador, sensorLuminosidade, sensorTemperatura,  phpUser$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `selectDadosNaoMigrados` ()  SELECT * FROM logs WHERE logs.exportado=0$$
 
@@ -106,6 +115,13 @@ CREATE TABLE `cultura` (
   `DescricaoCultura` text,
   `EmailInvestigador` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `cultura`
+--
+
+INSERT INTO `cultura` (`IDCultura`, `NomeCultura`, `DescricaoCultura`, `EmailInvestigador`) VALUES
+(1, 'cenouras', 'Daucus carota subsp. sativus ', 'lala@gmail.com');
 
 --
 -- Triggers `cultura`
@@ -134,6 +150,13 @@ CREATE TABLE `investigador` (
   `NomeInvestigador` varchar(100) NOT NULL,
   `CategoriaProfissional` varchar(300) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `investigador`
+--
+
+INSERT INTO `investigador` (`Email`, `NomeInvestigador`, `CategoriaProfissional`) VALUES
+('lala@gmail.com', 'wqser', 'qwer');
 
 --
 -- Triggers `investigador`
@@ -175,7 +198,15 @@ CREATE TABLE `logs` (
 INSERT INTO `logs` (`logId`, `username`, `nomeTabela`, `comandoUsado`, `linhaAnterior`, `resultado`, `dataComando`, `exportado`) VALUES
 (2, 'root@localhost', 'medicoes_luminosidade', 'DELETE', 'DataHoraMedicao: 2019-03-05 00:22:37  ValorMedicaoLuminosidade: 20.67  IDMedicao: 1', 'Linha Eliminada', '2019-03-05 00:22:56', 1),
 (3, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', 'Não Aplicável', '2019-03-06 00:26:58', 1),
-(4, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', 'Não Aplicável', '2019-03-06 00:28:09', 1);
+(4, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', 'Não Aplicável', '2019-03-06 00:28:09', 1),
+(5, 'root@localhost', 'investigador', 'INSERT', 'Não Aplicável', 'Email: lala@gmail.com  NomeInvestigador: wqser  CategoriaProfissional: qwer', '2019-03-14 14:01:00', 0),
+(6, 'root@localhost', 'cultura', 'INSERT', 'Não Aplicável', 'IdCultura: 1  NomeCultura: cenouras  DescricaoCultura: Daucus carota subsp. sativus   EmailInvestigador: lala@gmail.com', '2019-03-14 14:01:58', 0),
+(7, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 1  NomeVariavel: pH', '2019-03-14 14:02:13', 0),
+(8, 'root@localhost', 'variaveis_medidas', 'INSERT', 'Não Aplicável', 'IDVariavel: 1  IDCultura: 1  LimiteInferior: 3.00  LimiteSuperior: 7.00  IdVariaveisMedidas: 1', '2019-03-14 14:03:56', 0),
+(9, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 1  DataHoraMedicao: 2019-03-14 14:04:11  ValorMedicao: 4.00  IdVariaveisMedidas: 1', '2019-03-14 14:04:11', 0),
+(10, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 1  DataHoraMedicao: 2019-03-14 14:04:11  ValorMedicao: 4.00  IdVariaveisMedidas: 1', 'NumeroMedicao: 1  DataHoraMedicao: 2019-03-14 14:05:52  ValorMedicao: 5.00  IdVariaveisMedidas: 1', '2019-03-14 14:05:52', 0),
+(11, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 2  DataHoraMedicao: 2019-03-14 14:07:34  ValorMedicao: 6.00  IdVariaveisMedidas: 1', '2019-03-14 14:07:34', 0),
+(12, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 2  DataHoraMedicao: 2019-03-14 14:07:34  ValorMedicao: 6.00  IdVariaveisMedidas: 1', 'NumeroMedicao: 2  DataHoraMedicao: 2019-03-14 14:09:00  ValorMedicao: 23233.00  IdVariaveisMedidas: 1', '2019-03-14 14:09:00', 0);
 
 -- --------------------------------------------------------
 
@@ -189,6 +220,14 @@ CREATE TABLE `medicoes` (
   `ValorMedicao` decimal(8,2) NOT NULL,
   `IdVariaveisMedidas` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `medicoes`
+--
+
+INSERT INTO `medicoes` (`NumeroMedicao`, `DataHoraMedicao`, `ValorMedicao`, `IdVariaveisMedidas`) VALUES
+(1, '2019-03-14 14:05:52', '5.00', 1),
+(2, '2019-03-14 14:09:00', '23233.00', 1);
 
 --
 -- Triggers `medicoes`
@@ -311,6 +350,13 @@ CREATE TABLE `variaveis` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
+-- Dumping data for table `variaveis`
+--
+
+INSERT INTO `variaveis` (`IDVariavel`, `NomeVariavel`) VALUES
+(1, 'pH');
+
+--
 -- Triggers `variaveis`
 --
 DELIMITER $$
@@ -339,6 +385,13 @@ CREATE TABLE `variaveis_medidas` (
   `LimiteSuperior` decimal(8,2) NOT NULL,
   `IdVariaveisMedidas` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `variaveis_medidas`
+--
+
+INSERT INTO `variaveis_medidas` (`IDVariavel`, `IDCultura`, `LimiteInferior`, `LimiteSuperior`, `IdVariaveisMedidas`) VALUES
+(1, 1, '3.00', '7.00', 1);
 
 --
 -- Triggers `variaveis_medidas`
@@ -420,25 +473,25 @@ ALTER TABLE `variaveis_medidas`
 -- AUTO_INCREMENT for table `cultura`
 --
 ALTER TABLE `cultura`
-  MODIFY `IDCultura` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `IDCultura` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `logs`
 --
 ALTER TABLE `logs`
-  MODIFY `logId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `logId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `medicoes`
 --
 ALTER TABLE `medicoes`
-  MODIFY `NumeroMedicao` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `NumeroMedicao` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `medicoes_luminosidade`
 --
 ALTER TABLE `medicoes_luminosidade`
-  MODIFY `IDMedicao` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `IDMedicao` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `medicoes_temperatura`
@@ -450,13 +503,13 @@ ALTER TABLE `medicoes_temperatura`
 -- AUTO_INCREMENT for table `variaveis`
 --
 ALTER TABLE `variaveis`
-  MODIFY `IDVariavel` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `IDVariavel` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `variaveis_medidas`
 --
 ALTER TABLE `variaveis_medidas`
-  MODIFY `IdVariaveisMedidas` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `IdVariaveisMedidas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Constraints for dumped tables
