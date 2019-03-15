@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 13, 2019 at 11:59 PM
+-- Generation Time: Mar 16, 2019 at 12:20 AM
 -- Server version: 10.1.37-MariaDB
 -- PHP Version: 7.2.12
 
@@ -21,6 +21,147 @@ SET time_zone = "+00:00";
 --
 -- Database: `estufa`
 --
+
+DELIMITER $$
+--
+-- Procedures
+--
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ExportaçãoManual` ()  BEGIN
+
+CALL export_cultura;
+CALL export_investigador;
+CALL export_medicoes;
+CALL export_medicoesluminosidade;
+CALL export_medicoestemperatura;
+CALL export_sistema;
+CALL export_variaveis;
+CALL export_variaveismedidas;
+
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `export_cultura` ()  BEGIN
+
+SELECT * INTO OUTFILE 'C:logs_cultura.csv '
+  FIELDS TERMINATED BY ';' OPTIONALLY ENCLOSED BY '"'
+  LINES TERMINATED BY '\n'
+  FROM log_cultura
+  WHERE log_cultura.IDLog > (SELECT IDLogCultura FROM `dadosexportados`) ;
+  
+  
+UPDATE `dadosexportados` SET `IDLogCultura`= (SELECT IDLog FROM log_cultura ORDER BY IDLog DESC LIMIT 1);
+
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `export_investigador` ()  BEGIN
+
+SELECT * INTO OUTFILE 'C:logs_investigador.csv '
+  FIELDS TERMINATED BY ';' OPTIONALLY ENCLOSED BY '"'
+  LINES TERMINATED BY '\n'
+  FROM log_investigador  WHERE log_investigador.IDLog > (SELECT IDLogInvestigador FROM `dadosexportados`) ;
+  
+  
+UPDATE `dadosexportados` SET `IDLogInvestigador`= (SELECT IDLog FROM log_investigador ORDER BY IDLog DESC LIMIT 1);
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `export_medicoes` ()  BEGIN
+
+SELECT * INTO OUTFILE 'C:/logs/logs_medicoes.csv '
+  FIELDS TERMINATED BY ';' OPTIONALLY ENCLOSED BY '"'
+  LINES TERMINATED BY '\n'
+  FROM log_medicoes WHERE log_medicoes.IDLog > (SELECT 	IDLogMedicoes FROM `dadosexportados`) ;
+  
+UPDATE `dadosexportados` SET `IDLogMedicoes`= (SELECT IDLog FROM log_medicoes ORDER BY IDLog DESC LIMIT 1);
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `export_medicoesluminosidade` ()  NO SQL
+BEGIN
+
+SELECT * INTO OUTFILE 'C:logs_medicoesluminosidade.csv '
+  FIELDS TERMINATED BY ';' OPTIONALLY ENCLOSED BY '"'
+  LINES TERMINATED BY '\n'
+  FROM log_medicoesluminosidade  WHERE log_medicoesluminosidade.IDLog > (SELECT IDLogMedicoesLuminosidade FROM `dadosexportados`) ;
+
+UPDATE `dadosexportados` SET `IDLogMedicoesLuminosidade `= (SELECT IDLog FROM log_medicoesluminosidade ORDER BY IDLog DESC LIMIT 1);
+  
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `export_medicoestemperatura` ()  BEGIN
+
+SELECT * INTO OUTFILE 'C:logs_medicoestemperatura.csv '
+  FIELDS TERMINATED BY ';' OPTIONALLY ENCLOSED BY '"'
+  LINES TERMINATED BY '\n'
+  FROM log_medicoestemperatura  WHERE log_medicoestemperatura.IDLog > (SELECT IDLogMedicoesTemperatura FROM `dadosexportados`) ;
+ 
+UPDATE `dadosexportados` SET `IDLogMedicoesTemperatura `= (SELECT IDLog FROM log_medicoestemperatura ORDER BY IDLog DESC LIMIT 1);
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `export_sistema` ()  BEGIN
+
+SELECT * INTO OUTFILE 'C:logs_sistema.csv '
+  FIELDS TERMINATED BY ';' OPTIONALLY ENCLOSED BY '"'
+  LINES TERMINATED BY '\n'
+  FROM log_sistema WHERE log_sistema.IDLog > (SELECT IDLogSistema FROM `dadosexportados`) ;
+  
+UPDATE `dadosexportados` SET `IDLogSistema`= (SELECT IDLog FROM log_sistema ORDER BY IDLog DESC LIMIT 1);
+
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `export_variaveis` ()  NO SQL
+BEGIN
+
+SELECT * INTO OUTFILE 'C:logs_variaveis.csv '
+  FIELDS TERMINATED BY ';' OPTIONALLY ENCLOSED BY '"'
+  LINES TERMINATED BY '\n'
+  FROM log_variaveis  WHERE log_variaveis.IDLog > (SELECT IDLogVariaveis FROM `dadosexportados`) ;
+  
+UPDATE `dadosexportados` SET `IDLogVariaveis`= (SELECT IDLog FROM log_variaveis ORDER BY IDLog DESC LIMIT 1);
+
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `export_variaveismedidas` ()  BEGIN
+
+SELECT * INTO OUTFILE 'C:logs_variaveismedidas.csv '
+  FIELDS TERMINATED BY ';' OPTIONALLY ENCLOSED BY '"'
+  LINES TERMINATED BY '\n'
+  FROM log_variaveismedidas WHERE log_variaveismedidas.IDLog > (SELECT IDLogVariaveisMedidas FROM `dadosexportados`) ;
+  
+UPDATE `dadosexportados` SET `IDLogVariaveisMedidas`= (SELECT IDLog FROM log_variaveismedidas ORDER BY IDLog DESC LIMIT 1);
+
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `init` ()  BEGIN
+CREATE ROLE investigador, administrador;
+
+GRANT SELECT,UPDATE,DELETE,INSERT ON estufa.cultura TO investigador;
+GRANT SELECT,UPDATE,DELETE,INSERT ON estufa.medicoes TO investigador;
+
+GRANT SELECT,UPDATE,DELETE,INSERT ON estufa.variaveis TO administrador;
+GRANT SELECT ON estufa.variaveis TO investigador;
+
+GRANT SELECT,UPDATE,DELETE,INSERT ON estufa.variaveismedidas TO administrador;
+GRANT SELECT ON estufa.variaveismedidas TO investigador;
+
+GRANT SELECT,UPDATE,DELETE,INSERT ON estufa.investigador TO administrador;
+GRANT SELECT ON estufa.investigador TO investigador;
+
+GRANT SELECT,UPDATE,DELETE,INSERT ON estufa.sistema TO administrador;
+GRANT SELECT ON estufa.sistema TO investigador;
+
+GRANT SELECT ON estufa.dadosexportados TO administrador;
+GRANT SELECT ON estufa.log_cultura TO administrador;
+GRANT SELECT ON estufa.log_medicoes TO administrador;
+GRANT SELECT ON estufa.log_medicoestemperatura TO administrador;
+GRANT SELECT ON estufa.log_medicoesluminosidade TO administrador;
+GRANT SELECT ON estufa.log_variaveis TO administrador;
+GRANT SELECT ON estufa.log_variaveismedidas TO administrador;
+GRANT SELECT ON estufa.log_investigador TO administrador;
+GRANT SELECT ON estufa.log_sistema TO administrador;
+
+INSERT INTO `dadosexportados`(`IDExportação`, `IDLogInvestigador`, `IDLogMedicoesLuminosidade`, `IDLogMedicoesVariaveis`, `IDLogMedicoesTemperatura`, `IDLogMedicoes`, `IDLogCultura`, `IDLogVariaveisMedidas`,`IDLogSistema`,`IDLogVariaveis`) VALUES (Null,'0','0','0','0','0','0','0','0','0');
+
+END$$
+
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -57,8 +198,17 @@ CREATE TABLE `dadosexportados` (
   `IDLogMedicoesTemperatura` int(11) NOT NULL,
   `IDLogMedicoes` int(11) NOT NULL,
   `IDLogCultura` int(11) NOT NULL,
-  `IDLogVariaveisMedidas` int(11) NOT NULL
+  `IDLogVariaveisMedidas` int(11) NOT NULL,
+  `IDLogSistema` int(11) NOT NULL,
+  `IDLogVariaveis` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `dadosexportados`
+--
+
+INSERT INTO `dadosexportados` (`IDExportação`, `IDLogInvestigador`, `IDLogMedicoesLuminosidade`, `IDLogMedicoesVariaveis`, `IDLogMedicoesTemperatura`, `IDLogMedicoes`, `IDLogCultura`, `IDLogVariaveisMedidas`, `IDLogSistema`, `IDLogVariaveis`) VALUES
+(1, 3, 0, 0, 0, 0, 1, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -80,7 +230,8 @@ CREATE TABLE `investigador` (
 INSERT INTO `investigador` (`IDInvestigador`, `Email`, `NomeInvestigador`, `CategoriaProfissional`) VALUES
 (8, 'lala@gmail.com', 'sdf', 'sdf'),
 (11, 'lala@gmail.com', 'sf', 'sdf'),
-(12, 'asdsfs', 'sdfsdd', 'sdds');
+(12, 'asdsfs', 'sdfsdd', 'sdds'),
+(13, 'lala@gmail.com', 'sfd', 'sdgfh');
 
 --
 -- Triggers `investigador`
@@ -107,6 +258,13 @@ CREATE TABLE `log_cultura` (
   `Operacao` varchar(45) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `log_cultura`
+--
+
+INSERT INTO `log_cultura` (`IDLog`, `IDCultura`, `NomeCultura`, `DescricaoCultura`, `IDInvestigador`, `Utilizador`, `Data`, `Operacao`) VALUES
+(1, 0, 'sadfds', 'sadfdv', 1, 'asd', '0000-00-00 00:00:00', 'wef');
+
 -- --------------------------------------------------------
 
 --
@@ -130,7 +288,8 @@ CREATE TABLE `log_investigador` (
 
 INSERT INTO `log_investigador` (`IDLog`, `IDInvestigador`, `Email`, `NomeInvestigador`, `CategoriaProfissional`, `Utilizador`, `Data`, `Operacao`) VALUES
 (1, 0, 'sdx', 'lala@gmail.com', 'sf', 'sdf', '2019-03-13 22:37:47', 'Insert'),
-(2, 0, 'sdfsdd', 'asdsfs', 'sdfsdd', 'sdds', '2019-03-13 22:40:31', 'Insert');
+(2, 0, 'sdfsdd', 'asdsfs', 'sdfsdd', 'sdds', '2019-03-13 22:40:31', 'Insert'),
+(3, 0, 'sfd', 'lala@gmail.com', 'sfd', 'sdgfh', '2019-03-15 22:14:50', 'Insert');
 
 -- --------------------------------------------------------
 
@@ -241,7 +400,6 @@ CREATE TABLE `log_variaveismedidas` (
 CREATE TABLE `medicoes` (
   `DataHoraMedicao` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `ValorMedicao` decimal(8,2) NOT NULL,
-  `IdVariaveisMedidas` int(11) NOT NULL,
   `IDCultura` int(11) NOT NULL,
   `IDVariavel` int(11) NOT NULL,
   `NumMedicao` int(11) NOT NULL
@@ -308,16 +466,6 @@ CREATE TABLE `sistema` (
   `LimiteInfLuminosidade` decimal(8,2) NOT NULL,
   `LimiteSupLuminosidade` decimal(8,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `sistema`
---
-
-INSERT INTO `sistema` (`IDSistema`, `LimiteInfTemperatura`, `LimiteSupTemperatura`, `LimiteInfLuminosidade`, `LimiteSupLuminosidade`) VALUES
-(0, '19.50', '25.00', '2.00', '5.00'),
-(0, '19.50', '30.00', '5.00', '9.00'),
-(0, '19.50', '25.00', '2.00', '5.00'),
-(0, '19.50', '30.00', '5.00', '9.00');
 
 --
 -- Triggers `sistema`
@@ -442,9 +590,9 @@ ALTER TABLE `log_variaveismedidas`
 -- Indexes for table `medicoes`
 --
 ALTER TABLE `medicoes`
-  ADD PRIMARY KEY (`IDCultura`,`IDVariavel`),
-  ADD KEY `IdVariaveisMedidas` (`IdVariaveisMedidas`),
-  ADD KEY `IDVariavel` (`IDVariavel`);
+  ADD PRIMARY KEY (`NumMedicao`),
+  ADD KEY `IDVariavel` (`IDVariavel`),
+  ADD KEY `IDCultura` (`IDCultura`,`IDVariavel`) USING BTREE;
 
 --
 -- Indexes for table `medicoes_luminosidade`
@@ -457,6 +605,12 @@ ALTER TABLE `medicoes_luminosidade`
 --
 ALTER TABLE `medicoes_temperatura`
   ADD PRIMARY KEY (`IDMedicao`);
+
+--
+-- Indexes for table `sistema`
+--
+ALTER TABLE `sistema`
+  ADD PRIMARY KEY (`IDSistema`);
 
 --
 -- Indexes for table `variaveis`
@@ -486,25 +640,25 @@ ALTER TABLE `cultura`
 -- AUTO_INCREMENT for table `dadosexportados`
 --
 ALTER TABLE `dadosexportados`
-  MODIFY `IDExportação` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `IDExportação` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `investigador`
 --
 ALTER TABLE `investigador`
-  MODIFY `IDInvestigador` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `IDInvestigador` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `log_cultura`
 --
 ALTER TABLE `log_cultura`
-  MODIFY `IDLog` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `IDLog` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `log_investigador`
 --
 ALTER TABLE `log_investigador`
-  MODIFY `IDLog` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `IDLog` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `log_medicoes`
