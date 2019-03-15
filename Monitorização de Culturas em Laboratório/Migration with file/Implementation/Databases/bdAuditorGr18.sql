@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 14, 2019 at 12:09 AM
+-- Generation Time: Mar 15, 2019 at 12:16 PM
 -- Server version: 10.1.37-MariaDB
 -- PHP Version: 7.2.12
 
@@ -19,8 +19,27 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `logsgr18`
+-- Database: `auditor`
 --
+
+DELIMITER $$
+--
+-- Procedures
+--
+CREATE DEFINER=`root`@`localhost` PROCEDURE `init` ()  BEGIN
+CREATE ROLE auditor, administrador;
+
+GRANT SELECT ON auditor.log_cultura TO auditor, administrador;
+GRANT SELECT ON auditor.log_investigador TO auditor, administrador;
+GRANT SELECT ON auditor.log_medicoes TO auditor, administrador;
+GRANT SELECT ON auditor.log_medicoesluminosidade TO auditor, administrador;
+GRANT SELECT ON auditor.log_medicoestemperatura  TO auditor, administrador;
+GRANT SELECT ON auditor.log_sistema  TO auditor, administrador;
+GRANT SELECT ON auditor.log_variaveis TO auditor, administrador;
+GRANT SELECT ON auditor.log_variaveismedidas  TO auditor, administrador;
+END$$
+
+DELIMITER ;
 
 -- --------------------------------------------------------
 
