@@ -2,23 +2,134 @@
 <html>
 <body>
 
-<h1> GUI Auditor </h1>
-<h2> Efetuar migrações </h2>
+<style>
+html, body {
+	font-family: sans-serif;
+	margin:0;
+	padding: 0;
+	color: #404040;
+}
 
-<form action="makeMigrations.php" method="get">
-  <input type="submit" value="Fazer migrações!">
-</form>
+h1 {
+	margin: 30px 10px;
+    font-size: 50px;
+    text-align: center;
+}
 
-<h2> Consultar logs </h2>
+h2 {
+	margin-top: 0;
+	margin-bottom: 20px;
+}
 
-<form name="form" action="" method="get">
+.row {
+	display: flex;
+}
 
-Username:<input name="user" type="text"/>
-Password:<input name="password" type="text"/>
+button {
+	background-color: #629fde;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    font-size: 16px;
+	display: block;
+	border-radius: 7px;
+	box-shadow: 0px 3px 9px rgba(0,0,0,0.4);	
+}
 
-SQL Query:<input name="query" type="text"/>
-<input type="submit" name="execute" value="execute" />
-</form>
+input[type=text] {
+  border: 1px solid grey;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.floating-box, pre {
+	box-shadow: 0px 3px 10px rgba(0,0,0,0.4);
+	margin: 0 0 0 15px;
+	border-radius: 10px;
+    padding: 30px;
+}
+
+.floating-box.last {
+	flex: 1;
+	margin-right: 15px;
+	padding-right: 10px;
+}
+
+.credentials-box, .query-box {
+	display: inline-block;
+}
+
+.credentials-box label, .credentials-box input {
+	display: block;
+}
+
+.credentials-box label, .query-box label {
+	margin-bottom: 10px;
+}
+
+.credentials-box input.first, .query-box input {
+	margin-bottom:15px;
+}
+
+.query-box {
+	flex: 1;
+	margin-left: 35px;
+	margin-right: 20px;
+}
+
+.query-box label, .query-box input {
+	display: block;
+}
+
+.query-box input {
+	width: calc(100% - 20px);
+}
+
+pre {
+	background-color: white;
+	margin-right: 15px; 
+	margin-top: 15px
+}
+</style>
+
+	<h1> Auditoria de Dados </h1>
+	<div class="row">
+		<div class="floating-box">
+			<h2> Ferramentas </h2>
+
+			<form action="makeMigrations.php" method="get">
+			  <button type="submit">Migrar manualmente</button>
+			</form>
+		</div>
+
+		<div class="floating-box last">
+			<h2> Consultar logs </h2>
+
+			<form name="form" action="" method="get">
+
+			<div class="row">
+				<div class="credentials-box">
+					<label>Nome de utilizador:</label>
+					<input class="first" name="user" type="text"/>
+					
+					<label>Palavra-passe:</label>
+					<input name="password" type="text"/>
+				</div>
+
+				<div class="query-box">
+					<label>Comando SQL:</label>
+					<input name="query" type="text"/>
+
+					<div>
+						<button style="float: right; margin-top: 20px" type="submit" name="execute">Executar</button>
+					</div>
+				</div>
+			</div>
+			
+			</form>
+		</div>
+	</div>
 
 
 <?php
@@ -48,7 +159,7 @@ SQL Query:<input name="query" type="text"/>
 			echo '<pre>', json_encode($rows, JSON_PRETTY_PRINT), '</pre>';	// Echoes a string containing a pretty representation of the supplied value.		
 			
 		} else {
-			echo "Please insert values into all fields in order to execute the query.";
+			echo "<pre> Please insert values into all fields in order to execute the query. </pre>";
 		}
 	}
 	

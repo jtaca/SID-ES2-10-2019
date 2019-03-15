@@ -26,6 +26,7 @@
 		}
 	}
 	
+	curl_close($client);
 	
 	switch (json_last_error()) {
         case JSON_ERROR_NONE:
@@ -60,6 +61,7 @@
 		curl_setopt( $put, CURLOPT_HTTPHEADER, array('Content-Type: application/json')); 
 		curl_setopt( $put, CURLOPT_RETURNTRANSFER, 1);
 		$last_updated = curl_exec($put);
+		curl_close($put);
 		
 		
 		// Mark data as migrated
@@ -82,7 +84,7 @@
 		$password="";
 		$database="estufa";
 		
-		$conn = mysqli_connect($url, $username, $password, $database); // Connects to the mysql database. If unsuccessful $conn is an object that is false.
+		$conn = new mysqli($url, $username, $password, $database); // Connects to the mysql database. If unsuccessful $conn is an object that is false.
 		
 		if (!$conn){
 			die ("Connection Failled: Couldn't mark data as migrated.");		// Prints a message and exits the current script
@@ -92,15 +94,17 @@
 		if (!$conn->set_charset("utf8")) {
 			printf("Error loading character set utf8: %s\n", $conn->error);
 			exit();
-		} else {
-			printf("Current character set: %s\n", $conn->character_set_name());
 		}
 		
 		$sql = "call updateMigrados(".$endID.")";	// sql string cronstructed. '.' concats strings
 		$result = mysqli_query($conn, $sql);	// Performs the query on the database
 		if($result) {
 			echo "<p> Marking data as Migrated: Success</p>";
+		} else {
+			printf("Unable to mark data as migrated");
 		}
+		
+		$conn->next_result();
 	}	
 	
 ?>
