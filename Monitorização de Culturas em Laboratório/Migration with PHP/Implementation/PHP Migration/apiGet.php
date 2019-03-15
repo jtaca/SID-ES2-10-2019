@@ -25,6 +25,7 @@ function get_data() {
 	if (!$conn){
 		die ("Connection Failled: ".$conn->connect_error);		// Prints a message and exits the current script
 	}
+	
 	$sql = "call selectDadosNaoMigrados";	// sql query
 	$result = mysqli_query($conn, $sql);	// Performs the query on the database
 	$rows = array();	// Creates an empty array
@@ -33,8 +34,10 @@ function get_data() {
 			while($r=mysqli_fetch_assoc($result)){	// Returns an array that corresponds to the fetched row
 				array_push($rows, $r);				// Pushes one or more elements onto the end of array
 			}
-		}	
+		}
 	}
-	mysqli_close ($conn);		// Closes connection
+	$result->close();
+	$conn->next_result();
+	$conn->close();             // Closes connection
 	return json_encode($rows);	// Returns a string containing the JSON representation of the supplied value.
 }

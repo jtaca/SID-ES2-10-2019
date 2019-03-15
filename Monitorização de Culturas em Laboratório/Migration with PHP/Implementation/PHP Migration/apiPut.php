@@ -29,7 +29,7 @@ function put_data($data){
 	$username="root";
 	$password="";
 	
-	$conn = mysqli_connect($url, $username, $password, $database);
+	$conn = new mysqli($url, $username, $password, $database);
 	/* change character set to utf8 */
 	if (!$conn->set_charset("utf8")) {
 		exit();
@@ -37,20 +37,24 @@ function put_data($data){
 	
 	if ($conn){
 		$sql = "call selectID";
-		$result = mysqli_query($conn, $sql);
+		$result = $conn->query($sql);
+		
 		$rows = array();
 		
 		// If the migrated db has data, next record is largest logId + 1
 		if (mysqli_num_rows($result) > 0) {
 			$r = mysqli_fetch_assoc($result);
-			$next_record_id = $r["Maximo"] + 1;
+			 $next_record_id = $r["Maximo"] + 1;
 		} else {
 			$next_record_id = 1;
 		}
 		
+		$result->close();
+		$conn->next_result();
 		foreach ($logs as $log) {
 			
 			if ($log->logId >= $next_record_id) {
+				
 				$logId = $log->logId;
 				$username = $log->username;
 				$nomeTabela= $log->nomeTabela;
@@ -59,16 +63,10 @@ function put_data($data){
 				$resultado = $log->resultado;
 				$dataComando = $log->dataComando;
 				
-				$sql = "INSERT INTO logs (logId, comandoUsado, dataComando, linhaAnterior, nomeTabela, resultado, username)
-						VALUES ('$logId','$comandoUsado','$dataComando','$linhaAnterior','$nomeTabela','$resultado','$username');";
-				$res = mysqli_query($conn, $sql);
-				if(!$res){
-					$result = new stdClass();
-					$result->status = false;
-					$result->msg = mysqli_error($conn);
-					echo json_encode($result);
-					exit;
-				}
+				$insertQuery = "INSERT INTO logs
+						VALUES ('$logId', '$username', '$nomeTabela', '$comandoUsado','$linhaAnterior', '$resultado', '$dataComando')";
+				$insert = mysqli_query($conn, $insertQuery);
+				
 				$next_record_id++;
 			}
 		}
