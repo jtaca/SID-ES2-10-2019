@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 16, 2019 at 12:20 AM
+-- Generation Time: Mar 17, 2019 at 12:44 AM
 -- Server version: 10.1.37-MariaDB
 -- PHP Version: 7.2.12
 
@@ -26,19 +26,6 @@ DELIMITER $$
 --
 -- Procedures
 --
-CREATE DEFINER=`root`@`localhost` PROCEDURE `ExportaçãoManual` ()  BEGIN
-
-CALL export_cultura;
-CALL export_investigador;
-CALL export_medicoes;
-CALL export_medicoesluminosidade;
-CALL export_medicoestemperatura;
-CALL export_sistema;
-CALL export_variaveis;
-CALL export_variaveismedidas;
-
-END$$
-
 CREATE DEFINER=`root`@`localhost` PROCEDURE `export_cultura` ()  BEGIN
 
 SELECT * INTO OUTFILE 'C:logs_cultura.csv '
@@ -63,9 +50,22 @@ SELECT * INTO OUTFILE 'C:logs_investigador.csv '
 UPDATE `dadosexportados` SET `IDLogInvestigador`= (SELECT IDLog FROM log_investigador ORDER BY IDLog DESC LIMIT 1);
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `export_manual` ()  BEGIN
+
+CALL export_cultura;
+CALL export_investigador;
+CALL export_medicoes;
+CALL export_medicoesluminosidade;
+CALL export_medicoestemperatura;
+CALL export_sistema;
+CALL export_variaveis;
+CALL export_variaveismedidas;
+
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `export_medicoes` ()  BEGIN
 
-SELECT * INTO OUTFILE 'C:/logs/logs_medicoes.csv '
+SELECT * INTO OUTFILE 'C:logs_medicoes.csv '
   FIELDS TERMINATED BY ';' OPTIONALLY ENCLOSED BY '"'
   LINES TERMINATED BY '\n'
   FROM log_medicoes WHERE log_medicoes.IDLog > (SELECT 	IDLogMedicoes FROM `dadosexportados`) ;
@@ -81,7 +81,7 @@ SELECT * INTO OUTFILE 'C:logs_medicoesluminosidade.csv '
   LINES TERMINATED BY '\n'
   FROM log_medicoesluminosidade  WHERE log_medicoesluminosidade.IDLog > (SELECT IDLogMedicoesLuminosidade FROM `dadosexportados`) ;
 
-UPDATE `dadosexportados` SET `IDLogMedicoesLuminosidade `= (SELECT IDLog FROM log_medicoesluminosidade ORDER BY IDLog DESC LIMIT 1);
+UPDATE `dadosexportados` SET `IDLogMedicoesLuminosidade`= (SELECT IDLog FROM log_medicoesluminosidade ORDER BY IDLog DESC LIMIT 1);
   
 END$$
 
@@ -92,7 +92,7 @@ SELECT * INTO OUTFILE 'C:logs_medicoestemperatura.csv '
   LINES TERMINATED BY '\n'
   FROM log_medicoestemperatura  WHERE log_medicoestemperatura.IDLog > (SELECT IDLogMedicoesTemperatura FROM `dadosexportados`) ;
  
-UPDATE `dadosexportados` SET `IDLogMedicoesTemperatura `= (SELECT IDLog FROM log_medicoestemperatura ORDER BY IDLog DESC LIMIT 1);
+UPDATE `dadosexportados` SET `IDLogMedicoesTemperatura`= (SELECT IDLog FROM log_medicoestemperatura ORDER BY IDLog DESC LIMIT 1);
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `export_sistema` ()  BEGIN
@@ -640,7 +640,7 @@ ALTER TABLE `cultura`
 -- AUTO_INCREMENT for table `dadosexportados`
 --
 ALTER TABLE `dadosexportados`
-  MODIFY `IDExportação` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `IDExportação` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `investigador`
