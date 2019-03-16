@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.5
+-- version 4.8.3
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 16, 2019 at 12:04 AM
--- Server version: 10.1.38-MariaDB
--- PHP Version: 7.3.2
+-- Generation Time: Mar 16, 2019 at 01:10 AM
+-- Server version: 10.1.37-MariaDB
+-- PHP Version: 7.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `estufa2`
+-- Database: `ourestufa`
 --
 
 DELIMITER $$
@@ -80,6 +80,24 @@ ELSE
 END IF$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `alterarValorMedido` (IN `IdVar` INT(11), IN `novoValor` DECIMAL(8,2))  UPDATE medicoes SET medicoes.ValorMedicao = novoValor WHERE medicoes.NumeroMedicao = IdVar$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `createPhpUser` ()  BEGIN
+DROP USER IF EXISTS ''@localhost;
+SET @sql := CONCAT('CREATE USER ', 'php', ' IDENTIFIED BY ', QUOTE('php'));
+    PREPARE statement FROM @sql;
+    EXECUTE statement;
+    
+    SET @sql := CONCAT('GRANT ', 'phpUser', ' TO ', QUOTE('php'));
+    PREPARE statement FROM @sql;
+    EXECUTE statement;
+    
+    SET @sql := CONCAT('SET DEFAULT ROLE ', 'phpUser' ,' FOR ', 		QUOTE('php'));
+    PREPARE statement FROM @sql;
+    EXECUTE statement;
+
+    DEALLOCATE PREPARE statement;
+    FLUSH PRIVILEGES;
+END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `criarPrivilegios` ()  BEGIN
 
