@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.3
+-- version 4.8.4
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 16, 2019 at 01:10 AM
--- Server version: 10.1.37-MariaDB
--- PHP Version: 7.2.12
+-- Generation Time: 18-Mar-2019 às 21:11
+-- Versão do servidor: 10.1.37-MariaDB
+-- versão do PHP: 7.3.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `ourestufa`
+-- Database: `estufa`
 --
 
 DELIMITER $$
@@ -40,7 +40,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `addUser` (IN `var_role` ENUM('inves
     
     ALTER TABLE mysql.user ADD COLUMN IF NOT EXISTS email varchar(100);
 
-    SET @sql := CONCAT('CREATE USER ', var_nome, ' IDENTIFIED BY ', QUOTE(var_password));
+    SET @sql := CONCAT('CREATE USER ', QUOTE(var_nome), ' IDENTIFIED BY ', QUOTE(var_password));
     PREPARE statement FROM @sql;
     EXECUTE statement;
     
@@ -142,7 +142,7 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `cultura`
+-- Estrutura da tabela `cultura`
 --
 
 CREATE TABLE `cultura` (
@@ -153,14 +153,14 @@ CREATE TABLE `cultura` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `cultura`
+-- Extraindo dados da tabela `cultura`
 --
 
 INSERT INTO `cultura` (`IDCultura`, `NomeCultura`, `DescricaoCultura`, `EmailInvestigador`) VALUES
 (1, 'cenouras', 'Daucus carota subsp. sativus ', 'lala@gmail.com');
 
 --
--- Triggers `cultura`
+-- Acionadores `cultura`
 --
 DELIMITER $$
 CREATE TRIGGER `deleteCultura` AFTER DELETE ON `cultura` FOR EACH ROW INSERT into logs VALUES (null, CURRENT_USER, "cultura", "DELETE", CONCAT("IdCultura", ": ", old.IdCultura, "  NomeCultura", ": ", old.NomeCultura, "  DescricaoCultura", ": ", old.DescricaoCultura, "  EmailInvestigador", ": ", old.EmailInvestigador), "Linha Eliminada", NOW(), 0)
@@ -178,7 +178,7 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `investigador`
+-- Estrutura da tabela `investigador`
 --
 
 CREATE TABLE `investigador` (
@@ -188,17 +188,19 @@ CREATE TABLE `investigador` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `investigador`
+-- Extraindo dados da tabela `investigador`
 --
 
 INSERT INTO `investigador` (`Email`, `NomeInvestigador`, `CategoriaProfissional`) VALUES
+('a.@b.c', 'Alberto', 'wer'),
 ('a@b.c', 'qwer', 'nao sei'),
+('abc', 'El Chap', 'abc'),
 ('jonas@gmail.com', 'jonas', 'programador'),
 ('lala@gmail.com', 'wqser', 'qwer'),
 ('p@p.p', 'pipu', '0');
 
 --
--- Triggers `investigador`
+-- Acionadores `investigador`
 --
 DELIMITER $$
 CREATE TRIGGER `deleteInvestigador` AFTER DELETE ON `investigador` FOR EACH ROW INSERT into logs VALUES (null, CURRENT_USER, "investigador", "DELETE", CONCAT("Email", ": ", old.Email, "  NomeInvestigador", ": ", old.NomeInvestigador, "  CategoriaProfissional", ": ", old.CategoriaProfissional), "Linha Eliminada", NOW(), 0)
@@ -216,7 +218,7 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `logs`
+-- Estrutura da tabela `logs`
 --
 
 CREATE TABLE `logs` (
@@ -231,7 +233,7 @@ CREATE TABLE `logs` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `logs`
+-- Extraindo dados da tabela `logs`
 --
 
 INSERT INTO `logs` (`logId`, `username`, `nomeTabela`, `comandoUsado`, `linhaAnterior`, `resultado`, `dataComando`, `exportado`) VALUES
@@ -248,12 +250,14 @@ INSERT INTO `logs` (`logId`, `username`, `nomeTabela`, `comandoUsado`, `linhaAnt
 (12, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 2  DataHoraMedicao: 2019-03-14 14:07:34  ValorMedicao: 6.00  IdVariaveisMedidas: 1', 'NumeroMedicao: 2  DataHoraMedicao: 2019-03-14 14:09:00  ValorMedicao: 23233.00  IdVariaveisMedidas: 1', '2019-03-14 14:09:00', 0),
 (13, 'root@localhost', 'investigador', 'INSERT', 'Não Aplicável', 'Email: a@b.c  NomeInvestigador: qwer  CategoriaProfissional: nao sei', '2019-03-15 19:23:05', 0),
 (14, 'root@localhost', 'investigador', 'INSERT', 'Não Aplicável', 'Email: p@p.p  NomeInvestigador: pipu  CategoriaProfissional: 0', '2019-03-15 19:27:25', 0),
-(15, 'root@localhost', 'investigador', 'INSERT', 'Não Aplicável', 'Email: jonas@gmail.com  NomeInvestigador: jonas  CategoriaProfissional: programador', '2019-03-15 19:28:52', 0);
+(15, 'root@localhost', 'investigador', 'INSERT', 'Não Aplicável', 'Email: jonas@gmail.com  NomeInvestigador: jonas  CategoriaProfissional: programador', '2019-03-15 19:28:52', 0),
+(16, 'root@localhost', 'investigador', 'INSERT', 'Não Aplicável', 'Email: a.@b.c  NomeInvestigador: Alberto  CategoriaProfissional: wer', '2019-03-18 20:07:38', 0),
+(17, 'root@localhost', 'investigador', 'INSERT', 'Não Aplicável', 'Email: abc  NomeInvestigador: El Chap  CategoriaProfissional: abc', '2019-03-18 20:09:27', 0);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `medicoes`
+-- Estrutura da tabela `medicoes`
 --
 
 CREATE TABLE `medicoes` (
@@ -264,7 +268,7 @@ CREATE TABLE `medicoes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `medicoes`
+-- Extraindo dados da tabela `medicoes`
 --
 
 INSERT INTO `medicoes` (`NumeroMedicao`, `DataHoraMedicao`, `ValorMedicao`, `IdVariaveisMedidas`) VALUES
@@ -272,7 +276,7 @@ INSERT INTO `medicoes` (`NumeroMedicao`, `DataHoraMedicao`, `ValorMedicao`, `IdV
 (2, '2019-03-14 14:09:00', '23233.00', 1);
 
 --
--- Triggers `medicoes`
+-- Acionadores `medicoes`
 --
 DELIMITER $$
 CREATE TRIGGER `deleteMedicoes` AFTER DELETE ON `medicoes` FOR EACH ROW INSERT into logs VALUES (null, CURRENT_USER, "medicoes", "DELETE", CONCAT("NumeroMedicao", ": ", old.NumeroMedicao, "  DataHoraMedicao", ": ", old.DataHoraMedicao, "  ValorMedicao", ": ", old.ValorMedicao, "  IdVariaveisMedidas", ": ", old.IdVariaveisMedidas), "Linha Eliminada", NOW(), 0)
@@ -290,7 +294,7 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `medicoes_luminosidade`
+-- Estrutura da tabela `medicoes_luminosidade`
 --
 
 CREATE TABLE `medicoes_luminosidade` (
@@ -300,7 +304,7 @@ CREATE TABLE `medicoes_luminosidade` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Triggers `medicoes_luminosidade`
+-- Acionadores `medicoes_luminosidade`
 --
 DELIMITER $$
 CREATE TRIGGER `deleteMedicoesLuminosidade` AFTER DELETE ON `medicoes_luminosidade` FOR EACH ROW INSERT into logs VALUES (null, CURRENT_USER, "medicoes_luminosidade", "DELETE", CONCAT("DataHoraMedicao", ": ", old.DataHoraMedicao, "  ValorMedicaoLuminosidade", ": ", old.ValorMedicaoLuminosidade, "  IDMedicao", ": ", old.IDMedicao), "Linha Eliminada", NOW(), 0)
@@ -318,7 +322,7 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `medicoes_temperatura`
+-- Estrutura da tabela `medicoes_temperatura`
 --
 
 CREATE TABLE `medicoes_temperatura` (
@@ -328,7 +332,7 @@ CREATE TABLE `medicoes_temperatura` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Triggers `medicoes_temperatura`
+-- Acionadores `medicoes_temperatura`
 --
 DELIMITER $$
 CREATE TRIGGER `deleteMedicoesTemperatura` AFTER DELETE ON `medicoes_temperatura` FOR EACH ROW INSERT into logs VALUES (null, CURRENT_USER, "medicoes_temperatura", "DELETE", CONCAT("DataHoraMedicao", ": ", old.DataHoraMedicao, "  ValorMedicaoTemperatura", ": ", old.ValorMedicaoTemperatura, "  IDMedicao", ": ", old.IDMedicao), "Linha Eliminada", NOW(), 0)
@@ -346,7 +350,7 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `sistema`
+-- Estrutura da tabela `sistema`
 --
 
 CREATE TABLE `sistema` (
@@ -357,7 +361,7 @@ CREATE TABLE `sistema` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `sistema`
+-- Extraindo dados da tabela `sistema`
 --
 
 INSERT INTO `sistema` (`LimiteInferiorTemperatura`, `LimiteSuperiorTemperatura`, `LimiteInferiorLuz`, `LimiteSuperiorLuz`) VALUES
@@ -365,7 +369,7 @@ INSERT INTO `sistema` (`LimiteInferiorTemperatura`, `LimiteSuperiorTemperatura`,
 ('19.50', '30.00', '5.00', '9.00');
 
 --
--- Triggers `sistema`
+-- Acionadores `sistema`
 --
 DELIMITER $$
 CREATE TRIGGER `deleteSistema` AFTER DELETE ON `sistema` FOR EACH ROW INSERT into logs VALUES (null, CURRENT_USER, "sistema", "DELETE", CONCAT("LimiteInferiorTemperatura", ": ", old.LimiteInferiorTemperatura, "  LimiteSuperiorTemperatura", ": ", old.LimiteSuperiorTemperatura, "  LimiteInferiorLuz", ": ", old.LimiteInferiorLuz, "  LimiteSuperiorLuz", ": ", old.LimiteSuperiorLuz), "Linha Eliminada", NOW(), 0)
@@ -383,7 +387,7 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `variaveis`
+-- Estrutura da tabela `variaveis`
 --
 
 CREATE TABLE `variaveis` (
@@ -392,14 +396,14 @@ CREATE TABLE `variaveis` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `variaveis`
+-- Extraindo dados da tabela `variaveis`
 --
 
 INSERT INTO `variaveis` (`IDVariavel`, `NomeVariavel`) VALUES
 (1, 'pH');
 
 --
--- Triggers `variaveis`
+-- Acionadores `variaveis`
 --
 DELIMITER $$
 CREATE TRIGGER `deleteVariaveis` AFTER DELETE ON `variaveis` FOR EACH ROW INSERT into logs VALUES (null, CURRENT_USER, "variaveis", "DELETE", CONCAT("IDVariavel", ": ", old.IDVariavel, "  NomeVariavel", ": ", old.NomeVariavel), "Linha Eliminada", NOW(), 0)
@@ -417,7 +421,7 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `variaveis_medidas`
+-- Estrutura da tabela `variaveis_medidas`
 --
 
 CREATE TABLE `variaveis_medidas` (
@@ -429,14 +433,14 @@ CREATE TABLE `variaveis_medidas` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `variaveis_medidas`
+-- Extraindo dados da tabela `variaveis_medidas`
 --
 
 INSERT INTO `variaveis_medidas` (`IDVariavel`, `IDCultura`, `LimiteInferior`, `LimiteSuperior`, `IdVariaveisMedidas`) VALUES
 (1, 1, '3.00', '7.00', 1);
 
 --
--- Triggers `variaveis_medidas`
+-- Acionadores `variaveis_medidas`
 --
 DELIMITER $$
 CREATE TRIGGER `deleteVariaveisMedidas` AFTER DELETE ON `variaveis_medidas` FOR EACH ROW INSERT into logs VALUES (null, CURRENT_USER, "variaveis_medidas", "DELETE", CONCAT("IDVariavel", ": ", old.IDVariavel, "  IDCultura", ": ", old.IDCultura, "  LimiteInferior", ": ", old.LimiteInferior, "  LimiteSuperior", ": ", old.LimiteSuperior, "  IdVariaveisMedidas", ": ", old.IdVariaveisMedidas), "Linha Eliminada", NOW(), 0)
@@ -521,7 +525,7 @@ ALTER TABLE `cultura`
 -- AUTO_INCREMENT for table `logs`
 --
 ALTER TABLE `logs`
-  MODIFY `logId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `logId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `medicoes`
@@ -558,19 +562,19 @@ ALTER TABLE `variaveis_medidas`
 --
 
 --
--- Constraints for table `cultura`
+-- Limitadores para a tabela `cultura`
 --
 ALTER TABLE `cultura`
   ADD CONSTRAINT `cultura_ibfk_1` FOREIGN KEY (`EmailInvestigador`) REFERENCES `investigador` (`Email`);
 
 --
--- Constraints for table `medicoes`
+-- Limitadores para a tabela `medicoes`
 --
 ALTER TABLE `medicoes`
   ADD CONSTRAINT `medicoes_ibfk_1` FOREIGN KEY (`IdVariaveisMedidas`) REFERENCES `variaveis_medidas` (`IdVariaveisMedidas`);
 
 --
--- Constraints for table `variaveis_medidas`
+-- Limitadores para a tabela `variaveis_medidas`
 --
 ALTER TABLE `variaveis_medidas`
   ADD CONSTRAINT `variaveis_medidas_ibfk_1` FOREIGN KEY (`IDCultura`) REFERENCES `cultura` (`IDCultura`),
