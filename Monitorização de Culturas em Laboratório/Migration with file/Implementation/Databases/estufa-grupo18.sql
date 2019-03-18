@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.4
+-- version 4.8.5
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 18-Mar-2019 às 23:09
--- Versão do servidor: 10.1.37-MariaDB
--- versão do PHP: 7.3.1
+-- Generation Time: 18-Mar-2019 às 23:56
+-- Versão do servidor: 10.1.38-MariaDB
+-- versão do PHP: 7.3.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `estufa-grupo18`
+-- Database: `estufagrupo18`
 --
 
 DELIMITER $$
@@ -215,22 +215,6 @@ INSERT INTO `dadosexportados`(`IDExportação`, `IDLogInvestigador`, `IDLogMedic
 
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `select_medicoes` (IN `var_condicao` VARCHAR(200))  NO SQL
-BEGIN  
-
-	IF var_condicao = "" THEN SET var_condicao = "1=1";
-    END IF;
-  
-	SET @sql := CONCAT('INSERT log_medicoes (IDVariavel, IDCultura, NumMedicao, DataHoraMedicao, ValorMedicao, Utilizador, Data, Operacao) SELECT IDVariavel, IDCultura, NumMedicao, DataHoraMedicao, ValorMedicao, CURRENT_USER, NOW(), "Select" FROM medicoes WHERE ', var_condicao);
-    PREPARE statement FROM @sql;
-    EXECUTE statement;
-  
-	SET @sql := CONCAT('SELECT IDVariavel, IDCultura, NumMedicao, DataHoraMedicao, ValorMedicao FROM medicoes WHERE ', var_condicao);
-    PREPARE statement FROM @sql;
-    EXECUTE statement; 
-
-END$$
-
 DELIMITER ;
 
 -- --------------------------------------------------------
@@ -247,16 +231,16 @@ CREATE TABLE `cultura` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Extraindo dados da tabela `cultura`
---
-
-INSERT INTO `cultura` (`IDCultura`, `NomeCultura`, `DescricaoCultura`, `IDInvestigador`) VALUES
-(4, 'sdaf', 'sd', 12),
-(6, 'culturaA', NULL, 8);
-
---
 -- Acionadores `cultura`
 --
+DELIMITER $$
+CREATE TRIGGER `cultura_delete` AFTER DELETE ON `cultura` FOR EACH ROW INSERT INTO log_cultura VALUES (null, old.IDCultura, null, null, null, CURRENT_USER, NOW(), "Delete")
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `cultura_update` AFTER UPDATE ON `cultura` FOR EACH ROW INSERT INTO log_cultura VALUES (null, old.IDCultura, old.NomeCultura, old.DescricaoCultura, old.IDInvestigador, CURRENT_USER, NOW(), "Update")
+$$
+DELIMITER ;
 DELIMITER $$
 CREATE TRIGGER `insert_cultura` AFTER INSERT ON `cultura` FOR EACH ROW INSERT into log_cultura VALUES ( null ,new.IDCultura, new.NomeCultura, new.DescricaoCultura, new.IDInvestigador,CURRENT_USER, CURRENT_TIME, 'Insert')
 $$
@@ -281,13 +265,6 @@ CREATE TABLE `dadosexportados` (
   `IDLogVariaveis` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Extraindo dados da tabela `dadosexportados`
---
-
-INSERT INTO `dadosexportados` (`IDExportação`, `IDLogInvestigador`, `IDLogMedicoesLuminosidade`, `IDLogMedicoesVariaveis`, `IDLogMedicoesTemperatura`, `IDLogMedicoes`, `IDLogCultura`, `IDLogVariaveisMedidas`, `IDLogSistema`, `IDLogVariaveis`) VALUES
-(1, 3, 0, 0, 0, 0, 1, 0, 0, 0);
-
 -- --------------------------------------------------------
 
 --
@@ -302,20 +279,18 @@ CREATE TABLE `investigador` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Extraindo dados da tabela `investigador`
---
-
-INSERT INTO `investigador` (`IDInvestigador`, `Email`, `NomeInvestigador`, `CategoriaProfissional`) VALUES
-(8, 'lala@gmail.com', 'sdf', 'sdf'),
-(11, 'lala@gmail.com', 'sf', 'sdf'),
-(12, 'asdsfs', 'sdfsdd', 'sdds'),
-(13, 'lala@gmail.com', 'sfd', 'sdgfh');
-
---
 -- Acionadores `investigador`
 --
 DELIMITER $$
-CREATE TRIGGER `investigador_insert` AFTER INSERT ON `investigador` FOR EACH ROW INSERT into log_investigador VALUES ( null ,CURRENT_USER, new.NomeInvestigador, new.Email, new.NomeInvestigador, new.CategoriaProfissional, CURRENT_TIME, 'Insert')
+CREATE TRIGGER `investigador_delete` AFTER DELETE ON `investigador` FOR EACH ROW INSERT INTO log_investigador VALUES (null, old.IDInvestigador, null, null, null, CURRENT_USER, NOW(), "Delete")
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `investigador_insert` AFTER INSERT ON `investigador` FOR EACH ROW INSERT into log_investigador VALUES (null , new.IDInvestigador, new.Email, new.NomeInvestigador, new.CategoriaProfissional, CURRENT_USER, CURRENT_TIME, 'Insert')
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `investigador_update` AFTER UPDATE ON `investigador` FOR EACH ROW INSERT INTO log_investigador VALUES (null, old.IDInvestigador, old.Email, old.NomeInvestigador, old.CategoriaProfissional, CURRENT_USER, NOW(), "Update")
 $$
 DELIMITER ;
 
@@ -336,13 +311,6 @@ CREATE TABLE `log_cultura` (
   `Operacao` varchar(45) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Extraindo dados da tabela `log_cultura`
---
-
-INSERT INTO `log_cultura` (`IDLog`, `IDCultura`, `NomeCultura`, `DescricaoCultura`, `IDInvestigador`, `Utilizador`, `Data`, `Operacao`) VALUES
-(2, 6, 'culturaA', NULL, 8, 'root@localhost', '2019-03-18 21:06:35', 'Insert');
-
 -- --------------------------------------------------------
 
 --
@@ -359,16 +327,6 @@ CREATE TABLE `log_investigador` (
   `Data` datetime NOT NULL,
   `Operacao` varchar(45) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Extraindo dados da tabela `log_investigador`
---
-
-INSERT INTO `log_investigador` (`IDLog`, `IDInvestigador`, `Email`, `NomeInvestigador`, `CategoriaProfissional`, `Utilizador`, `Data`, `Operacao`) VALUES
-(1, 0, 'sdx', 'lala@gmail.com', 'sf', 'sdf', '2019-03-13 22:37:47', 'Insert'),
-(2, 0, 'sdfsdd', 'asdsfs', 'sdfsdd', 'sdds', '2019-03-13 22:40:31', 'Insert'),
-(3, 0, 'sfd', 'lala@gmail.com', 'sfd', 'sdgfh', '2019-03-15 22:14:50', 'Insert'),
-(4, 0, 'Toino', 'a@b.c', 'Toino', 'xixi', '2019-03-18 20:30:55', 'Insert');
 
 -- --------------------------------------------------------
 
@@ -387,19 +345,6 @@ CREATE TABLE `log_medicoes` (
   `Data` datetime NOT NULL,
   `Operacao` varchar(45) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Extraindo dados da tabela `log_medicoes`
---
-
-INSERT INTO `log_medicoes` (`IDLog`, `IDVariavel`, `IDCultura`, `NumMedicao`, `DataHoraMedicao`, `ValorMedicao`, `Utilizador`, `Data`, `Operacao`) VALUES
-(7, 1, 6, 2, '2019-03-18 21:53:09', 7, 'root@localhost', '2019-03-18 21:58:06', 'Select'),
-(8, 1, 6, 2, '2019-03-18 21:53:09', 7, 'root@localhost', '2019-03-18 22:02:16', 'Select'),
-(9, 1, 6, 2, '2019-03-18 21:53:09', 7, 'root@localhost', '2019-03-18 22:03:56', 'Select'),
-(10, 1, 6, 3, '2019-03-18 22:04:35', 5, 'root@localhost', '2019-03-18 22:04:35', 'Insert'),
-(11, 1, 6, 2, '2019-03-18 21:53:09', 7, 'root@localhost', '2019-03-18 22:05:54', 'Select'),
-(12, 1, 6, 3, '2019-03-18 22:04:35', 5, 'root@localhost', '2019-03-18 22:05:54', 'Select'),
-(14, 1, 6, 2, '2019-03-18 21:53:09', 7, 'root@localhost', '2019-03-18 22:09:27', 'Select');
 
 -- --------------------------------------------------------
 
@@ -466,13 +411,6 @@ CREATE TABLE `log_variaveis` (
   `Operacao` varchar(45) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Extraindo dados da tabela `log_variaveis`
---
-
-INSERT INTO `log_variaveis` (`IDLog`, `IDVariavel`, `NomeVariavel`, `Utilizador`, `Data`, `Operacao`) VALUES
-(1, 1, 'pH', 'root@localhost', '2019-03-18 21:51:14', 'Insert');
-
 -- --------------------------------------------------------
 
 --
@@ -490,13 +428,6 @@ CREATE TABLE `log_variaveismedidas` (
   `Operacao` varchar(45) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Extraindo dados da tabela `log_variaveismedidas`
---
-
-INSERT INTO `log_variaveismedidas` (`IDLog`, `IDVariavel`, `IDCultura`, `LimiteInferior`, `LimiteSuperior`, `Utilizador`, `Data`, `Operacao`) VALUES
-(1, 1, 6, 4, 10, 'root@localhost', '2019-03-18 21:52:52', 'Insert');
-
 -- --------------------------------------------------------
 
 --
@@ -512,18 +443,18 @@ CREATE TABLE `medicoes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Extraindo dados da tabela `medicoes`
---
-
-INSERT INTO `medicoes` (`DataHoraMedicao`, `ValorMedicao`, `IDCultura`, `IDVariavel`, `NumMedicao`) VALUES
-('2019-03-18 21:53:09', '7.00', 6, 1, 2),
-('2019-03-18 22:04:35', '5.00', 6, 1, 3);
-
---
 -- Acionadores `medicoes`
 --
 DELIMITER $$
+CREATE TRIGGER `medicoes_delete` AFTER DELETE ON `medicoes` FOR EACH ROW INSERT INTO log_medicoes VALUES (null, null, null, old.NumMedicao, null, null, CURRENT_USER, NOW(), "Delete")
+$$
+DELIMITER ;
+DELIMITER $$
 CREATE TRIGGER `medicoes_insert` AFTER INSERT ON `medicoes` FOR EACH ROW INSERT into log_medicoes VALUES ( null ,new.IDVariavel, new.IDCultura, new.NumMedicao,  new.DataHoraMedicao, new.ValorMedicao,CURRENT_USER,  CURRENT_TIME, 'Insert')
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `medicoes_update` AFTER UPDATE ON `medicoes` FOR EACH ROW INSERT INTO log_medicoes VALUES (null, old.IDVariavel, old.IDCultura, old.NumMedicao, old.DataHoraMedicao, old.ValorMedicao, CURRENT_USER, NOW(), "Update")
 $$
 DELIMITER ;
 
@@ -543,7 +474,15 @@ CREATE TABLE `medicoes_luminosidade` (
 -- Acionadores `medicoes_luminosidade`
 --
 DELIMITER $$
+CREATE TRIGGER `medicoesluminosidade_delete` AFTER DELETE ON `medicoes_luminosidade` FOR EACH ROW INSERT INTO log_medicoesluminosidade VALUES (null, old.IDMedicao, null, null, CURRENT_USER, NOW(), "Delete")
+$$
+DELIMITER ;
+DELIMITER $$
 CREATE TRIGGER `medicoesluminosidade_insert` AFTER INSERT ON `medicoes_luminosidade` FOR EACH ROW INSERT into log_medicoesluminosidade VALUES ( null ,new.IDMedicao, new.DataHoraMedicao, new.ValorMedicaoLuminosidade,  CURRENT_USER,  CURRENT_TIME, 'Insert')
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `medicoesluminosidade_update` AFTER UPDATE ON `medicoes_luminosidade` FOR EACH ROW INSERT INTO log_medicoesluminosidade VALUES (null, old.IDMedicao, old.DataHoraMedicao, old.ValorMedicaoLuminosidade, CURRENT_USER, NOW(), "Update")
 $$
 DELIMITER ;
 
@@ -563,7 +502,15 @@ CREATE TABLE `medicoes_temperatura` (
 -- Acionadores `medicoes_temperatura`
 --
 DELIMITER $$
+CREATE TRIGGER `medicoestemperatura_delete` AFTER DELETE ON `medicoes_temperatura` FOR EACH ROW INSERT INTO log_medicoestemperatura VALUES (null, old.IDMedicao, null, null, CURRENT_USER, NOW(), "Delete")
+$$
+DELIMITER ;
+DELIMITER $$
 CREATE TRIGGER `medicoestemperatura_insert` AFTER INSERT ON `medicoes_temperatura` FOR EACH ROW INSERT into log_medicoestemperatura VALUES ( null ,new.IDMedicao, new.DataHoraMedicao, new.ValorMedicaoTemperatura,  CURRENT_USER,  CURRENT_TIME, 'Insert')
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `medicoestemperatura_update` AFTER UPDATE ON `medicoes_temperatura` FOR EACH ROW INSERT INTO log_medicoestemperatura VALUES (null, old.IDMedicao, old.DataHoraMedicao, old.ValorMedicaoTemperatura, CURRENT_USER, NOW(), "Update")
 $$
 DELIMITER ;
 
@@ -585,7 +532,15 @@ CREATE TABLE `sistema` (
 -- Acionadores `sistema`
 --
 DELIMITER $$
+CREATE TRIGGER `sistema_delete` AFTER DELETE ON `sistema` FOR EACH ROW INSERT INTO log_sistema VALUES (null, old.IDSistema, null, null, null, null, CURRENT_USER, NOW(), "Delete")
+$$
+DELIMITER ;
+DELIMITER $$
 CREATE TRIGGER `sistema_insert` AFTER INSERT ON `sistema` FOR EACH ROW INSERT into log_sistema VALUES ( null ,new.IDSistema, new.LimiteInfTemperatura, new.LimiteSupTemperatura,  new.LimiteInfLuminosidade, new.LimiteSupLuminosidade,CURRENT_USER,  CURRENT_TIME, 'Insert')
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `sistema_update` AFTER UPDATE ON `sistema` FOR EACH ROW INSERT INTO log_sistema VALUES (null, old.IDSistema, old.LimiteInfTemperatura, old.LimiteSupTemperatura, old.LimiteInfLuminosidade, old.LimiteSupLuminosidade, CURRENT_USER, NOW(), "Update")
 $$
 DELIMITER ;
 
@@ -601,17 +556,18 @@ CREATE TABLE `variaveis` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Extraindo dados da tabela `variaveis`
---
-
-INSERT INTO `variaveis` (`IDVariavel`, `NomeVariavel`) VALUES
-(1, 'pH');
-
---
 -- Acionadores `variaveis`
 --
 DELIMITER $$
+CREATE TRIGGER `variaveis_delete` AFTER DELETE ON `variaveis` FOR EACH ROW INSERT INTO log_variaveis VALUES (null, old.IDVariavel, null, CURRENT_USER, NOW(), "Delete")
+$$
+DELIMITER ;
+DELIMITER $$
 CREATE TRIGGER `variaveis_insert` AFTER INSERT ON `variaveis` FOR EACH ROW INSERT into log_variaveis VALUES ( null ,new.IDVariavel, new.NomeVariavel,CURRENT_USER,  CURRENT_TIME, 'Insert')
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `variaveis_update` AFTER UPDATE ON `variaveis` FOR EACH ROW INSERT INTO log_variaveis VALUES (null, old.IDVariavel, old.NomeVariavel, CURRENT_USER, NOW(), "Update")
 $$
 DELIMITER ;
 
@@ -629,17 +585,18 @@ CREATE TABLE `variaveis_medidas` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Extraindo dados da tabela `variaveis_medidas`
---
-
-INSERT INTO `variaveis_medidas` (`IDVariavel`, `IDCultura`, `LimiteInferior`, `LimiteSuperior`) VALUES
-(1, 6, '4.00', '10.00');
-
---
 -- Acionadores `variaveis_medidas`
 --
 DELIMITER $$
+CREATE TRIGGER `variaveismedidas_delete` AFTER DELETE ON `variaveis_medidas` FOR EACH ROW INSERT INTO log_variaveismedidas VALUES (null, old.IDVariavel, old.IDCultura, null, null, CURRENT_USER, NOW(), "Delete")
+$$
+DELIMITER ;
+DELIMITER $$
 CREATE TRIGGER `variaveismedidas_insert` AFTER INSERT ON `variaveis_medidas` FOR EACH ROW INSERT into log_variaveismedidas VALUES ( null ,new.IDVariavel, new.IDCultura, new.LimiteInferior,  new.LimiteSuperior,CURRENT_USER,  CURRENT_TIME, 'Insert')
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `variaveismedidas_update` AFTER UPDATE ON `variaveis_medidas` FOR EACH ROW INSERT INTO log_variaveismedidas VALUES (null, old.IDVariavel, old.IDCultura, old.LimiteInferior, old.LimiteSuperior, CURRENT_USER, NOW(), "Update")
 $$
 DELIMITER ;
 
@@ -762,7 +719,7 @@ ALTER TABLE `variaveis_medidas`
 -- AUTO_INCREMENT for table `cultura`
 --
 ALTER TABLE `cultura`
-  MODIFY `IDCultura` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `IDCultura` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `dadosexportados`
@@ -774,73 +731,85 @@ ALTER TABLE `dadosexportados`
 -- AUTO_INCREMENT for table `investigador`
 --
 ALTER TABLE `investigador`
-  MODIFY `IDInvestigador` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `IDInvestigador` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `log_cultura`
 --
 ALTER TABLE `log_cultura`
-  MODIFY `IDLog` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `IDLog` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `log_investigador`
 --
 ALTER TABLE `log_investigador`
-  MODIFY `IDLog` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `IDLog` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `log_medicoes`
 --
 ALTER TABLE `log_medicoes`
-  MODIFY `IDLog` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `IDLog` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `log_medicoesluminosidade`
 --
 ALTER TABLE `log_medicoesluminosidade`
-  MODIFY `IDLog` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `IDLog` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `log_medicoestemperatura`
 --
 ALTER TABLE `log_medicoestemperatura`
-  MODIFY `IDLog` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `IDLog` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `log_sistema`
 --
 ALTER TABLE `log_sistema`
-  MODIFY `IDLog` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `IDLog` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `log_variaveis`
 --
 ALTER TABLE `log_variaveis`
-  MODIFY `IDLog` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `IDLog` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `log_variaveismedidas`
 --
 ALTER TABLE `log_variaveismedidas`
-  MODIFY `IDLog` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `IDLog` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `medicoes`
+--
+ALTER TABLE `medicoes`
+  MODIFY `NumMedicao` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `medicoes_luminosidade`
 --
 ALTER TABLE `medicoes_luminosidade`
-  MODIFY `IDMedicao` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `IDMedicao` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `medicoes_temperatura`
 --
 ALTER TABLE `medicoes_temperatura`
-  MODIFY `IDMedicao` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `IDMedicao` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `sistema`
+--
+ALTER TABLE `sistema`
+  MODIFY `IDSistema` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `variaveis`
 --
 ALTER TABLE `variaveis`
-  MODIFY `IDVariavel` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `IDVariavel` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Constraints for dumped tables
