@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.3
+-- version 4.8.4
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 17, 2019 at 12:44 AM
--- Server version: 10.1.37-MariaDB
--- PHP Version: 7.2.12
+-- Generation Time: 18-Mar-2019 às 21:50
+-- Versão do servidor: 10.1.37-MariaDB
+-- versão do PHP: 7.3.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -19,13 +19,67 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `estufa`
+-- Database: `estufa-grupo18`
 --
 
 DELIMITER $$
 --
 -- Procedures
 --
+CREATE DEFINER=`root`@`localhost` PROCEDURE `create_administrador` (IN `var_nome` VARCHAR(50), IN `var_password` VARCHAR(50))  NO SQL
+BEGIN
+
+	DROP USER IF EXISTS ''@localhost;
+
+    SET @sql := CONCAT('CREATE USER ', QUOTE(var_nome), ' IDENTIFIED BY ', QUOTE(var_password));
+    PREPARE statement FROM @sql;
+    EXECUTE statement;
+    
+    SET @sql := CONCAT('GRANT administrador TO ', QUOTE(var_nome));
+    PREPARE statement FROM @sql;
+    EXECUTE statement;
+    
+    SET @sql := CONCAT('SET DEFAULT ROLE administrador FOR ', 		QUOTE(var_nome));
+    PREPARE statement FROM @sql;
+    EXECUTE statement;
+
+    DEALLOCATE PREPARE statement;
+    FLUSH PRIVILEGES;
+    
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `create_investigador` (IN `var_nome` VARCHAR(50), IN `var_password` VARCHAR(50), IN `var_email` VARCHAR(100), IN `var_categoria_profissional` VARCHAR(100))  NO SQL
+BEGIN
+
+	DROP USER IF EXISTS ''@localhost;
+    
+    ALTER TABLE mysql.user ADD COLUMN IF NOT EXISTS email varchar(100);
+
+    SET @sql := CONCAT('CREATE USER ', QUOTE(var_nome), ' IDENTIFIED BY ', QUOTE(var_password));
+    PREPARE statement FROM @sql;
+    EXECUTE statement;
+    
+    SET @sql := CONCAT('GRANT investigador TO ', QUOTE(var_nome));
+    PREPARE statement FROM @sql;
+    EXECUTE statement;
+    
+    SET @sql := CONCAT('SET DEFAULT ROLE investigador FOR ', 		QUOTE(var_nome));
+    PREPARE statement FROM @sql;
+    EXECUTE statement;
+
+	SET @sql := CONCAT('UPDATE mysql.user SET email = ', QUOTE(var_email),' WHERE User=',QUOTE(var_nome));
+    PREPARE statement FROM @sql;
+    EXECUTE statement;
+
+	SET @sql := CONCAT('INSERT INTO investigador SET email=', QUOTE(var_email),', nomeinvestigador=', QUOTE(var_nome),', categoriaprofissional=', QUOTE(var_categoria_profissional));
+    PREPARE statement FROM @sql;
+    EXECUTE statement;
+
+    DEALLOCATE PREPARE statement;
+    FLUSH PRIVILEGES;
+    
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `export_cultura` ()  BEGIN
 
 SELECT * INTO OUTFILE 'C:logs_cultura.csv '
@@ -166,7 +220,7 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `cultura`
+-- Estrutura da tabela `cultura`
 --
 
 CREATE TABLE `cultura` (
@@ -177,7 +231,7 @@ CREATE TABLE `cultura` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Triggers `cultura`
+-- Acionadores `cultura`
 --
 DELIMITER $$
 CREATE TRIGGER `cultura_insert` AFTER INSERT ON `cultura` FOR EACH ROW INSERT into log_cultura VALUES ( null , new.NomeCultura, new.DescricaoCultura, new.IDInvestigador,CURRENT_USER, CURRENT_TIME, 'Insert')
@@ -187,7 +241,7 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `dadosexportados`
+-- Estrutura da tabela `dadosexportados`
 --
 
 CREATE TABLE `dadosexportados` (
@@ -204,7 +258,7 @@ CREATE TABLE `dadosexportados` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `dadosexportados`
+-- Extraindo dados da tabela `dadosexportados`
 --
 
 INSERT INTO `dadosexportados` (`IDExportação`, `IDLogInvestigador`, `IDLogMedicoesLuminosidade`, `IDLogMedicoesVariaveis`, `IDLogMedicoesTemperatura`, `IDLogMedicoes`, `IDLogCultura`, `IDLogVariaveisMedidas`, `IDLogSistema`, `IDLogVariaveis`) VALUES
@@ -213,7 +267,7 @@ INSERT INTO `dadosexportados` (`IDExportação`, `IDLogInvestigador`, `IDLogMedi
 -- --------------------------------------------------------
 
 --
--- Table structure for table `investigador`
+-- Estrutura da tabela `investigador`
 --
 
 CREATE TABLE `investigador` (
@@ -224,17 +278,18 @@ CREATE TABLE `investigador` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `investigador`
+-- Extraindo dados da tabela `investigador`
 --
 
 INSERT INTO `investigador` (`IDInvestigador`, `Email`, `NomeInvestigador`, `CategoriaProfissional`) VALUES
 (8, 'lala@gmail.com', 'sdf', 'sdf'),
 (11, 'lala@gmail.com', 'sf', 'sdf'),
 (12, 'asdsfs', 'sdfsdd', 'sdds'),
-(13, 'lala@gmail.com', 'sfd', 'sdgfh');
+(13, 'lala@gmail.com', 'sfd', 'sdgfh'),
+(14, 'a@b.c', 'Toino', 'xixi');
 
 --
--- Triggers `investigador`
+-- Acionadores `investigador`
 --
 DELIMITER $$
 CREATE TRIGGER `investigador_insert` AFTER INSERT ON `investigador` FOR EACH ROW INSERT into log_investigador VALUES ( null ,CURRENT_USER, new.NomeInvestigador, new.Email, new.NomeInvestigador, new.CategoriaProfissional, CURRENT_TIME, 'Insert')
@@ -244,7 +299,7 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `log_cultura`
+-- Estrutura da tabela `log_cultura`
 --
 
 CREATE TABLE `log_cultura` (
@@ -259,7 +314,7 @@ CREATE TABLE `log_cultura` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `log_cultura`
+-- Extraindo dados da tabela `log_cultura`
 --
 
 INSERT INTO `log_cultura` (`IDLog`, `IDCultura`, `NomeCultura`, `DescricaoCultura`, `IDInvestigador`, `Utilizador`, `Data`, `Operacao`) VALUES
@@ -268,7 +323,7 @@ INSERT INTO `log_cultura` (`IDLog`, `IDCultura`, `NomeCultura`, `DescricaoCultur
 -- --------------------------------------------------------
 
 --
--- Table structure for table `log_investigador`
+-- Estrutura da tabela `log_investigador`
 --
 
 CREATE TABLE `log_investigador` (
@@ -283,18 +338,19 @@ CREATE TABLE `log_investigador` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `log_investigador`
+-- Extraindo dados da tabela `log_investigador`
 --
 
 INSERT INTO `log_investigador` (`IDLog`, `IDInvestigador`, `Email`, `NomeInvestigador`, `CategoriaProfissional`, `Utilizador`, `Data`, `Operacao`) VALUES
 (1, 0, 'sdx', 'lala@gmail.com', 'sf', 'sdf', '2019-03-13 22:37:47', 'Insert'),
 (2, 0, 'sdfsdd', 'asdsfs', 'sdfsdd', 'sdds', '2019-03-13 22:40:31', 'Insert'),
-(3, 0, 'sfd', 'lala@gmail.com', 'sfd', 'sdgfh', '2019-03-15 22:14:50', 'Insert');
+(3, 0, 'sfd', 'lala@gmail.com', 'sfd', 'sdgfh', '2019-03-15 22:14:50', 'Insert'),
+(4, 0, 'Toino', 'a@b.c', 'Toino', 'xixi', '2019-03-18 20:30:55', 'Insert');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `log_medicoes`
+-- Estrutura da tabela `log_medicoes`
 --
 
 CREATE TABLE `log_medicoes` (
@@ -312,7 +368,7 @@ CREATE TABLE `log_medicoes` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `log_medicoesluminosidade`
+-- Estrutura da tabela `log_medicoesluminosidade`
 --
 
 CREATE TABLE `log_medicoesluminosidade` (
@@ -328,7 +384,7 @@ CREATE TABLE `log_medicoesluminosidade` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `log_medicoestemperatura`
+-- Estrutura da tabela `log_medicoestemperatura`
 --
 
 CREATE TABLE `log_medicoestemperatura` (
@@ -344,7 +400,7 @@ CREATE TABLE `log_medicoestemperatura` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `log_sistema`
+-- Estrutura da tabela `log_sistema`
 --
 
 CREATE TABLE `log_sistema` (
@@ -362,7 +418,7 @@ CREATE TABLE `log_sistema` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `log_variaveis`
+-- Estrutura da tabela `log_variaveis`
 --
 
 CREATE TABLE `log_variaveis` (
@@ -377,7 +433,7 @@ CREATE TABLE `log_variaveis` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `log_variaveismedidas`
+-- Estrutura da tabela `log_variaveismedidas`
 --
 
 CREATE TABLE `log_variaveismedidas` (
@@ -394,7 +450,7 @@ CREATE TABLE `log_variaveismedidas` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `medicoes`
+-- Estrutura da tabela `medicoes`
 --
 
 CREATE TABLE `medicoes` (
@@ -406,7 +462,7 @@ CREATE TABLE `medicoes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Triggers `medicoes`
+-- Acionadores `medicoes`
 --
 DELIMITER $$
 CREATE TRIGGER `medicoes_insert` AFTER INSERT ON `medicoes` FOR EACH ROW INSERT into log_medicoes VALUES ( null ,new.IDVariavel, new.IDCultura, new.NumMedicao,  new.DataHoraMedicao, new.ValorMedicao,CURRENT_USER,  CURRENT_TIME, 'Insert')
@@ -416,7 +472,7 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `medicoes_luminosidade`
+-- Estrutura da tabela `medicoes_luminosidade`
 --
 
 CREATE TABLE `medicoes_luminosidade` (
@@ -426,7 +482,7 @@ CREATE TABLE `medicoes_luminosidade` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Triggers `medicoes_luminosidade`
+-- Acionadores `medicoes_luminosidade`
 --
 DELIMITER $$
 CREATE TRIGGER `medicoesluminosidade_insert` AFTER INSERT ON `medicoes_luminosidade` FOR EACH ROW INSERT into log_medicoesluminosidade VALUES ( null ,new.IDMedicao, new.DataHoraMedicao, new.ValorMedicaoLuminosidade,  CURRENT_USER,  CURRENT_TIME, 'Insert')
@@ -436,7 +492,7 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `medicoes_temperatura`
+-- Estrutura da tabela `medicoes_temperatura`
 --
 
 CREATE TABLE `medicoes_temperatura` (
@@ -446,7 +502,7 @@ CREATE TABLE `medicoes_temperatura` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Triggers `medicoes_temperatura`
+-- Acionadores `medicoes_temperatura`
 --
 DELIMITER $$
 CREATE TRIGGER `medicoestemperatura_insert` AFTER INSERT ON `medicoes_temperatura` FOR EACH ROW INSERT into log_medicoestemperatura VALUES ( null ,new.IDMedicao, new.DataHoraMedicao, new.ValorMedicaoTemperatura,  CURRENT_USER,  CURRENT_TIME, 'Insert')
@@ -456,7 +512,7 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `sistema`
+-- Estrutura da tabela `sistema`
 --
 
 CREATE TABLE `sistema` (
@@ -468,7 +524,7 @@ CREATE TABLE `sistema` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Triggers `sistema`
+-- Acionadores `sistema`
 --
 DELIMITER $$
 CREATE TRIGGER `sistema_insert` AFTER INSERT ON `sistema` FOR EACH ROW INSERT into log_sistema VALUES ( null ,new.IDSistema, new.LimiteInfTemperatura, new.LimiteSupTemperatura,  new.LimiteInfLuminosidade, new.LimiteSupLuminosidade,CURRENT_USER,  CURRENT_TIME, 'Insert')
@@ -478,7 +534,7 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `variaveis`
+-- Estrutura da tabela `variaveis`
 --
 
 CREATE TABLE `variaveis` (
@@ -487,7 +543,7 @@ CREATE TABLE `variaveis` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Triggers `variaveis`
+-- Acionadores `variaveis`
 --
 DELIMITER $$
 CREATE TRIGGER `variaveis_insert` AFTER INSERT ON `variaveis` FOR EACH ROW INSERT into log_variaveis VALUES ( null ,new.IDVariavel, new.NomeVariavel,CURRENT_USER,  CURRENT_TIME, 'Insert')
@@ -497,7 +553,7 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `variaveis_medidas`
+-- Estrutura da tabela `variaveis_medidas`
 --
 
 CREATE TABLE `variaveis_medidas` (
@@ -508,7 +564,7 @@ CREATE TABLE `variaveis_medidas` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Triggers `variaveis_medidas`
+-- Acionadores `variaveis_medidas`
 --
 DELIMITER $$
 CREATE TRIGGER `variaveismedidas_insert` AFTER INSERT ON `variaveis_medidas` FOR EACH ROW INSERT into log_variaveismedidas VALUES ( null ,new.IDVariavel, new.IDCultura, new.LimiteInferior,  new.LimiteSuperior,CURRENT_USER,  CURRENT_TIME, 'Insert')
@@ -634,7 +690,7 @@ ALTER TABLE `variaveis_medidas`
 -- AUTO_INCREMENT for table `cultura`
 --
 ALTER TABLE `cultura`
-  MODIFY `IDCultura` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `IDCultura` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `dadosexportados`
@@ -646,7 +702,7 @@ ALTER TABLE `dadosexportados`
 -- AUTO_INCREMENT for table `investigador`
 --
 ALTER TABLE `investigador`
-  MODIFY `IDInvestigador` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `IDInvestigador` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `log_cultura`
@@ -658,7 +714,7 @@ ALTER TABLE `log_cultura`
 -- AUTO_INCREMENT for table `log_investigador`
 --
 ALTER TABLE `log_investigador`
-  MODIFY `IDLog` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `IDLog` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `log_medicoes`
@@ -719,14 +775,14 @@ ALTER TABLE `variaveis`
 --
 
 --
--- Constraints for table `medicoes`
+-- Limitadores para a tabela `medicoes`
 --
 ALTER TABLE `medicoes`
   ADD CONSTRAINT `medicoes_ibfk_1` FOREIGN KEY (`IDCultura`) REFERENCES `variaveis_medidas` (`IDCultura`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `medicoes_ibfk_2` FOREIGN KEY (`IDVariavel`) REFERENCES `variaveis_medidas` (`IDVariavel`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `variaveis_medidas`
+-- Limitadores para a tabela `variaveis_medidas`
 --
 ALTER TABLE `variaveis_medidas`
   ADD CONSTRAINT `variaveis_medidas_ibfk_1` FOREIGN KEY (`IDCultura`) REFERENCES `cultura` (`IDCultura`) ON DELETE CASCADE ON UPDATE CASCADE,
