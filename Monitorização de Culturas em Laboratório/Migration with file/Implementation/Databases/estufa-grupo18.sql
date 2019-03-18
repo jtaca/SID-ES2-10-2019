@@ -241,7 +241,7 @@ INSERT INTO `cultura` (`IDCultura`, `NomeCultura`, `DescricaoCultura`, `IDInvest
 -- Triggers `cultura`
 --
 DELIMITER $$
-CREATE TRIGGER `cultura_insert` AFTER INSERT ON `cultura` FOR EACH ROW INSERT into log_cultura VALUES ( null , new.NomeCultura, new.DescricaoCultura, new.IDInvestigador,CURRENT_USER, CURRENT_TIME, 'Insert')
+CREATE TRIGGER `insert_cultura` AFTER INSERT ON `cultura` FOR EACH ROW INSERT into log_cultura VALUES ( null ,new.IDCultura, new.NomeCultura, new.DescricaoCultura, new.IDInvestigador,CURRENT_USER, CURRENT_TIME, 'Insert')
 $$
 DELIMITER ;
 
@@ -318,13 +318,6 @@ CREATE TABLE `log_cultura` (
   `Data` datetime NOT NULL,
   `Operacao` varchar(45) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `log_cultura`
---
-
-INSERT INTO `log_cultura` (`IDLog`, `IDCultura`, `NomeCultura`, `DescricaoCultura`, `IDInvestigador`, `Utilizador`, `Data`, `Operacao`) VALUES
-(1, 0, 'sadfds', 'sadfdv', 1, 'asd', '0000-00-00 00:00:00', 'wef');
 
 -- --------------------------------------------------------
 
@@ -696,7 +689,7 @@ ALTER TABLE `variaveis_medidas`
 -- AUTO_INCREMENT for table `cultura`
 --
 ALTER TABLE `cultura`
-  MODIFY `IDCultura` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `IDCultura` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `dadosexportados`
