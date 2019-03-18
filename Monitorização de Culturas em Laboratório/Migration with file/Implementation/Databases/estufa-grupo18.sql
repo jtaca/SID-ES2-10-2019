@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 17, 2019 at 12:44 AM
+-- Generation Time: Mar 18, 2019 at 09:45 PM
 -- Server version: 10.1.37-MariaDB
 -- PHP Version: 7.2.12
 
@@ -177,10 +177,17 @@ CREATE TABLE `cultura` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
+-- Dumping data for table `cultura`
+--
+
+INSERT INTO `cultura` (`IDCultura`, `NomeCultura`, `DescricaoCultura`, `IDInvestigador`) VALUES
+(4, 'sdaf', 'sd', 12);
+
+--
 -- Triggers `cultura`
 --
 DELIMITER $$
-CREATE TRIGGER `cultura_insert` AFTER INSERT ON `cultura` FOR EACH ROW INSERT into log_cultura VALUES ( null , new.NomeCultura, new.DescricaoCultura, new.IDInvestigador,CURRENT_USER, CURRENT_TIME, 'Insert')
+CREATE TRIGGER `insert_cultura` AFTER INSERT ON `cultura` FOR EACH ROW INSERT into log_cultura VALUES ( null ,new.IDCultura, new.NomeCultura, new.DescricaoCultura, new.IDInvestigador,CURRENT_USER, CURRENT_TIME, 'Insert')
 $$
 DELIMITER ;
 
@@ -257,13 +264,6 @@ CREATE TABLE `log_cultura` (
   `Data` datetime NOT NULL,
   `Operacao` varchar(45) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `log_cultura`
---
-
-INSERT INTO `log_cultura` (`IDLog`, `IDCultura`, `NomeCultura`, `DescricaoCultura`, `IDInvestigador`, `Utilizador`, `Data`, `Operacao`) VALUES
-(1, 0, 'sadfds', 'sadfdv', 1, 'asd', '0000-00-00 00:00:00', 'wef');
 
 -- --------------------------------------------------------
 
@@ -634,7 +634,7 @@ ALTER TABLE `variaveis_medidas`
 -- AUTO_INCREMENT for table `cultura`
 --
 ALTER TABLE `cultura`
-  MODIFY `IDCultura` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `IDCultura` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `dadosexportados`
@@ -717,6 +717,12 @@ ALTER TABLE `variaveis`
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `cultura`
+--
+ALTER TABLE `cultura`
+  ADD CONSTRAINT `cultura_ibfk_1` FOREIGN KEY (`IDInvestigador`) REFERENCES `investigador` (`IDInvestigador`);
 
 --
 -- Constraints for table `medicoes`
