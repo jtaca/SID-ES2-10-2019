@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.5
+-- version 4.8.3
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 14, 2019 at 12:33 AM
--- Server version: 10.1.38-MariaDB
--- PHP Version: 7.3.2
+-- Generation Time: Mar 19, 2019 at 11:59 AM
+-- Server version: 10.1.37-MariaDB
+-- PHP Version: 7.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `auditor`
+-- Database: `ourauditor`
 --
 
 DELIMITER $$
@@ -72,10 +72,13 @@ CREATE ROLE phpmigr, auditor;
 GRANT SELECT ON auditor.logs TO auditor;
 GRANT INSERT ON auditor.logs TO phpmigr;
 GRANT EXECUTE ON PROCEDURE auditor.addUser TO auditor;
+GRANT EXECUTE ON PROCEDURE auditor.insert_logs TO phpmigr;
 
 CALL createPhpUser;
 
 END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insert_logs` (IN `username` VARCHAR(45), IN `nomeTabela` VARCHAR(45), IN `comandoUsado` VARCHAR(400), IN `linhaAnterior` VARCHAR(400), IN `resultado` VARCHAR(400), IN `dataComando` VARCHAR(400))  INSERT INTO `logs` (`logId`, `username`, `nomeTabela`, `comandoUsado`, `linhaAnterior`, `resultado`, `dataComando`)  VALUES ( null, username, nomeTabela,  comandoUsado, linhaAnterior, resultado, dataComando)$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `selectID` ()  NO SQL
 select max(logId) as Maximo from logs$$
@@ -99,6 +102,13 @@ CREATE TABLE `logs` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
+-- Dumping data for table `logs`
+--
+
+INSERT INTO `logs` (`logId`, `username`, `nomeTabela`, `comandoUsado`, `linhaAnterior`, `resultado`, `dataComando`) VALUES
+(1, 'df', 'sd', 'd', 'sad', 'dsf', 'asd');
+
+--
 -- Indexes for dumped tables
 --
 
@@ -116,7 +126,7 @@ ALTER TABLE `logs`
 -- AUTO_INCREMENT for table `logs`
 --
 ALTER TABLE `logs`
-  MODIFY `logId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `logId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
