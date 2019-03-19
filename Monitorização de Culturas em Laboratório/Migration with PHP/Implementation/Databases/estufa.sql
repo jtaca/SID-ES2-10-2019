@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 18-Mar-2019 às 21:11
+-- Generation Time: 19-Mar-2019 às 02:05
 -- Versão do servidor: 10.1.37-MariaDB
 -- versão do PHP: 7.3.1
 
@@ -26,42 +26,36 @@ DELIMITER $$
 --
 -- Procedures
 --
-CREATE DEFINER=`root`@`localhost` PROCEDURE `addTodosPriv` ()  BEGIN
-	CALL criarRoles;
- 
-    CALL criarPrivilegios;
-
-  
-END$$
-
 CREATE DEFINER=`root`@`localhost` PROCEDURE `addUser` (IN `var_role` ENUM('investigador  ','administrador','sensorLuminosidade','sensorTemperatura'), IN `var_nome` VARCHAR(50), IN `var_password` VARCHAR(50), IN `var_email` VARCHAR(100), IN `var_categoria_profissional` VARCHAR(100))  BEGIN
 
-	DROP USER IF EXISTS ''@localhost;
+	IF (SELECT EXISTS( SELECT * FROM mysql.user WHERE `email` =  var_email))=0 THEN
+
+        DROP USER IF EXISTS ''@localhost;
+
+        SET @sql := CONCAT('CREATE USER ', QUOTE(var_nome), ' IDENTIFIED BY ', QUOTE(var_password));
+        PREPARE statement FROM @sql;
+        EXECUTE statement;
+
+        SET @sql := CONCAT('GRANT ', var_role, ' TO ', QUOTE(var_nome));
+        PREPARE statement FROM @sql;
+        EXECUTE statement;
+
+        SET @sql := CONCAT('SET DEFAULT ROLE ', var_role ,' FOR ', 		QUOTE(var_nome));
+        PREPARE statement FROM @sql;
+        EXECUTE statement;
+
+        SET @sql := CONCAT('UPDATE mysql.user SET email = ', QUOTE(var_email),' WHERE User=',QUOTE(var_nome));
+        PREPARE statement FROM @sql;
+        EXECUTE statement;
+
+        SET @sql := CONCAT('INSERT INTO investigador SET email=', QUOTE(var_email),', nomeinvestigador=', QUOTE(var_nome),', categoriaprofissional=', QUOTE(var_categoria_profissional));
+        PREPARE statement FROM @sql;
+        EXECUTE statement;
+
+        DEALLOCATE PREPARE statement;
+        FLUSH PRIVILEGES;
     
-    ALTER TABLE mysql.user ADD COLUMN IF NOT EXISTS email varchar(100);
-
-    SET @sql := CONCAT('CREATE USER ', QUOTE(var_nome), ' IDENTIFIED BY ', QUOTE(var_password));
-    PREPARE statement FROM @sql;
-    EXECUTE statement;
-    
-    SET @sql := CONCAT('GRANT ', var_role, ' TO ', QUOTE(var_nome));
-    PREPARE statement FROM @sql;
-    EXECUTE statement;
-    
-    SET @sql := CONCAT('SET DEFAULT ROLE ', var_role ,' FOR ', 		QUOTE(var_nome));
-    PREPARE statement FROM @sql;
-    EXECUTE statement;
-
-	SET @sql := CONCAT('UPDATE mysql.user SET email = ', QUOTE(var_email),' WHERE User=',QUOTE(var_nome));
-    PREPARE statement FROM @sql;
-    EXECUTE statement;
-
-	SET @sql := CONCAT('INSERT INTO investigador SET email=', QUOTE(var_email),', nomeinvestigador=', QUOTE(var_nome),', categoriaprofissional=', QUOTE(var_categoria_profissional));
-    PREPARE statement FROM @sql;
-    EXECUTE statement;
-
-    DEALLOCATE PREPARE statement;
-    FLUSH PRIVILEGES;
+    END IF;
     
 END$$
 
@@ -125,7 +119,30 @@ GRANT SELECT,INSERT, UPDATE, DELETE ON estufa.medicoes_luminosidade TO administr
 
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `criarRoles` ()  CREATE ROLE investigador, administrador, sensorLuminosidade, sensorTemperatura,  phpUser$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `criarRoles` ()  CREATE ROLE IF NOT EXISTS investigador, administrador, sensorLuminosidade, sensorTemperatura,  phpUser$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteUser` (IN `var_email` VARCHAR(100))  NO SQL
+BEGIN
+
+SET @sql := CONCAT('SELECT User INTO @user FROM mysql.user WHERE email = ', QUOTE(var_email));
+PREPARE statement FROM @sql;
+EXECUTE statement;
+
+SET @sql := CONCAT('DROP USER IF EXISTS ', @user);
+PREPARE statement FROM @sql;
+EXECUTE statement;
+
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `init` ()  BEGIN
+
+	CALL criarRoles;
+ 
+    CALL criarPrivilegios;
+
+	ALTER TABLE mysql.user ADD COLUMN IF NOT EXISTS email varchar(100) UNIQUE;
+    
+END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `selectDadosNaoMigrados` ()  SELECT * FROM logs WHERE logs.exportado=0$$
 
@@ -192,12 +209,23 @@ CREATE TABLE `investigador` (
 --
 
 INSERT INTO `investigador` (`Email`, `NomeInvestigador`, `CategoriaProfissional`) VALUES
+('a', 'a', 'a'),
 ('a.@b.c', 'Alberto', 'wer'),
 ('a@b.c', 'qwer', 'nao sei'),
 ('abc', 'El Chap', 'abc'),
+('aDFSDFV', 'sfdafd', 'sadsd'),
+('afga', 'asddsa', 'wcafdv'),
+('b', 'b', 'b'),
+('c', 'c', 'c'),
+('eumail', 'eu', 'sadad'),
 ('jonas@gmail.com', 'jonas', 'programador'),
 ('lala@gmail.com', 'wqser', 'qwer'),
-('p@p.p', 'pipu', '0');
+('p@p.p', 'pipu', '0'),
+('qwe', 'sens', 'asd'),
+('qwerty', 'boneca', 'asdfg'),
+('sdfvsdfvc', 'adscfsad', 'sfcvsfdcv'),
+('v', 'v', 'v'),
+('y', 'y', 'y');
 
 --
 -- Acionadores `investigador`
@@ -252,7 +280,18 @@ INSERT INTO `logs` (`logId`, `username`, `nomeTabela`, `comandoUsado`, `linhaAnt
 (14, 'root@localhost', 'investigador', 'INSERT', 'Não Aplicável', 'Email: p@p.p  NomeInvestigador: pipu  CategoriaProfissional: 0', '2019-03-15 19:27:25', 0),
 (15, 'root@localhost', 'investigador', 'INSERT', 'Não Aplicável', 'Email: jonas@gmail.com  NomeInvestigador: jonas  CategoriaProfissional: programador', '2019-03-15 19:28:52', 0),
 (16, 'root@localhost', 'investigador', 'INSERT', 'Não Aplicável', 'Email: a.@b.c  NomeInvestigador: Alberto  CategoriaProfissional: wer', '2019-03-18 20:07:38', 0),
-(17, 'root@localhost', 'investigador', 'INSERT', 'Não Aplicável', 'Email: abc  NomeInvestigador: El Chap  CategoriaProfissional: abc', '2019-03-18 20:09:27', 0);
+(17, 'root@localhost', 'investigador', 'INSERT', 'Não Aplicável', 'Email: abc  NomeInvestigador: El Chap  CategoriaProfissional: abc', '2019-03-18 20:09:27', 0),
+(18, 'root@localhost', 'investigador', 'INSERT', 'Não Aplicável', 'Email: qwe  NomeInvestigador: sens  CategoriaProfissional: asd', '2019-03-18 23:09:58', 0),
+(19, 'root@localhost', 'investigador', 'INSERT', 'Não Aplicável', 'Email: eumail  NomeInvestigador: eu  CategoriaProfissional: sadad', '2019-03-18 23:24:58', 0),
+(20, 'root@localhost', 'investigador', 'INSERT', 'Não Aplicável', 'Email: afga  NomeInvestigador: asddsa  CategoriaProfissional: wcafdv', '2019-03-18 23:25:24', 0),
+(21, 'root@localhost', 'investigador', 'INSERT', 'Não Aplicável', 'Email: aDFSDFV  NomeInvestigador: sfdafd  CategoriaProfissional: sadsd', '2019-03-18 23:26:34', 0),
+(22, 'root@localhost', 'investigador', 'INSERT', 'Não Aplicável', 'Email: sdfvsdfvc  NomeInvestigador: adscfsad  CategoriaProfissional: sfcvsfdcv', '2019-03-18 23:28:04', 0),
+(23, 'root@localhost', 'investigador', 'INSERT', 'Não Aplicável', 'Email: qwerty  NomeInvestigador: boneca  CategoriaProfissional: asdfg', '2019-03-18 23:49:37', 0),
+(24, 'root@localhost', 'investigador', 'INSERT', 'Não Aplicável', 'Email: a  NomeInvestigador: a  CategoriaProfissional: a', '2019-03-19 00:17:37', 0),
+(25, 'root@localhost', 'investigador', 'INSERT', 'Não Aplicável', 'Email: b  NomeInvestigador: b  CategoriaProfissional: b', '2019-03-19 00:49:06', 0),
+(26, 'root@localhost', 'investigador', 'INSERT', 'Não Aplicável', 'Email: c  NomeInvestigador: c  CategoriaProfissional: c', '2019-03-19 00:49:50', 0),
+(27, 'root@localhost', 'investigador', 'INSERT', 'Não Aplicável', 'Email: v  NomeInvestigador: v  CategoriaProfissional: v', '2019-03-19 01:02:05', 0),
+(28, 'root@localhost', 'investigador', 'INSERT', 'Não Aplicável', 'Email: y  NomeInvestigador: y  CategoriaProfissional: y', '2019-03-19 01:04:33', 0);
 
 -- --------------------------------------------------------
 
@@ -525,7 +564,7 @@ ALTER TABLE `cultura`
 -- AUTO_INCREMENT for table `logs`
 --
 ALTER TABLE `logs`
-  MODIFY `logId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `logId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT for table `medicoes`
