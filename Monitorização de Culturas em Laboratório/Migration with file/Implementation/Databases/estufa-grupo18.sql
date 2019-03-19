@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.5
+-- version 4.8.4
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 18-Mar-2019 às 23:56
--- Versão do servidor: 10.1.38-MariaDB
--- versão do PHP: 7.3.2
+-- Generation Time: 19-Mar-2019 às 02:14
+-- Versão do servidor: 10.1.37-MariaDB
+-- versão do PHP: 7.3.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `estufagrupo18`
+-- Database: `estufa-grupo18`
 --
 
 DELIMITER $$
@@ -212,6 +212,22 @@ GRANT SELECT ON estufa.log_investigador TO administrador;
 GRANT SELECT ON estufa.log_sistema TO administrador;
 
 INSERT INTO `dadosexportados`(`IDExportação`, `IDLogInvestigador`, `IDLogMedicoesLuminosidade`, `IDLogMedicoesVariaveis`, `IDLogMedicoesTemperatura`, `IDLogMedicoes`, `IDLogCultura`, `IDLogVariaveisMedidas`,`IDLogSistema`,`IDLogVariaveis`) VALUES (Null,'0','0','0','0','0','0','0','0','0');
+
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `select_medicoes` (IN `var_condicao` VARCHAR(200))  NO SQL
+BEGIN  
+
+	IF var_condicao = "" THEN SET var_condicao = "1=1";
+    END IF;
+
+	SET @sql := CONCAT('INSERT log_medicoes (IDVariavel, IDCultura, NumMedicao, DataHoraMedicao, ValorMedicao, Utilizador, Data, Operacao) SELECT IDVariavel, IDCultura, NumMedicao, DataHoraMedicao, ValorMedicao, CURRENT_USER, NOW(), "Select" FROM medicoes WHERE ', var_condicao);
+    PREPARE statement FROM @sql;
+    EXECUTE statement;
+
+	SET @sql := CONCAT('SELECT IDVariavel, IDCultura, NumMedicao, DataHoraMedicao, ValorMedicao FROM medicoes WHERE ', var_condicao);
+    PREPARE statement FROM @sql;
+    EXECUTE statement; 
 
 END$$
 
