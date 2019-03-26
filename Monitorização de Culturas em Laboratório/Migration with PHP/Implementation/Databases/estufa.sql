@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 19, 2019 at 11:24 AM
+-- Generation Time: Mar 26, 2019 at 10:31 PM
 -- Server version: 10.1.37-MariaDB
 -- PHP Version: 7.2.12
 
@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `nossa_estufa`
+-- Database: `estufa`
 --
 
 DELIMITER $$
@@ -103,6 +103,8 @@ GRANT SELECT ON estufa.logs TO phpUser;
 GRANT EXECUTE ON PROCEDURE estufa.selectDadosNaoMigrados TO phpUser;
 GRANT EXECUTE ON PROCEDURE estufa.updateMigrados TO phpUser;
 
+
+
 GRANT SELECT ON estufa.medicoes_luminosidade TO investigador;
 GRANT SELECT ON estufa.medicoes_temperatura TO investigador;
 
@@ -120,6 +122,22 @@ GRANT SELECT,INSERT, UPDATE, DELETE ON estufa.sistema TO administrador,investiga
 
 GRANT SELECT,INSERT, UPDATE, DELETE ON estufa.medicoes_temperatura TO administrador;
 GRANT SELECT,INSERT, UPDATE, DELETE ON estufa.medicoes_luminosidade TO administrador;
+
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `criarPrivilegiosExecute` ()  BEGIN
+
+GRANT EXECUTE ON PROCEDURE estufa.apagarCultura TO administrador,investigador;
+GRANT EXECUTE ON PROCEDURE estufa.apagarMedicao TO administrador,investigador;
+GRANT EXECUTE ON PROCEDURE estufa.addUser TO administrador;
+GRANT EXECUTE ON PROCEDURE estufa.alterarLimitesLuz TO administrador;
+GRANT EXECUTE ON PROCEDURE estufa.alterarLimitesTemperatura TO administrador;
+GRANT EXECUTE ON PROCEDURE estufa.alterarValorMedido TO administrador,investigador;
+GRANT EXECUTE ON PROCEDURE estufa.createPhpUser TO administrador;
+GRANT EXECUTE ON PROCEDURE estufa.criarPrivilegios TO administrador;
+GRANT EXECUTE ON PROCEDURE estufa.criarRoles TO administrador;
+GRANT EXECUTE ON PROCEDURE estufa.deleteUser TO administrador;
+GRANT EXECUTE ON PROCEDURE estufa.init TO administrador;
 
 END$$
 
@@ -143,6 +161,9 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `init` ()  BEGIN
 	CALL criarRoles;
  
     CALL criarPrivilegios;
+    
+   CALL criarPrivilegiosExecute;
+    
 
 	ALTER TABLE mysql.user ADD COLUMN IF NOT EXISTS email varchar(100) UNIQUE;
     
@@ -574,7 +595,7 @@ ALTER TABLE `logs`
 -- AUTO_INCREMENT for table `medicoes`
 --
 ALTER TABLE `medicoes`
-  MODIFY `NumeroMedicao` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `NumeroMedicao` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `medicoes_luminosidade`
