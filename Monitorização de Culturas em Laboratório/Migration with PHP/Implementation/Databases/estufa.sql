@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 26, 2019 at 10:31 PM
+-- Generation Time: Mar 30, 2019 at 12:27 AM
 -- Server version: 10.1.37-MariaDB
 -- PHP Version: 7.2.12
 
@@ -171,10 +171,22 @@ END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `selectDadosNaoMigrados` ()  SELECT * FROM logs WHERE logs.exportado=0$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `selectMedicoes` ()  NO SQL
+CREATE DEFINER=`root`@`localhost` PROCEDURE `selectMedicoes` (IN `var_condicao` VARCHAR(200))  NO SQL
 BEGIN  
-   	SELECT * FROM estufa.medicoes;  
-   	INSERT INTO estufa.logs VALUES (null, CURRENT_USER, "medicoes", "SELECT", "Não Aplicável", "Não Aplicável", NOW(), 0);
+
+	IF var_condicao = "" THEN 
+    	SET var_condicao = "1=1";
+        SELECT "Dentro IF";
+    END IF;
+
+	SET @sql := CONCAT('INSERT INTO estufa.logs VALUES (null, CURRENT_USER, "medicoes", "SELECT", "Não Aplicável", "', var_condicao,'", NOW(), 0)');
+    PREPARE statement FROM @sql;
+    EXECUTE statement;
+
+	SET @sql := CONCAT('SELECT * FROM estufa.medicoes WHERE ', var_condicao);
+    PREPARE statement FROM @sql;
+    EXECUTE statement; 
+
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `updateMigrados` (IN `endID` INT(50))  UPDATE logs SET logs.exportado=1 WHERE logs.logId<=endID$$
@@ -317,7 +329,18 @@ INSERT INTO `logs` (`logId`, `username`, `nomeTabela`, `comandoUsado`, `linhaAnt
 (26, 'root@localhost', 'investigador', 'INSERT', 'Não Aplicável', 'Email: c  NomeInvestigador: c  CategoriaProfissional: c', '2019-03-19 00:49:50', 0),
 (27, 'root@localhost', 'investigador', 'INSERT', 'Não Aplicável', 'Email: v  NomeInvestigador: v  CategoriaProfissional: v', '2019-03-19 01:02:05', 0),
 (28, 'root@localhost', 'investigador', 'INSERT', 'Não Aplicável', 'Email: y  NomeInvestigador: y  CategoriaProfissional: y', '2019-03-19 01:04:33', 0),
-(29, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 2  DataHoraMedicao: 2019-03-14 14:09:00  ValorMedicao: 23233.00  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-03-19 10:16:43', 0);
+(29, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 2  DataHoraMedicao: 2019-03-14 14:09:00  ValorMedicao: 23233.00  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-03-19 10:16:43', 0),
+(30, 'root@localhost', 'medicoes', 'SELECT', '1', 'Não Aplicável', '2019-03-29 18:25:26', 0),
+(31, 'root@localhost', 'medicoes', 'SELECT', '1', 'Não Aplicável', '2019-03-29 18:25:39', 0),
+(32, 'root@localhost', 'medicoes', 'SELECT', '1', 'Não Aplicável', '2019-03-29 18:25:56', 0),
+(33, 'root@localhost', 'medicoes', 'SELECT', '1', 'Não Aplicável', '2019-03-29 18:26:09', 0),
+(34, 'root@localhost', 'medicoes', 'SELECT', '1', 'Não Aplicável', '2019-03-29 18:28:01', 0),
+(35, 'root@localhost', 'medicoes', 'SELECT', '1', 'Não Aplicável', '2019-03-29 18:28:14', 0),
+(36, 'root@localhost', 'medicoes', 'SELECT', '1', 'Não Aplicável', '2019-03-29 18:31:32', 0),
+(37, 'root@localhost', 'medicoes', 'SELECT', '1', 'Não Aplicável', '2019-03-29 18:32:59', 0),
+(38, 'root@localhost', 'medicoes', 'SELECT', '1=1', 'Não Aplicável', '2019-03-29 18:34:14', 0),
+(39, 'root@localhost', 'medicoes', 'SELECT', '1=0', 'Não Aplicável', '2019-03-29 18:34:33', 0),
+(40, 'root@localhost', 'medicoes', 'SELECT', '1=123', 'Não Aplicável', '2019-03-29 18:50:52', 0);
 
 -- --------------------------------------------------------
 
@@ -589,7 +612,7 @@ ALTER TABLE `cultura`
 -- AUTO_INCREMENT for table `logs`
 --
 ALTER TABLE `logs`
-  MODIFY `logId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `logId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT for table `medicoes`
