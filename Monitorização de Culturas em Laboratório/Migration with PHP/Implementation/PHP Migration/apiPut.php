@@ -16,6 +16,7 @@ $data = trim(file_get_contents("php://input"));
 $result = put_data($data);
 echo $result;
 
+
 function put_data($data){
 	$logs = json_decode($data);
 	
@@ -36,23 +37,23 @@ function put_data($data){
 	}
 	
 	if ($conn){
-		$sql = "call selectID";
-		$result = $conn->query($sql);
+		$result = mysqli_query($conn, "call selectID;");
 		
 		$rows = array();
-		
-		// If the migrated db has data, next record is largest logId + 1
-		if (mysqli_num_rows($result) > 0) {
-			$r = mysqli_fetch_assoc($result);
-			 $next_record_id = $r["Maximo"] + 1;
+		if ($result) {
+			if (mysqli_num_rows($result)>0){
+				while($r=mysqli_fetch_assoc($result)){
+					array_push($rows, $r);
+				}
+				$next_record_id = intval($rows[0]["Maximo"]);
+			}
 		} else {
 			$next_record_id = 1;
 		}
-		
 		$result->close();
 		$conn->next_result();
+		
 		foreach ($logs as $log) {
-			
 			if ($log->logId >= $next_record_id) {
 				
 				$logId = $log->logId;
@@ -73,5 +74,6 @@ function put_data($data){
 		
 		mysqli_close ($conn);
 	}
+	
 	return $next_record_id;
 }

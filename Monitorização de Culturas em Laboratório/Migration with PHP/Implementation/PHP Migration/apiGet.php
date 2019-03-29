@@ -25,8 +25,8 @@ function get_data() {
 	if (!$conn){
 		die ("Connection Failled: ".$conn->connect_error);		// Prints a message and exits the current script
 	}
-	
-	$sql = "call selectDadosNaoMigrados";	// sql query
+	//call selectDadosNaoMigrados
+	$sql = "select * from logs where exportado=0";	// sql query
 	$result = mysqli_query($conn, $sql);	// Performs the query on the database
 	$rows = array();	// Creates an empty array
 	if ($result) {
