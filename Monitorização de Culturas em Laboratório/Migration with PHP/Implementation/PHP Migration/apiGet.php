@@ -12,8 +12,8 @@ function get_data() {
 	// Database credentials
 	$url="localhost";
 	$database="estufa";
-	$username="root";
-	$password="";
+	$username="php";
+	$password="php";
 	
 	$conn = mysqli_connect($url, $username, $password, $database); // Connects to the mysql database. If unsuccessful $conn is an object that is false.
 	/* change character set to utf8 */
@@ -25,8 +25,8 @@ function get_data() {
 	if (!$conn){
 		die ("Connection Failled: ".$conn->connect_error);		// Prints a message and exits the current script
 	}
-	//call selectDadosNaoMigrados
-	$sql = "select * from logs where exportado=0";	// sql query
+	
+	$sql = "call selectDadosNaoMigrados";	// sql query
 	$result = mysqli_query($conn, $sql);	// Performs the query on the database
 	$rows = array();	// Creates an empty array
 	if ($result) {
