@@ -14,26 +14,25 @@ public class DatabaseConnection {
      * Attempts to establish a connection to the database with the given parameters.
      * @param username a username
      * @param password a password
+     * @throws SQLException if a database access error occurs (ex. incorrect username or password)
      */
-	public void connect(String username, String password) {
-        try {
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/estufa?&serverTimezone=UTC&user=" + username + "&password=" + password); // mudar para phpUser maybe?
-
-            // Do something with the Connection
-
-        } catch (SQLException ex) {
-            // handle any errors
-            System.out.println("SQLException: " + ex.getMessage());
-            System.out.println("SQLState: " + ex.getSQLState());
-            System.out.println("VendorError: " + ex.getErrorCode());
-        }
+	public void connect(String username, String password) throws SQLException {
+	    conn = DriverManager.getConnection("jdbc:mysql://localhost/estufa?&serverTimezone=UTC&user=" + username + "&password=" + password); // mudar para phpUser maybe?
     }
 
+    public void getVariaveis() {
 
+    }
 
+    /**
+     *
+     * @param query
+     * @return
+     */
 	public ResultSet select(String query) {
-
-		// assume that conn is an already created JDBC connection (see previous examples)
+	    if (conn == null) {
+	        return null;
+        }
 
 		Statement stmt = null;
 		ResultSet rs = null;
@@ -42,8 +41,7 @@ public class DatabaseConnection {
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(query);
 
-		}
-		catch (SQLException ex){
+		} catch (SQLException ex){
 			// handle any errors
 			System.out.println("SQLException: " + ex.getMessage());
 			System.out.println("SQLState: " + ex.getSQLState());
