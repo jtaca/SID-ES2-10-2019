@@ -1,4 +1,4 @@
-package api;
+package main.java.api;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -12,7 +12,7 @@ public class DatabaseConnection {
 
 	public DatabaseConnection() {
 		
-		// vou meter isto bonitinho em termos de extrutura é só mm para poderem trabalhar
+		// vou meter isto bonitinho em termos de extrutura ï¿½ sï¿½ mm para poderem trabalhar
 		
 		try {
 		    conn =
