@@ -4,4 +4,12 @@
   <artifactId>JavaAppMCL</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
+  <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+<dependencies>
+<dependency>
+    <groupId>mysql</groupId>
+    <artifactId>mysql-connector-java</artifactId>
+    <version>8.0.15</version>
+</dependency>
+</dependencies>  
 </project>
