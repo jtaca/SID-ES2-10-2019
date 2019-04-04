@@ -10,25 +10,26 @@ public class DatabaseConnection {
 
 	private static Connection conn = null;
 
-	public DatabaseConnection() {
+    /**
+     * Attempts to establish a connection to the database with the given parameters.
+     * @param username a username
+     * @param password a password
+     */
+	public void connect(String username, String password) {
+        try {
+            conn = DriverManager.getConnection("jdbc:mysql://localhost/estufa?&serverTimezone=UTC&user=" + username + "&password=" + password); // mudar para phpUser maybe?
 
-		// vou meter isto bonitinho em termos de extrutura � s� mm para poderem trabalhar
+            // Do something with the Connection
 
-		try {
-			conn =
-					DriverManager.getConnection("jdbc:mysql://localhost/estufa?&serverTimezone=UTC&" +
-							"user=root&password="); // mudar para phpUser maybe?
+        } catch (SQLException ex) {
+            // handle any errors
+            System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+        }
+    }
 
-			// Do something with the Connection
 
-		} catch (SQLException ex) {
-			// handle any errors
-			System.out.println("SQLException: " + ex.getMessage());
-			System.out.println("SQLState: " + ex.getSQLState());
-			System.out.println("VendorError: " + ex.getErrorCode());
-		}
-
-	}
 
 	public ResultSet select(String query) {
 

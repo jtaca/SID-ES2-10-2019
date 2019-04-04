@@ -11,6 +11,7 @@ public class Main {
         System.out.println("Starting app...");
 
         DatabaseConnection db = new DatabaseConnection();
+        db.connect("root", "");
 
         System.out.println("\nTabela de logs\n");
         ResultSet result = db.select("SELECT * FROM logs");
