@@ -16,7 +16,7 @@ public class DatabaseConnection {
 		
 		try {
 		    conn =
-		       DriverManager.getConnection("jdbc:mysql://localhost/test?" +
+		       DriverManager.getConnection("jdbc:mysql://localhost/estufa?" +
 		                                   "user=estufa&password="); // mudar para phpUser maybe?
 
 		    // Do something with the Connection
@@ -30,7 +30,7 @@ public class DatabaseConnection {
 
 	}
 	
-	public static void select(String query) {
+	public static ResultSet select(String query) {
 
 		// assume that conn is an already created JDBC connection (see previous examples)
 
@@ -46,6 +46,7 @@ public class DatabaseConnection {
 
 		    if (stmt.execute(query)) {
 		        rs = stmt.getResultSet();
+		        return rs;
 		    }
 
 		    // Now do something with the ResultSet ....
@@ -78,6 +79,10 @@ public class DatabaseConnection {
 		        stmt = null;
 		    }
 		}
+		return rs;
+		
+		
+		
 	}
 	
 
