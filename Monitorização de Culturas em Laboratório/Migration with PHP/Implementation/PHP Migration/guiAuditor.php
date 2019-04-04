@@ -146,6 +146,12 @@ pre {
 			if (!$conn){
 				die ("Connection Failled: Check your username and password, and try again.");		// Prints a message and exits the current script
 			}
+			
+			if (!$conn->set_charset("utf8")) {
+				printf("Error loading character set utf8: %s\n", $conn->error);
+				exit();
+			}
+			
 			$result = mysqli_query($conn, $sql);	// Performs the query on the database
 			$rows = array();	// Creates an empty array
 			if ($result) {
