@@ -1,4 +1,4 @@
-package main.java.variaveis;
+package variaveis;
 
 import java.util.ArrayList;
 

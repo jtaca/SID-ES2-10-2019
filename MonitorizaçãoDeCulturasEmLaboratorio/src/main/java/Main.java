@@ -1,8 +1,6 @@
-package main.java;
-
-import main.java.api.DatabaseConnection;
-import main.java.variaveis.VariableManager;
-import main.java.variaveis.Variable;
+import api.DatabaseConnection;
+import variaveis.Variable;
+import variaveis.VariableManager;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

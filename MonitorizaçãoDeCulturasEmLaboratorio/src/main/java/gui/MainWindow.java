@@ -1,4 +1,4 @@
-package main.java.gui;
+package gui;
 
 public class MainWindow {
 
