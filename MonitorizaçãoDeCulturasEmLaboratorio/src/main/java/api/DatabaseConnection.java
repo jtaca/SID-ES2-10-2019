@@ -29,7 +29,7 @@ public class DatabaseConnection {
     /**
      * Private constructor to prevent unwanted instantiation.
      */
-    private DatabaseConnection() {
+    DatabaseConnection() {
     }
 
     /**
@@ -100,6 +100,14 @@ public class DatabaseConnection {
         }
     }
 
+    /**
+     * Returns the instance of que connection
+     * @return a connection instance
+     */
+
+    public Connection getConnection() {
+        return conn;
+    }
 
 //	public static ResultSet select(String query) {
 //

@@ -1,7 +1,8 @@
 import api.DatabaseConnection;
-import javafx.util.Pair;
+import api.Users;
 import variaveis.Variable;
 import variaveis.VariableManager;
+import javafx.util.Pair;
 
 import java.sql.SQLException;
 
@@ -18,6 +19,9 @@ public class Main {
             System.out.println(connectionState.getValue());
             System.exit(0);
         }
+
+        Users users= new Users();
+        users.addUser("testeeee", "teste@gmail.com", "chefe", "588", "investigador");
 
 
         // Prepare variables from the database
