@@ -1,4 +1,5 @@
 import api.DatabaseConnection;
+import javafx.util.Pair;
 import variaveis.Variable;
 import variaveis.VariableManager;
 
@@ -13,7 +14,12 @@ public class Main {
         // Connect to the database
         // For now we connect with the root account. This should be changed later to the user account.
         DatabaseConnection db = new DatabaseConnection();
-        db.connect("root", "");
+        Pair<Boolean, String> connectionState = db.connect("root", "");
+        if(!connectionState.getKey()) {
+            System.out.println(connectionState.getValue());
+            System.exit(0);
+        }
+
 
         // Prepare variables from the database
         // This can also be moved later so we only prepare them if the admin logs in
@@ -23,10 +29,8 @@ public class Main {
             int variableID = variableResultSet.getInt("IDVariavel");
             String variableName = variableResultSet.getString("NomeVariavel");
 
-            variableManager.addVariavel(new Variable(variableID, variableName));
+            variableManager.addVariable(new Variable(variableID, variableName));
         }
-
-        System.out.println(variableManager);
 
 
 

@@ -8,10 +8,14 @@ import java.util.ArrayList;
  */
 public class VariableManager {
 
-    private ArrayList<Variable> variaveis = new ArrayList<Variable>();
+    private ArrayList<Variable> variables = new ArrayList<Variable>();
 
-    public void addVariavel(Variable variable){
-        variaveis.add(variable);
+    public ArrayList<Variable> getVariables() {
+        return variables;
+    }
+
+    public void addVariable(Variable variable){
+        variables.add(variable);
     }
 
 }

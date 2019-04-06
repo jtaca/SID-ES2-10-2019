@@ -1,4 +1,6 @@
 package api;
+import javafx.util.Pair;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -14,14 +16,24 @@ public class DatabaseConnection {
      * Attempts to establish a connection to the database with the given parameters.
      * @param username a username
      * @param password a password
-     * @throws SQLException if a database access error occurs (ex. incorrect username or password)
+     * @return a Boolean, String pair. The Boolean represents the success of the connection. If false, the connection failed and the String contains the appropriate error message.
      */
-	public void connect(String username, String password) throws SQLException {
-	    conn = DriverManager.getConnection("jdbc:mysql://localhost/estufa?&serverTimezone=UTC&user=" + username + "&password=" + password); // mudar para phpUser maybe?
-    }
+	public Pair<Boolean, String> connect(String username, String password) {
+	    try {
+            conn = DriverManager.getConnection("jdbc:mysql://localhost/estufa?&serverTimezone=UTC&user=" + username + "&password=" + password);
+        } catch (SQLException ex){
+            String error;
+            if(ex.getErrorCode() == 1045) {
+                error = "Incorrect username or password.";
+            } else if (ex.getErrorCode() == 0 ) {
+                error = "Couldn't connect to the database. Are you sure it is running?";
+            } else {
+                error = "Unknown error. Please contact the system administrator.";
+            }
 
-    public void getVariaveis() {
-
+            return(new Pair<Boolean, String>(false, error));
+        }
+        return(new Pair<Boolean, String>(true, ""));
     }
 
     /**
