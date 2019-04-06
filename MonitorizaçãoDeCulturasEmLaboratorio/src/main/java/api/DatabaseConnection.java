@@ -29,7 +29,7 @@ public class DatabaseConnection {
     /**
      * Private constructor to prevent unwanted instantiation.
      */
-    DatabaseConnection() {
+    private DatabaseConnection() {
     }
 
     /**

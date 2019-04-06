@@ -4,11 +4,9 @@ import variaveis.Variable;
 import variaveis.VariableManager;
 import javafx.util.Pair;
 
-import java.sql.SQLException;
-
 public class Main {
 
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args) {
         System.out.println("Starting app...");
 
         // Connect to the database

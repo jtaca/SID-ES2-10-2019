@@ -6,10 +6,8 @@ import com.mysql.cj.jdbc.CallableStatement;
 
 public class Users {
 
-    private DatabaseConnection dbc;
-
     public Users() {
-        this.dbc = new DatabaseConnection();
+
     }
 
     /**
@@ -23,7 +21,7 @@ public class Users {
 
     public void addUser(String nome, String email, String categoriaProfissional, String password, String role) {
         try {
-            CallableStatement cStmt = (CallableStatement) dbc.getConnection().prepareCall("{call addUser(?,?,?,?,?)}");
+            CallableStatement cStmt = (CallableStatement) DatabaseConnection.getInstance().getConnection().prepareCall("{call addUser(?,?,?,?,?)}");
             cStmt.setString(1, role);
             cStmt.setString(2, nome);
             cStmt.setString(3, password);
