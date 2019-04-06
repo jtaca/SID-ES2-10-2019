@@ -1,5 +1,6 @@
 package api;
 import javafx.util.Pair;
+import variaveis.Variable;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -23,6 +24,10 @@ public class DatabaseConnection {
 	        single_instance = new DatabaseConnection();
         }
         return single_instance;
+    }
+
+    public boolean isConnected() {
+	    return conn != null;
     }
 
     /**
@@ -63,7 +68,7 @@ public class DatabaseConnection {
      * @return
      */
 	public ResultSet select(String query) {
-	    if (conn == null) {
+	    if (!this.isConnected()) {
 	        return null;
         }
 
@@ -83,6 +88,19 @@ public class DatabaseConnection {
 
 		return rs;
 	}
+
+    public void insertVariable(Variable variable) {
+	    if(isConnected()) {
+            String insertQuery = "Insert into variaveis values " + variable;
+            try {
+                Statement statement = conn.createStatement();
+                int result = statement.executeUpdate(insertQuery);
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
 
 //	public static ResultSet select(String query) {

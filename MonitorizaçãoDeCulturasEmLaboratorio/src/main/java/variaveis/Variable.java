@@ -2,7 +2,7 @@ package variaveis;
 
 public class Variable {
 
-    private int id;
+    private Integer id;
     private String nome;
 
     public Variable(int id, String nome) {
@@ -10,6 +10,17 @@ public class Variable {
         this.nome = nome;
     }
 
+    public Variable(String nome) {
+        this.nome = nome;
+    }
 
+    @Override
+    public String toString() {
+        if(id == null) {
+            return "(NULL, \"" + nome +"\")";
+        } else {
+            return "(" + id + ",\"" + nome +"\")";
+        }
 
+    }
 }
