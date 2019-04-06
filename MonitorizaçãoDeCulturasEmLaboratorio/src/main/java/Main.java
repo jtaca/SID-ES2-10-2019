@@ -13,7 +13,7 @@ public class Main {
 
         // Connect to the database
         // For now we connect with the root account. This should be changed later to the user account.
-        DatabaseConnection db = new DatabaseConnection();
+        DatabaseConnection db = DatabaseConnection.getInstance();
         Pair<Boolean, String> connectionState = db.connect("root", "");
         if(!connectionState.getKey()) {
             System.out.println(connectionState.getValue());

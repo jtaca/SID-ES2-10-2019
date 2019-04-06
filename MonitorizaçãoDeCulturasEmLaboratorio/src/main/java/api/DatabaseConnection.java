@@ -10,7 +10,26 @@ import java.sql.ResultSet;
 
 public class DatabaseConnection {
 
+    private static DatabaseConnection single_instance = null;
 	private static Connection conn = null;
+
+    /**
+     * Returns or creates an instance of database connection.
+     * Does not establish the connection. To do that see the {@see #connect(String, String)} method.
+     * @return singleton instance of the DatabaseConnection object.
+     */
+	public static DatabaseConnection getInstance(){
+	    if(single_instance == null) {
+	        single_instance = new DatabaseConnection();
+        }
+        return single_instance;
+    }
+
+    /**
+     * Private constructor to prevent unwanted instantiation.
+     */
+    private DatabaseConnection() {
+    }
 
     /**
      * Attempts to establish a connection to the database with the given parameters.
@@ -35,6 +54,8 @@ public class DatabaseConnection {
         }
         return(new Pair<Boolean, String>(true, ""));
     }
+
+
 
     /**
      *
