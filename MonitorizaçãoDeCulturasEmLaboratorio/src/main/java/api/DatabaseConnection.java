@@ -2,11 +2,7 @@ package api;
 import javafx.util.Pair;
 import variaveis.Variable;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.ResultSet;
+import java.sql.*;
 
 
 public class DatabaseConnection {
@@ -61,12 +57,6 @@ public class DatabaseConnection {
     }
 
 
-
-    /**
-     *
-     * @param query
-     * @return
-     */
 	public ResultSet select(String query) {
 	    if (!this.isConnected()) {
 	        return null;
@@ -89,15 +79,23 @@ public class DatabaseConnection {
 		return rs;
 	}
 
-    public void insertVariable(Variable variable) {
+    public void insert(String table, String values) {
 	    if(isConnected()) {
-            String insertQuery = "Insert into variaveis values " + variable;
+            String insertQuery = "Insert into " + table + " values " + values;
             try {
                 Statement statement = conn.createStatement();
                 int result = statement.executeUpdate(insertQuery);
+                System.out.println(result);
 
-            } catch (SQLException e) {
-                e.printStackTrace();
+            } catch (SQLIntegrityConstraintViolationException ex) {
+                System.out.println("Problem while inserting: " + ex.getMessage());
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                if(ex.getErrorCode() == 1146) {
+                    System.out.println("Table " + table + " does not exist.");
+                } else {
+                    System.out.println("Unknown error.");
+                }
             }
         }
     }

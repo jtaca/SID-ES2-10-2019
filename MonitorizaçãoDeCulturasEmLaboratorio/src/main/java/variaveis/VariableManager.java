@@ -12,6 +12,8 @@ import java.util.ArrayList;
  */
 public class VariableManager {
 
+    private final String NOME_TABELA = "variaveis";
+
     private ArrayList<Variable> variables = new ArrayList<Variable>();
 
     public void updateLocalVariables() {
@@ -47,15 +49,14 @@ public class VariableManager {
     }
 
     /**
-     * Adds a new variable to the database.
-     * TODO check for errors such as inserting something when pk already exists
+     * Insert a new variable into the database. If the variable does not have an ID it will be assigned one automatically by the database auto-increment.
      * @param variable the variable to be inserted.
      */
     public void addVariable(Variable variable){
         DatabaseConnection db = DatabaseConnection.getInstance();
 
         if(db.isConnected()) {
-            db.insertVariable(variable);
+            db.insert(NOME_TABELA, variable.toString());
         }
 
         updateLocalVariables();
