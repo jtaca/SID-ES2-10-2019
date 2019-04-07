@@ -34,4 +34,21 @@ public class Users {
             System.out.println("Nao foi possivel executar com sucesso o seu pedido. Exception: " + e.getMessage() );
         }
     }
+
+    /**
+     * Tries to delete a user by calling the stored procedure deleteUser with the given parameters.
+     * @param email is the email of the user that we want to delete
+     */
+
+    public void deleteUser(String email) {
+        try {
+            CallableStatement cStmt = (CallableStatement) DatabaseConnection.getInstance().getConnection().prepareCall("{call deleteUser(?)}");
+            cStmt.setString(1, email);
+            if(cStmt.execute()==false) {
+                System.out.println("O utilizador com o email " + email +" foi apagado com sucesso" );
+            }
+        } catch (SQLException e) {
+            System.out.println("Nao foi possivel executar com sucesso o seu pedido. Exception: " + e.getMessage() );
+        }
+    }
 }
