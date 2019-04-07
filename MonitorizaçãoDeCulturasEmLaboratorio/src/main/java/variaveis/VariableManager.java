@@ -1,6 +1,7 @@
 package variaveis;
 
 import api.DatabaseConnection;
+import com.mysql.cj.jdbc.CallableStatement;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -60,6 +61,26 @@ public class VariableManager {
         }
 
         updateLocalVariables();
+    }
+
+    /**
+     * Tries to modify the value of a measured variable with its id and the new value with the given parameters.
+     * @param idMedicao is the id of the variable measured that we want to modify.
+     * @param novoValor is the new value for the measurement.
+     */
+
+    public void alterarValorMedido(int idMedicao, double novoValor) {
+        try {
+            CallableStatement cStmt = (CallableStatement) DatabaseConnection.getInstance().getConnection().prepareCall("{call alterarValorMedido(?,?)}");
+            cStmt.setInt(1, idMedicao);
+            cStmt.setDouble(2, novoValor);
+
+            if(cStmt.execute()==false) {
+                System.out.println("A mediçao com id " + idMedicao + " foi corretamente atualizado para " + novoValor );
+            }
+        } catch (SQLException e) {
+            System.out.println("Nao foi possivel executar com sucesso o seu pedido. Exception: " + e.getMessage() );
+        }
     }
 
 }
