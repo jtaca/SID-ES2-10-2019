@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+
+<TabPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="430.0" prefWidth="900.0" style="-fx-background-color: white;" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.InvestigadorController">
+  <tabs>
+    <Tab style="-fx-background-color: white; -fx-border-style: solid; -fx-border-width: 1 1 0 1; -fx-border-color: rgb(210, 210, 210); -fx-focus-color: grey; -fx-faint-focus-color: white;" text="Users">
+      <content>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="400.0" prefWidth="884.0">
+               <children>
+                  <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                     <right>
+                        <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+                           <children>
+                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-background-color: white; -fx-border-style: solid; -fx-border-width: 1; -fx-border-color: rgb(210, 210, 210);" text="Add">
+                                 <VBox.margin>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </VBox.margin>
+                              </Button>
+                              <Button alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-background-color: white; -fx-border-style: solid; -fx-border-width: 1; -fx-border-color: rgb(210, 210, 210);" text="Delete" textAlignment="CENTER">
+                                 <VBox.margin>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" />
+                                 </VBox.margin>
+                              </Button>
+                              <Button alignment="CENTER" contentDisplay="CENTER" layoutX="15.0" layoutY="50.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-background-color: white; -fx-border-style: solid; -fx-border-width: 1; -fx-border-color: rgb(210, 210, 210);" text="Edit" textAlignment="CENTER">
+                                 <VBox.margin>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" />
+                                 </VBox.margin>
+                              </Button>
+                           </children>
+                        </VBox>
+                     </right>
+                     <center>
+                        <TableView maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="800.0">
+                           <columns>
+                              <TableColumn maxWidth="1.7976931348623157E308" prefWidth="178.39990234375" style="-fx-background-color: white; -fx-border-style: solid; -fx-border-width: 0 1 1 0; -fx-border-color: rgb(210, 210, 210);" text="Name" />
+                              <TableColumn maxWidth="1.7976931348623157E308" prefWidth="272.0" style="-fx-background-color: white; -fx-border-style: solid; -fx-border-width: 0 1 1 0; -fx-border-color: rgb(210, 210, 210);" text="Email" />
+                              <TableColumn maxWidth="1.7976931348623157E308" prefWidth="184.0" style="-fx-background-color: white; -fx-border-style: solid; -fx-border-width: 0 1 1 0; -fx-border-color: rgb(210, 210, 210);" text="Professional Category" />
+                              <TableColumn maxWidth="1.7976931348623157E308" prefWidth="164.800048828125" style="-fx-background-color: white; -fx-border-style: solid; -fx-border-width: 0 0 1 0; -fx-border-color: rgb(210, 210, 210);" text="User type" />
+                           </columns>
+                        </TableView>
+                     </center>
+                  </BorderPane>
+               </children></AnchorPane>
+      </content>
+    </Tab>
+    <Tab style="-fx-background-color: white; -fx-border-style: solid; -fx-border-width: 1 1 0 1; -fx-border-color: rgb(210, 210, 210); -fx-focus-color: grey; -fx-faint-focus-color: white;" text="Variables">
+      <content>
+        <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0">
+               <children>
+                  <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                     <right>
+                        <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+                           <children>
+                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-background-color: white; -fx-border-style: solid; -fx-border-width: 1; -fx-border-color: rgb(210, 210, 210);" text="Add">
+                                 <VBox.margin>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </VBox.margin>
+                              </Button>
+                              <Button alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-background-color: white; -fx-border-style: solid; -fx-border-width: 1; -fx-border-color: rgb(210, 210, 210);" text="Delete" textAlignment="CENTER">
+                                 <VBox.margin>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" />
+                                 </VBox.margin>
+                              </Button>
+                              <Button alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="36.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-background-color: white; -fx-border-style: solid; -fx-border-width: 1; -fx-border-color: rgb(210, 210, 210);" text="Edit" textAlignment="CENTER">
+                                 <VBox.margin>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" />
+                                 </VBox.margin>
+                              </Button>
+                           </children>
+                        </VBox>
+                     </right>
+                     <center>
+                        <TableView maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="800.0">
+                          <columns>
+                            <TableColumn maxWidth="1.7976931348623157E308" prefWidth="799.1999267339706" style="-fx-background-color: white; -fx-border-style: solid; -fx-border-width: 0 1 1 0; -fx-border-color: rgb(210, 210, 210);" text="Name" />
+                          </columns>
+                        </TableView>
+                     </center>
+                  </BorderPane>
+               </children></AnchorPane>
+      </content>
+    </Tab>
+  </tabs>
+</TabPane>
