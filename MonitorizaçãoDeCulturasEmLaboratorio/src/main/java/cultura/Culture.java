@@ -29,7 +29,7 @@ public class Culture {
     public String toString() {
 
         if(id == null) {
-            return "(NULL" + ", '" + cultureName + "', '" + cultureDescription + "', '" + investigatorEmail + "')";
+            return "(NULL, '" + cultureName + "', '" + cultureDescription + "', '" + investigatorEmail + "')";
         } else {
             return "(" + id + ", '" + cultureName + "', '" + cultureDescription + "', '" + investigatorEmail + "')";
         }
