@@ -100,6 +100,8 @@ public class DatabaseConnection {
         }
     }
 
+    //"DELETE FROM `cultura` WHERE `cultura`.`IDCultura` = 4"
+
     /**
      * Returns the instance of que connection
      * @return a connection instance

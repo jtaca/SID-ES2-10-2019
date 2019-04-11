@@ -5,6 +5,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import com.mysql.cj.jdbc.CallableStatement;
+import java.sql.SQLException;
 
 
 public class CultureManager {
@@ -62,7 +64,23 @@ public class CultureManager {
     }
 
 
+    public void upadateCultura (int culturaId) {
+
+        //UPDATE `cultura` SET `DescricaoCultura` = 'Cultura Hidroponica ++' WHERE `cultura`.`IDCultura` = 4;
+    }
+
+
     public void deleteCultura (int idCulture) {
+
+        try {
+            CallableStatement cStmt = (CallableStatement) DatabaseConnection.getInstance().getConnection().prepareCall("{call apagarCultura(?)}");
+            cStmt.setString(1, ""+idCulture);
+            if(cStmt.execute()==false) {
+                System.out.println("A cultura com id: " + idCulture + " e respectivas variaveis medidas e medicões foram eliminadas com sucesso.");
+            }
+        } catch (SQLException e) {
+            System.out.println("Nao foi possível apagar a cultura pretendida. Exception: " + e.getMessage());
+        }
 
     }
 }
