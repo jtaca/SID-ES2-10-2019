@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.5
+-- version 4.8.3
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 21-Abr-2019 às 20:21
--- Versão do servidor: 10.1.38-MariaDB
--- versão do PHP: 7.3.2
+-- Generation Time: 01-Maio-2019 às 22:02
+-- Versão do servidor: 10.1.37-MariaDB
+-- versão do PHP: 7.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -118,6 +118,24 @@ BEGIN
          
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `createJavaUser` ()  BEGIN
+DROP USER IF EXISTS ''@localhost;
+SET @sql := CONCAT('CREATE USER ', 'java', ' IDENTIFIED BY ', QUOTE('php'));
+    PREPARE statement FROM @sql;
+    EXECUTE statement;
+    
+    SET @sql := CONCAT('GRANT ', 'javaUser', ' TO ', QUOTE('java'));
+    PREPARE statement FROM @sql;
+    EXECUTE statement;
+    
+    SET @sql := CONCAT('SET DEFAULT ROLE ', 'javaUser' ,' FOR ', 		QUOTE('java'));
+    PREPARE statement FROM @sql;
+    EXECUTE statement;
+
+    DEALLOCATE PREPARE statement;
+    FLUSH PRIVILEGES;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `createPhpUser` ()  BEGIN
 DROP USER IF EXISTS ''@localhost;
 SET @sql := CONCAT('CREATE USER ', 'php', ' IDENTIFIED BY ', QUOTE('php'));
@@ -142,7 +160,14 @@ GRANT SELECT ON estufa.logs TO phpUser;
 GRANT EXECUTE ON PROCEDURE estufa.selectDadosNaoMigrados TO phpUser;
 GRANT EXECUTE ON PROCEDURE estufa.updateMigrados TO phpUser;
 
-
+GRANT INSERT ON estufa.medicoes TO javaUser;
+GRANT INSERT ON estufa.medicao_luminosidade TO javaUser;
+GRANT INSERT ON estufa.medicao_temperatura TO javaUser;
+GRANT INSERT ON estufa.alertas TO javaUser;
+GRANT INSERT ON estufa.medicoes_temperatura_incorretas TO javaUser;
+GRANT INSERT ON estufa.medicoes_luminosidade_incorretas TO javaUser;
+GRANT SELECT ON estufa.sistema TO javaUser;
+GRANT SELECT ON estufa.variaveis_medidas TO javaUser;
 
 GRANT SELECT ON estufa.medicoes_luminosidade TO investigador;
 GRANT SELECT ON estufa.medicoes_temperatura TO investigador;
@@ -180,7 +205,7 @@ GRANT EXECUTE ON PROCEDURE estufa.init TO administrador;
 
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `criarRoles` ()  CREATE ROLE IF NOT EXISTS investigador, administrador, sensorLuminosidade, sensorTemperatura,  phpUser$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `criarRoles` ()  CREATE ROLE IF NOT EXISTS investigador, administrador, sensorLuminosidade, sensorTemperatura,  phpUser, javaUser$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteUser` (IN `var_email` VARCHAR(100))  NO SQL
 BEGIN
@@ -201,8 +226,9 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `init` ()  BEGIN
  
     CALL criarPrivilegios;
     
-   CALL criarPrivilegiosExecute;
+   	CALL criarPrivilegiosExecute;
     
+    CALL createJavaUser;
 
 	ALTER TABLE mysql.user ADD COLUMN IF NOT EXISTS email varchar(100) UNIQUE;
     
