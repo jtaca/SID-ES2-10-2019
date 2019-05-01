@@ -23,7 +23,7 @@ public class GUI extends Application {
      * Loads and shows the JavaFX main application
      */
     private void mainGUI() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/investigador.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/administrator.fxml"));
         System.out.println(getClass().getResource("/"));
         Parent root;
         try {
@@ -33,7 +33,7 @@ public class GUI extends Application {
             return;
         }
 
-        primaryStage.setTitle("The Greenhouse - Management Area");
+        primaryStage.setTitle("The Greenhouse - Administrator Management Area");
         primaryStage.setScene(new Scene(root));
         primaryStage.setMaximized(false);
         primaryStage.show();

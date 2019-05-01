@@ -14,6 +14,10 @@ public class Variable {
         this.nome = nome;
     }
 
+    public String getNome() {
+        return nome;
+    }
+
     @Override
     public String toString() {
         if(id == null) {

@@ -30,7 +30,7 @@
                         </Text>
                         <ImageView fitHeight="46.0" fitWidth="43.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../leaf.png" />
+                              <Image url="@leaf.png" />
                            </image>
                            <HBox.margin>
                               <Insets left="15.0" />
@@ -142,7 +142,7 @@
                <children>
                   <ImageView fitHeight="94.0" fitWidth="92.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../user.png" />
+                        <Image url="@user.png" />
                      </image>
                      <VBox.margin>
                         <Insets />
