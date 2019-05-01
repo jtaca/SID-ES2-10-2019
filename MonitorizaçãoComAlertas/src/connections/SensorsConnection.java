@@ -7,6 +7,8 @@ import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException; 
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
+import medicao.Medicao;
+
 	public class SensorsConnection implements MqttCallback {
 
 		MqttClient client;
@@ -41,11 +43,14 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 		
 		@Override
 		public void messageArrived(String topic, MqttMessage message) throws Exception {
-			System.out.println(message.toString()+"   "+topic);
+			System.out.println(message.toString());
+			Medicao medicao= new Medicao (message);
+			System.out.println(medicao.toString() + " resultado");
 		}
 
 		@Override
 		public void deliveryComplete(IMqttDeliveryToken token) {			
 		}
+		
 }
 
