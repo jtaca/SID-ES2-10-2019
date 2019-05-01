@@ -23,8 +23,8 @@ public class GUI extends Application {
      * Loads and shows the JavaFX main application
      */
     private void mainGUI() {
-        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("/fxml/investigador.fxml"));
-        System.out.println(getClass().getClassLoader().getResource("/fxml/investigador.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/investigador.fxml"));
+        System.out.println(getClass().getResource("/"));
         Parent root;
         try {
             root = (Parent) loader.load();
