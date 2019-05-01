@@ -1,6 +1,8 @@
 package connections;
 
 import javafx.util.Pair;
+import medicao.GestorDeMedicoes;
+import medicao.Sistema;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -13,8 +15,9 @@ import java.sql.ResultSet;
 public class DatabaseConnection {
 
 	private static Connection conn = null;
-	 private static DatabaseConnection single_instance = null;
-
+	private static DatabaseConnection single_instance = null;
+	private static GestorDeMedicoes ges ;
+	
     /**
      * Attempts to establish a connection to the database with the given parameters.
      * @param username a username
@@ -134,6 +137,53 @@ public class DatabaseConnection {
 //		}
 //		return rs;
 //	}
+	
+	
+	public  double viewTable(Connection con, String column)
+		    throws SQLException {
+	    	double res = 0;
+		    Statement stmt = null;
+		    String query = "select sistema." + column+
+		                   " from estufa.sistema"  ;
+		    try {
+		        stmt = con.createStatement();
+		        ResultSet rs = stmt.executeQuery(query);
+		        while (rs.next()) {
+		        	 res = rs.getDouble(column);
+		           
+		        }
+		    } catch (SQLException e ) {
+		     e.printStackTrace();
+		    } finally {
+		        if (stmt != null) { stmt.close(); }
+		    }
+			return res;
+		}
 
+	public Sistema initializeSystem() {
+		Sistema sis = null;
+		try {
+			double limiteInferiorTemperatura = viewTable(conn, "LimiteInferiorTemperatura");
+			double limiteSuperiorTemperatura = viewTable(conn, "LimiteSuperiorTemperatura");
+			double limiteInferiorLuz = viewTable(conn, "LimiteInferiorLuz");
+			double limiteSuperiorLuz = viewTable(conn, "LimiteSuperiorLuz");
+			double percentagemVariacaoTemperatura = viewTable(conn, "PercentagemVariacaoTemperatura");
+			double percentagemVariacaoLuz = viewTable(conn, "PercentagemVariacaoLuz");
+			double margemSegurancaLuz = viewTable(conn, "MargemSegurancaLuz");
+			double margemSegurancaTemperatura = viewTable(conn, "MargemSegurancaTemperatura");
+			sis= new Sistema (limiteInferiorTemperatura,limiteSuperiorTemperatura,limiteInferiorLuz,limiteSuperiorLuz,percentagemVariacaoTemperatura,percentagemVariacaoLuz,margemSegurancaLuz,margemSegurancaTemperatura);
+			ges = new GestorDeMedicoes(sis);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+		return sis;
+		
+	}
+	
+	public GestorDeMedicoes getGestor() {
+		return ges;
+	}
 
 }

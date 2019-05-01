@@ -7,6 +7,7 @@ import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException; 
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
+import medicao.GestorDeMedicoes;
 import medicao.Medicao;
 
 	public class SensorsConnection implements MqttCallback {
@@ -15,8 +16,9 @@ import medicao.Medicao;
 		String topic = "/sid_lab_2019_2";  
 	    String broker       = "tcp://broker.mqtt-dashboard.com:1883";
 	    String clientId     = "clientId-OJtthizHtB";
-
-	    public SensorsConnection() {
+	    GestorDeMedicoes ges;
+	    
+	    public SensorsConnection(GestorDeMedicoes ges) {
 			try {
 				client = new MqttClient(broker, clientId);
 				 MqttConnectOptions connOpts = new MqttConnectOptions();
@@ -25,7 +27,8 @@ import medicao.Medicao;
 	             client.connect(connOpts);
 	             client.setCallback(this);
 	             client.subscribe(topic);
-	             System.out.println("Connected");     
+	             System.out.println("Connected");  
+	             this.ges=ges;
 			} catch (MqttException exception) {		
 				System.out.println("reason "+exception.getReasonCode());
 	            System.out.println("mensagem "+exception.getMessage());
@@ -45,7 +48,9 @@ import medicao.Medicao;
 		public void messageArrived(String topic, MqttMessage message) throws Exception {
 			System.out.println(message.toString());
 			Medicao medicao= new Medicao (message);
-			System.out.println(medicao.toString() + " resultado");
+			
+			ges.adiciona(medicao);
+			
 		}
 
 		@Override

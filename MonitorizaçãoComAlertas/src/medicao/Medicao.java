@@ -6,11 +6,12 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 public class Medicao {
 	private String timestamp;
 	private double temperatura;
-	private int luminosidade;
+	private double luminosidade;
 	private boolean alertaLuminosidade;
 	private boolean alertaTemperatura;
 	private boolean erroTemperatura;
 	private boolean erroLuminosidade;
+	private boolean exportadoParaOMongo;
 	
 	public Medicao(MqttMessage message) {
 		super();
@@ -19,7 +20,7 @@ public class Medicao {
 		alertaTemperatura = false;
 		erroTemperatura = false;
 		erroLuminosidade = false;
-		
+		exportadoParaOMongo=false;
 	}
 	
 
@@ -34,6 +35,72 @@ public class Medicao {
 		this.temperatura = Double.parseDouble(temp);
 		this.luminosidade = Integer.parseInt(lum);
 	}
+
+	public void setAlertaLuminosidade(boolean alertaLuminosidade) {
+		this.alertaLuminosidade = alertaLuminosidade;
+	}
+
+
+	public void setAlertaTemperatura(boolean alertaTemperatura) {
+		this.alertaTemperatura = alertaTemperatura;
+	}
+
+
+	public void setErroTemperatura(boolean erroTemperatura) {
+		this.erroTemperatura = erroTemperatura;
+	}
+
+
+	public String getTimestamp() {
+		return timestamp;
+	}
+
+
+	public double getTemperatura() {
+		return temperatura;
+	}
+
+
+	public double getLuminosidade() {
+		return luminosidade;
+	}
+
+
+	public boolean isAlertaLuminosidade() {
+		return alertaLuminosidade;
+	}
+
+
+	public boolean isAlertaTemperatura() {
+		return alertaTemperatura;
+	}
+
+
+	public boolean isErroTemperatura() {
+		return erroTemperatura;
+	}
+
+
+	public boolean isErroLuminosidade() {
+		return erroLuminosidade;
+	}
+
+
+	public boolean isExportadoParaOMongo() {
+		return exportadoParaOMongo;
+	}
+
+
+	public void setExportadoParaOMongo(boolean exportadoParaOMongo) {
+		this.exportadoParaOMongo = exportadoParaOMongo;
+	}
+
+
+	public void setErroLuminosidade(boolean erroLuminosidade) {
+		this.erroLuminosidade = erroLuminosidade;
+	}
+	
+	
 
 	@Override
 	public String toString() {
