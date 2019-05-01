@@ -50,8 +50,13 @@ public class AdministratorController {
     @FXML
     public void initialize() {
         variable_name_col.setCellValueFactory(new PropertyValueFactory<>("nome"));
-
         variables_table.setItems(randomVariableList());
+
+        user_name_col.setCellValueFactory(new PropertyValueFactory<>("name"));
+        user_email_col.setCellValueFactory(new PropertyValueFactory<>("email"));
+        user_category_col.setCellValueFactory(new PropertyValueFactory<>("category"));
+        user_type_col.setCellValueFactory(new PropertyValueFactory<>("user_type"));
+        users_table.setItems(randomUserList());
     }
 
     private ObservableList<Variable> randomVariableList() {
@@ -89,5 +94,42 @@ public class AdministratorController {
     public void refreshVariablesTable(MouseEvent mouseEvent) {
         System.out.println("refreshVariablesTable");
         variables_table.setItems(randomVariableList());
+    }
+
+    private ObservableList<User> randomUserList() {
+        ObservableList<User> list = FXCollections.observableArrayList();
+        for (int i=0; i<25; i++) {
+            Random r = new Random();
+            char a = (char)(r.nextInt(26) + 'a');
+            char b = (char)(r.nextInt(26) + 'a');
+
+            String name = "Pessoa " + Character.toUpperCase(a) + Character.toUpperCase(b);
+
+            list.add(new User(i,name, a+"@"+b+".pt", "Agricultor","Investigador"));
+        }
+        return list;
+    }
+
+    public void addUser(MouseEvent mouseEvent) {
+        System.out.println("addUser");
+        User selected_variable = users_table.getSelectionModel().getSelectedItem();
+        System.out.println("Selected: " + selected_variable);
+    }
+
+    public void editUser(MouseEvent mouseEvent) {
+        System.out.println("editUser");
+        User selected_variable = users_table.getSelectionModel().getSelectedItem();
+        System.out.println("Selected: " + selected_variable);
+    }
+
+    public void deleteUser(MouseEvent mouseEvent) {
+        System.out.println("deleteUser");
+        User selected_variable = users_table.getSelectionModel().getSelectedItem();
+        System.out.println("Selected: " + selected_variable);
+    }
+
+    public void refreshUsersTable(MouseEvent mouseEvent) {
+        System.out.println("refreshUsersTable");
+        users_table.setItems(randomUserList());
     }
 }

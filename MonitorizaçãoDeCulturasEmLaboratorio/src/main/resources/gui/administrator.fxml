@@ -20,22 +20,22 @@
                      <right>
                         <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
                            <children>
-                              <Button fx:id="add_user_btn" maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-background-color: white; -fx-border-style: solid; -fx-border-width: 1; -fx-border-color: rgb(210, 210, 210);" text="Add">
+                              <Button fx:id="add_user_btn" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#addUser" style="-fx-background-color: white; -fx-border-style: solid; -fx-border-width: 1; -fx-border-color: rgb(210, 210, 210);" text="Add">
                                  <VBox.margin>
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                  </VBox.margin>
                               </Button>
-                              <Button fx:id="edit_user_btn" alignment="CENTER" contentDisplay="CENTER" layoutX="15.0" layoutY="50.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-background-color: white; -fx-border-style: solid; -fx-border-width: 1; -fx-border-color: rgb(210, 210, 210);" text="Edit" textAlignment="CENTER">
+                              <Button fx:id="edit_user_btn" alignment="CENTER" contentDisplay="CENTER" layoutX="15.0" layoutY="50.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#editUser" style="-fx-background-color: white; -fx-border-style: solid; -fx-border-width: 1; -fx-border-color: rgb(210, 210, 210);" text="Edit" textAlignment="CENTER">
                                  <VBox.margin>
                                     <Insets bottom="5.0" left="5.0" right="5.0" />
                                  </VBox.margin>
                               </Button>
-                              <Button fx:id="delete_user_btn" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-background-color: white; -fx-border-style: solid; -fx-border-width: 1; -fx-border-color: rgb(210, 210, 210);" text="Delete" textAlignment="CENTER">
+                              <Button fx:id="delete_user_btn" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#deleteUser" style="-fx-background-color: white; -fx-border-style: solid; -fx-border-width: 1; -fx-border-color: rgb(210, 210, 210);" text="Delete" textAlignment="CENTER">
                                  <VBox.margin>
                                     <Insets bottom="5.0" left="5.0" right="5.0" />
                                  </VBox.margin>
                               </Button>
-                              <Button fx:id="refresh_user_btn" alignment="CENTER" contentDisplay="CENTER" layoutX="15.0" layoutY="79.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-background-color: white; -fx-border-style: solid; -fx-border-width: 1; -fx-border-color: rgb(210, 210, 210);" text="Refresh" textAlignment="CENTER">
+                              <Button fx:id="refresh_user_btn" alignment="CENTER" contentDisplay="CENTER" layoutX="15.0" layoutY="79.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#refreshUsersTable" style="-fx-background-color: white; -fx-border-style: solid; -fx-border-width: 1; -fx-border-color: rgb(210, 210, 210);" text="Refresh" textAlignment="CENTER">
                                  <VBox.margin>
                                     <Insets bottom="5.0" left="5.0" right="5.0" />
                                  </VBox.margin>

@@ -2,13 +2,13 @@ package api;
 
 public class User {
 
-    private Integer id;
+    private int id;
     private String name;
     private String email;
     private String category;
     private String user_type;
 
-    public User(Integer id, String name, String email, String category, String user_type) {
+    public User(int id, String name, String email, String category, String user_type) {
         this.id = id;
         this.name = name;
         this.email = email;
