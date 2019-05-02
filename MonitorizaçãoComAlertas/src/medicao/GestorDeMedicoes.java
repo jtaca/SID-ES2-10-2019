@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
 
+import connections.MongoConnection;
+
 public class GestorDeMedicoes {
 	private Sistema sistema;
 	private int contador=0;
 	private BlockingQueue<Medicao> bq;
+	private MongoConnection mc = new MongoConnection();
 	
 	public GestorDeMedicoes(Sistema sistema) {
 		super();
@@ -21,6 +24,7 @@ public class GestorDeMedicoes {
 				bq.poll();
 				processaMedicao(m);
 				bq.put(m);
+				mc.write(m);
 				contador ++;
 			}else {
 				checkAlerts(m);
@@ -57,15 +61,18 @@ public class GestorDeMedicoes {
 	}
 
 	private void checkAlerts(Medicao m) {
-		if(!m.isErroLuminosidade()) {
+		if(m.isErroLuminosidade()==0) {
 			double margemAlertaLuz = (sistema.getLimiteSuperiorLuz() - sistema.getLimiteInferiorLuz()) * sistema.getMargemSegurancaLuz();
-			if(sistema.getLimiteSuperiorLuz() - margemAlertaLuz <= m.getLuminosidade() || sistema.getLimiteInferiorLuz() + margemAlertaLuz >= m.getLuminosidade() )
+			if(sistema.getLimiteSuperiorLuz() - margemAlertaLuz <= m.getLuminosidade() 
+					|| sistema.getLimiteInferiorLuz() + margemAlertaLuz >= m.getLuminosidade() || sistema.getLimiteInferiorLuz() >= m.getLuminosidade()
+					||  sistema.getLimiteSuperiorLuz() <= m.getLuminosidade())
 				m.setAlertaLuminosidade(true);
 		}
 			
-		if(!m.isErroTemperatura()) {
+		if(m.isErroTemperatura()==0) {
 			double margemAlertaTemp = (sistema.getLimiteSuperiorTemperatura() - sistema.getLimiteInferiorTemperatura()) * sistema.getMargemSegurancaTemperatura();
-		if(sistema.getLimiteSuperiorTemperatura() - margemAlertaTemp <= m.getTemperatura() || sistema.getLimiteInferiorTemperatura() + margemAlertaTemp >= m.getTemperatura() )
+		if(sistema.getLimiteSuperiorTemperatura() - margemAlertaTemp <= m.getTemperatura() || sistema.getLimiteInferiorTemperatura() + margemAlertaTemp >= m.getTemperatura() 
+				|| m.getTemperatura()>= sistema.getLimiteSuperiorTemperatura() || m.getTemperatura()<=sistema.getLimiteInferiorTemperatura())
 			m.setAlertaTemperatura(true);
 		}
 	}

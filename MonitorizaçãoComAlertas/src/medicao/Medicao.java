@@ -66,24 +66,42 @@ public class Medicao {
 	}
 
 
-	public boolean isAlertaLuminosidade() {
-		return alertaLuminosidade;
+	public int isAlertaLuminosidade() {
+		if(alertaLuminosidade){
+			return 1;
+		}else {
+			return 0;
+		}
 	}
 
 
-	public boolean isAlertaTemperatura() {
-		return alertaTemperatura;
+	public int isAlertaTemperatura() {
+		if(alertaTemperatura){
+			return 1;
+		}else {
+			return 0;
+		}
 	}
 
 
-	public boolean isErroTemperatura() {
-		return erroTemperatura;
+	public int isErroTemperatura() {
+		if(erroTemperatura){
+			return 1;
+		}else {
+			return 0;
+		}
 	}
 
 
-	public boolean isErroLuminosidade() {
-		return erroLuminosidade;
+
+	public int isErroLuminosidade() {
+		if(erroLuminosidade){
+			return 1;
+		}else {
+			return 0;
+		}
 	}
+
 
 
 	public boolean isExportadoParaOMongo() {
