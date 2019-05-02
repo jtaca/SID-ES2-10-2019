@@ -23,6 +23,7 @@ public class GestorDeMedicoes {
 				bq.put(m);
 				contador ++;
 			}else {
+				checkAlerts(m);
 				bq.put(m);
 				contador ++;
 			}
@@ -73,7 +74,7 @@ public class GestorDeMedicoes {
 		double margemErroLuz = (sistema.getLimiteSuperiorLuz() - sistema.getLimiteInferiorLuz()) * sistema.getPercentagemVariacaoLuz();
 		double margemErroTemp = (sistema.getLimiteSuperiorTemperatura() - sistema.getLimiteInferiorTemperatura()) * sistema.getPercentagemVariacaoTemperatura();
 		
-		if ( (Math.abs(m.getLuminosidade() - m1.getLuminosidade()) > margemErroLuz) && (Math.abs(m.getLuminosidade() - m2.getLuminosidade()) > margemErroLuz) )
+		if ( (Math.abs(m.getLuminosidade() - m1.getLuminosidade()) > margemErroLuz) && (Math.abs(m.getLuminosidade() - m2.getLuminosidade()) > margemErroLuz || m.getLuminosidade() < 0) )
 			m.setErroLuminosidade(true);
 		
 		if ( (Math.abs(m.getTemperatura() - m1.getTemperatura()) > margemErroTemp) && (Math.abs(m.getTemperatura() - m2.getTemperatura()) > margemErroTemp) )
