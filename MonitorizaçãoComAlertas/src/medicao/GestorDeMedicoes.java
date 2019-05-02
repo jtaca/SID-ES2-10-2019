@@ -25,15 +25,17 @@ public class GestorDeMedicoes {
 				processaMedicao(m);
 				bq.put(m);
 				mc.write(m);
+				m.setExportadoParaOMongo(true);
 				contador ++;
 			}else {
 				checkAlerts(m);
 				bq.put(m);
+				mc.write(m);
+				m.setExportadoParaOMongo(true);
 				contador ++;
 			}
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("Erro " + e.getMessage());
 		}
 	}
 
@@ -43,11 +45,6 @@ public class GestorDeMedicoes {
 		ArrayList<Medicao> aux = new ArrayList<Medicao>();
 		bq.drainTo(aux);
 		
-		
-		
-		
-		System.out.println(aux);
-	
 		Medicao m1 = aux.get(0);
 		Medicao m2 = aux.get(1);
 		
@@ -85,9 +82,7 @@ public class GestorDeMedicoes {
 			m.setErroLuminosidade(true);
 		
 		if ( (Math.abs(m.getTemperatura() - m1.getTemperatura()) > margemErroTemp) && (Math.abs(m.getTemperatura() - m2.getTemperatura()) > margemErroTemp) )
-			m.setAlertaTemperatura(true);
-		
-		
+			m.setAlertaTemperatura(true);	
 	}
 
 	

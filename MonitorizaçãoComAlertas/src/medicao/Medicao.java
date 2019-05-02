@@ -1,6 +1,8 @@
 package medicao;
 
 
+import java.time.LocalDateTime;
+
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 public class Medicao {
@@ -28,10 +30,7 @@ public class Medicao {
 		String [] measures = message.toString().split(",");
 		String temp = measures[0].substring(8, measures[0].length()-1);
 		String lum = measures[4].substring(8, measures[4].length()-14);
-		String data= measures[2].substring(7, measures[2].length()-1);
-		String hora = measures[3].substring(7, measures[3].length()-1);
-		String ts = data + " "+ hora;
-		this.timestamp = ts;
+		this.timestamp = parseDate();
 		this.temperatura = Double.parseDouble(temp);
 		this.luminosidade = Integer.parseInt(lum);
 	}
@@ -103,7 +102,6 @@ public class Medicao {
 	}
 
 
-
 	public boolean isExportadoParaOMongo() {
 		return exportadoParaOMongo;
 	}
@@ -116,6 +114,13 @@ public class Medicao {
 
 	public void setErroLuminosidade(boolean erroLuminosidade) {
 		this.erroLuminosidade = erroLuminosidade;
+	}
+	
+	public String parseDate() {
+		String currentDate = LocalDateTime.now() +"";
+		String replacedDate = currentDate.replace('T', ' ');
+		return replacedDate.substring(0, replacedDate.length()-4);
+		
 	}
 	
 	
