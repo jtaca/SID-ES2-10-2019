@@ -49,7 +49,7 @@ public class AdministratorController {
 
     @FXML
     public void initialize() {
-        variable_name_col.setCellValueFactory(new PropertyValueFactory<>("nome"));
+        variable_name_col.setCellValueFactory(new PropertyValueFactory<>("name"));
         variables_table.setItems(randomVariableList());
 
         user_name_col.setCellValueFactory(new PropertyValueFactory<>("name"));
