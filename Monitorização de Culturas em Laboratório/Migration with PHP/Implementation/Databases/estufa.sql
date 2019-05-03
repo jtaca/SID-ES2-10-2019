@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 02-Maio-2019 às 20:32
+-- Generation Time: 03-Maio-2019 às 23:31
 -- Versão do servidor: 10.1.38-MariaDB
 -- versão do PHP: 7.3.2
 
@@ -269,17 +269,19 @@ CREATE TABLE `alertas` (
   `nomeCultura` varchar(100) DEFAULT NULL,
   `emailInvestigador` varchar(100) NOT NULL,
   `data` datetime NOT NULL,
-  `valor` decimal(8,2) NOT NULL
+  `valor` decimal(8,2) NOT NULL,
+  `DescricaoAlertas` varchar(500) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Extraindo dados da tabela `alertas`
 --
 
-INSERT INTO `alertas` (`idAlerta`, `nomeVariavel`, `nomeCultura`, `emailInvestigador`, `data`, `valor`) VALUES
-(5, 'PH', 'Batatas', 'pedro@gmail.com', '2019-04-01 00:00:00', '7.80'),
-(6, 'CHUMBO', 'Cebola', 'carlos@gmail.com', '2019-04-13 00:00:00', '3.57'),
-(7, 'Chumbo', 'Beterraba', 'root@localhost', '2019-05-02 19:23:45', '10.00');
+INSERT INTO `alertas` (`idAlerta`, `nomeVariavel`, `nomeCultura`, `emailInvestigador`, `data`, `valor`, `DescricaoAlertas`) VALUES
+(5, 'PH', 'Batatas', 'pedro@gmail.com', '2019-04-01 00:00:00', '7.80', ''),
+(6, 'CHUMBO', 'Cebola', 'carlos@gmail.com', '2019-04-13 00:00:00', '3.57', ''),
+(7, 'Chumbo', 'Beterraba', 'root@localhost', '2019-05-02 19:23:45', '10.00', ''),
+(8, 'Chumbo', 'Batatas', 'email@gmail.com', '2019-05-15 00:00:00', '2.34', 'O valor da medição ultrapassou o limite inferior.');
 
 -- --------------------------------------------------------
 
@@ -742,7 +744,7 @@ ALTER TABLE `variaveis_medidas`
 -- AUTO_INCREMENT for table `alertas`
 --
 ALTER TABLE `alertas`
-  MODIFY `idAlerta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `idAlerta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `cultura`
