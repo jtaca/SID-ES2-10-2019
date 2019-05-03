@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 03-Maio-2019 às 23:31
+-- Generation Time: 04-Maio-2019 às 00:45
 -- Versão do servidor: 10.1.38-MariaDB
 -- versão do PHP: 7.3.2
 
@@ -278,10 +278,22 @@ CREATE TABLE `alertas` (
 --
 
 INSERT INTO `alertas` (`idAlerta`, `nomeVariavel`, `nomeCultura`, `emailInvestigador`, `data`, `valor`, `DescricaoAlertas`) VALUES
-(5, 'PH', 'Batatas', 'pedro@gmail.com', '2019-04-01 00:00:00', '7.80', ''),
-(6, 'CHUMBO', 'Cebola', 'carlos@gmail.com', '2019-04-13 00:00:00', '3.57', ''),
-(7, 'Chumbo', 'Beterraba', 'root@localhost', '2019-05-02 19:23:45', '10.00', ''),
-(8, 'Chumbo', 'Batatas', 'email@gmail.com', '2019-05-15 00:00:00', '2.34', 'O valor da medição ultrapassou o limite inferior.');
+(9, 'Chumbo', 'Beterraba', 'root@localhost', '2019-05-03 23:21:57', '2.85', 'O valor da medição ultrapassou o limite inferior.'),
+(10, 'Chumbo', 'Beterraba', 'root@localhost', '2019-05-03 23:22:27', '2.50', 'O valor da medição ultrapassou o limite inferior.'),
+(11, 'Chumbo', 'Beterraba', 'root@localhost', '2019-05-03 23:23:14', '2.86', 'O valor da medição está próximo do limite inferior.'),
+(12, 'Chumbo', 'Beterraba', 'root@localhost', '2019-05-03 23:23:41', '3.01', 'O valor da medição está próximo do limite inferior.'),
+(13, 'Chumbo', 'Beterraba', 'root@localhost', '2019-05-03 23:24:19', '3.39', 'O valor da medição está próximo do limite inferior.'),
+(14, 'Chumbo', 'Beterraba', 'root@localhost', '2019-05-03 23:26:07', '7.71', 'O valor da medição está próximo do limite superior.'),
+(15, 'Chumbo', 'Beterraba', 'root@localhost', '2019-05-03 23:26:41', '7.95', 'O valor da medição está próximo do limite superior.'),
+(16, 'Chumbo', 'Beterraba', 'root@localhost', '2019-05-03 23:27:10', '8.24', 'O valor da medição está próximo do limite superior.'),
+(17, 'Chumbo', 'Beterraba', 'root@localhost', '2019-05-03 23:27:29', '8.25', 'O valor da medição ultrapassou o limite superior.'),
+(18, 'Chumbo', 'Beterraba', 'root@localhost', '2019-05-03 23:27:52', '9.56', 'O valor da medição ultrapassou o limite superior.'),
+(19, 'Chumbo', 'Beterraba', 'root@localhost', '2019-05-03 23:42:46', '2.85', 'O valor da medição atingiu o limite inferior.'),
+(20, 'Chumbo', 'Beterraba', 'root@localhost', '2019-05-03 23:43:13', '8.25', 'O valor da medição atingiu o limite superior.'),
+(21, 'Chumbo', 'Beterraba', 'root@localhost', '2019-05-03 23:43:48', '2.84', 'O valor da medição ultrapassou o limite inferior.'),
+(22, 'Chumbo', 'Beterraba', 'root@localhost', '2019-05-03 23:43:48', '2.86', 'O valor da medição está próximo do limite inferior.'),
+(23, 'Chumbo', 'Beterraba', 'root@localhost', '2019-05-03 23:44:29', '8.26', 'O valor da medição ultrapassou o limite superior.'),
+(24, 'Chumbo', 'Beterraba', 'root@localhost', '2019-05-03 23:44:29', '8.24', 'O valor da medição está próximo do limite superior.');
 
 -- --------------------------------------------------------
 
@@ -395,7 +407,29 @@ CREATE TABLE `logs` (
 --
 
 INSERT INTO `logs` (`logId`, `username`, `nomeTabela`, `comandoUsado`, `linhaAnterior`, `resultado`, `dataComando`, `exportado`) VALUES
-(133, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 1  DataHoraMedicao: 2019-05-02 19:23:45  ValorMedicao: 10.00  IdVariaveisMedidas: 1', '2019-05-02 19:23:45', 0);
+(133, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 1  DataHoraMedicao: 2019-05-02 19:23:45  ValorMedicao: 10.00  IdVariaveisMedidas: 1', '2019-05-02 19:23:45', 0),
+(134, 'root@localhost', 'variaveis_medidas', 'UPDATE', 'IDVariavel: 3  IDCultura: 4  LimiteInferior: 2.85  LimiteSuperior: 8.23  IdVariaveisMedidas: 1', 'IDVariavel: 3  IDCultura: 4  LimiteInferior: 2.85  LimiteSuperior: 8.25  IdVariaveisMedidas: 1', '2019-05-03 23:19:04', 0),
+(135, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 2  DataHoraMedicao: 2019-05-03 23:21:13  ValorMedicao: 5.23  IdVariaveisMedidas: 1', '2019-05-03 23:21:13', 0),
+(136, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 3  DataHoraMedicao: 2019-05-03 23:21:57  ValorMedicao: 2.85  IdVariaveisMedidas: 1', '2019-05-03 23:21:57', 0),
+(137, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 4  DataHoraMedicao: 2019-05-03 23:22:27  ValorMedicao: 2.50  IdVariaveisMedidas: 1', '2019-05-03 23:22:27', 0),
+(138, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 5  DataHoraMedicao: 2019-05-03 23:23:14  ValorMedicao: 2.86  IdVariaveisMedidas: 1', '2019-05-03 23:23:14', 0),
+(139, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 6  DataHoraMedicao: 2019-05-03 23:23:41  ValorMedicao: 3.01  IdVariaveisMedidas: 1', '2019-05-03 23:23:41', 0),
+(140, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 7  DataHoraMedicao: 2019-05-03 23:24:19  ValorMedicao: 3.39  IdVariaveisMedidas: 1', '2019-05-03 23:24:19', 0),
+(141, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 8  DataHoraMedicao: 2019-05-03 23:24:40  ValorMedicao: 3.40  IdVariaveisMedidas: 1', '2019-05-03 23:24:40', 0),
+(142, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 9  DataHoraMedicao: 2019-05-03 23:25:45  ValorMedicao: 7.70  IdVariaveisMedidas: 1', '2019-05-03 23:25:45', 0),
+(143, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 10  DataHoraMedicao: 2019-05-03 23:26:07  ValorMedicao: 7.71  IdVariaveisMedidas: 1', '2019-05-03 23:26:07', 0),
+(144, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 11  DataHoraMedicao: 2019-05-03 23:26:41  ValorMedicao: 7.95  IdVariaveisMedidas: 1', '2019-05-03 23:26:41', 0),
+(145, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 12  DataHoraMedicao: 2019-05-03 23:27:10  ValorMedicao: 8.24  IdVariaveisMedidas: 1', '2019-05-03 23:27:10', 0),
+(146, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 13  DataHoraMedicao: 2019-05-03 23:27:29  ValorMedicao: 8.25  IdVariaveisMedidas: 1', '2019-05-03 23:27:29', 0),
+(147, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 14  DataHoraMedicao: 2019-05-03 23:27:52  ValorMedicao: 9.56  IdVariaveisMedidas: 1', '2019-05-03 23:27:52', 0),
+(148, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 1  DataHoraMedicao: 2019-05-02 19:23:45  ValorMedicao: 10.00  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-03 23:28:14', 0),
+(149, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 15  DataHoraMedicao: 2019-05-03 23:28:30  ValorMedicao: 6.45  IdVariaveisMedidas: 1', '2019-05-03 23:28:30', 0),
+(150, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 16  DataHoraMedicao: 2019-05-03 23:42:46  ValorMedicao: 2.85  IdVariaveisMedidas: 1', '2019-05-03 23:42:46', 0),
+(151, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 17  DataHoraMedicao: 2019-05-03 23:43:13  ValorMedicao: 8.25  IdVariaveisMedidas: 1', '2019-05-03 23:43:13', 0),
+(152, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 18  DataHoraMedicao: 2019-05-03 23:43:48  ValorMedicao: 2.84  IdVariaveisMedidas: 1', '2019-05-03 23:43:48', 0),
+(153, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 19  DataHoraMedicao: 2019-05-03 23:43:48  ValorMedicao: 2.86  IdVariaveisMedidas: 1', '2019-05-03 23:43:48', 0),
+(154, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 20  DataHoraMedicao: 2019-05-03 23:44:29  ValorMedicao: 8.26  IdVariaveisMedidas: 1', '2019-05-03 23:44:29', 0),
+(155, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 21  DataHoraMedicao: 2019-05-03 23:44:29  ValorMedicao: 8.24  IdVariaveisMedidas: 1', '2019-05-03 23:44:29', 0);
 
 -- --------------------------------------------------------
 
@@ -415,7 +449,26 @@ CREATE TABLE `medicoes` (
 --
 
 INSERT INTO `medicoes` (`NumeroMedicao`, `DataHoraMedicao`, `ValorMedicao`, `IdVariaveisMedidas`) VALUES
-(1, '2019-05-02 18:23:45', '10.00', 1);
+(2, '2019-05-03 22:21:13', '5.23', 1),
+(3, '2019-05-03 22:21:57', '2.85', 1),
+(4, '2019-05-03 22:22:27', '2.50', 1),
+(5, '2019-05-03 22:23:14', '2.86', 1),
+(6, '2019-05-03 22:23:41', '3.01', 1),
+(7, '2019-05-03 22:24:19', '3.39', 1),
+(8, '2019-05-03 22:24:40', '3.40', 1),
+(9, '2019-05-03 22:25:45', '7.70', 1),
+(10, '2019-05-03 22:26:07', '7.71', 1),
+(11, '2019-05-03 22:26:41', '7.95', 1),
+(12, '2019-05-03 22:27:10', '8.24', 1),
+(13, '2019-05-03 22:27:29', '8.25', 1),
+(14, '2019-05-03 22:27:52', '9.56', 1),
+(15, '2019-05-03 22:28:30', '6.45', 1),
+(16, '2019-05-03 22:42:46', '2.85', 1),
+(17, '2019-05-03 22:43:13', '8.25', 1),
+(18, '2019-05-03 22:43:48', '2.84', 1),
+(19, '2019-05-03 22:43:48', '2.86', 1),
+(20, '2019-05-03 22:44:29', '8.26', 1),
+(21, '2019-05-03 22:44:29', '8.24', 1);
 
 --
 -- Acionadores `medicoes`
@@ -449,9 +502,23 @@ CREATE TRIGGER `insertMedicoes` AFTER INSERT ON `medicoes` FOR EACH ROW BEGIN
     
 	INSERT into logs VALUES (null, CURRENT_USER, "medicoes", "INSERT", "Não Aplicável", CONCAT("NumeroMedicao", ": ", new.NumeroMedicao, "  DataHoraMedicao", ": ", new.DataHoraMedicao, "  ValorMedicao", ": ", new.ValorMedicao, "  IdVariaveisMedidas", ": ", new.IdVariaveisMedidas), NOW(),0);
 
-	
-    IF(new.ValorMedicao <= limiteI+margem OR new.ValorMedicao >= limiteS-margem)
-    THEN INSERT into alertas VALUES(null, nomeVariavel, nomeCultura, CURRENT_USER, NOW(), new.ValorMedicao);
+	IF(new.ValorMedicao < limiteI)
+    THEN INSERT into alertas VALUES(null, nomeVariavel, nomeCultura, CURRENT_USER, NOW(), new.ValorMedicao, "O valor da medição ultrapassou o limite inferior.");
+    
+    ELSEIF(new.ValorMedicao = limiteI)
+    THEN INSERT into alertas VALUES(null, nomeVariavel, nomeCultura, CURRENT_USER, NOW(), new.ValorMedicao, "O valor da medição atingiu o limite inferior.");
+    
+    ELSEIF(new.ValorMedicao > limiteI AND new.ValorMedicao <= limiteI+margem)
+    THEN INSERT into alertas VALUES(null, nomeVariavel, nomeCultura, CURRENT_USER, NOW(), new.ValorMedicao, "O valor da medição está próximo do limite inferior.");
+    
+    ELSEIF(new.ValorMedicao >= limiteS-margem AND new.ValorMedicao < limiteS)
+    THEN INSERT into alertas VALUES(null, nomeVariavel, nomeCultura, CURRENT_USER, NOW(), new.ValorMedicao, "O valor da medição está próximo do limite superior.");
+    
+    ELSEIF(new.ValorMedicao = limiteS)
+    THEN INSERT into alertas VALUES(null, nomeVariavel, nomeCultura, CURRENT_USER, NOW(), new.ValorMedicao, "O valor da medição atingiu o limite superior.");
+    
+    ELSEIF(new.ValorMedicao > limiteS)
+    THEN INSERT into alertas VALUES(null, nomeVariavel, nomeCultura, CURRENT_USER, NOW(), new.ValorMedicao, "O valor da medição ultrapassou o limite superior.");
     END IF;
 
 END
@@ -644,7 +711,7 @@ CREATE TABLE `variaveis_medidas` (
 --
 
 INSERT INTO `variaveis_medidas` (`IDVariavel`, `IDCultura`, `LimiteInferior`, `LimiteSuperior`, `MargemSegurancaVariavel`, `IdVariaveisMedidas`) VALUES
-(3, 4, '2.85', '8.23', '0.10', 1);
+(3, 4, '2.85', '8.25', '0.10', 1);
 
 --
 -- Acionadores `variaveis_medidas`
@@ -744,7 +811,7 @@ ALTER TABLE `variaveis_medidas`
 -- AUTO_INCREMENT for table `alertas`
 --
 ALTER TABLE `alertas`
-  MODIFY `idAlerta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `idAlerta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `cultura`
@@ -756,13 +823,13 @@ ALTER TABLE `cultura`
 -- AUTO_INCREMENT for table `logs`
 --
 ALTER TABLE `logs`
-  MODIFY `logId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=134;
+  MODIFY `logId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=156;
 
 --
 -- AUTO_INCREMENT for table `medicoes`
 --
 ALTER TABLE `medicoes`
-  MODIFY `NumeroMedicao` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `NumeroMedicao` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `medicoes_luminosidade`
