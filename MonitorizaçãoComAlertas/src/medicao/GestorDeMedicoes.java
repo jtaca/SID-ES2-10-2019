@@ -24,6 +24,7 @@ public class GestorDeMedicoes {
 				bq.poll();
 				processaMedicao(m);
 				bq.put(m);
+				System.out.println(m.toString());
 				mc.write(m);
 				m.setExportadoParaOMongo(true);
 				contador ++;

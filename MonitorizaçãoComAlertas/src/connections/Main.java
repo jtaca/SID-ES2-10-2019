@@ -13,6 +13,7 @@ public class Main {
 		dc.initializeSystem();
 		GestorDeMedicoes ges = dc.getGestor();
 		SensorsConnection sc = new SensorsConnection(ges);	
-		
+	
 	}
+
 }
