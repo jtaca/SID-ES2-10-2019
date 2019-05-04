@@ -29,11 +29,20 @@ public class MongoConnection {
 		document.put("timestamp",m.getTimestamp());
 		document.put("temperatura",m.getTemperatura() + "");
 		document.put("luminosidade",m.getLuminosidade()+ "");
-		document.put("alertaTemperatura",m.isAlertaTemperatura() + "");
-		document.put("alertaLuminosidade",m.isAlertaLuminosidade() + "");
-		document.put("erroTemperatura",m.isErroTemperatura() + "");
-		document.put("erroLuminosidade",m.isErroLuminosidade() + "");
+		if(m.isAlertaTemperatura() == 1)
+			document.put("alertaTemperatura",1 + "");
+		if(m.isAlertaLuminosidade() == 1)
+			document.put("alertaLuminosidade",1 + "");
+		if(m.isErroTemperatura() == 1)
+			document.put("erroTemperatura",1 + "");
+		if(m.isErroLuminosidade() == 1)
+			document.put("erroLuminosidade",1 + "");
+		if(!m.getCausaTemperatura().equals(""))
+			document.put("causaTemperatura", m.getCausaTemperatura());
+		if(!m.getCausaLuminosidade().equals(""))
+			document.put("causaLuminosidade", m.getCausaLuminosidade());
 		document.put("exportado", 0 + "");
+		
 		try { table.insert(document);} catch (Exception e) {}
 		try{Thread.sleep(5000);} catch (InterruptedException  e) {Thread.currentThread().interrupt();}
 		mongoClient1.close();		

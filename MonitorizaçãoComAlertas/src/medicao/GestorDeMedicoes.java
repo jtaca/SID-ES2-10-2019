@@ -61,17 +61,47 @@ public class GestorDeMedicoes {
 	private void checkAlerts(Medicao m) {
 		if(m.isErroLuminosidade()==0) {
 			double margemAlertaLuz = (sistema.getLimiteSuperiorLuz() - sistema.getLimiteInferiorLuz()) * sistema.getMargemSegurancaLuz();
-			if(sistema.getLimiteSuperiorLuz() - margemAlertaLuz <= m.getLuminosidade() 
-					|| sistema.getLimiteInferiorLuz() + margemAlertaLuz >= m.getLuminosidade() || sistema.getLimiteInferiorLuz() >= m.getLuminosidade()
-					||  sistema.getLimiteSuperiorLuz() <= m.getLuminosidade())
+			
+			
+			if(sistema.getLimiteSuperiorLuz() - margemAlertaLuz <= m.getLuminosidade() ) {
+				m.setAlertaLuminosidade(true);
+				m.setCausaLuminosidade("O valor da medicao da luminosidade esta proximo do limite superior estabelecido.");
+			}
+			else if(sistema.getLimiteInferiorLuz() + margemAlertaLuz >= m.getLuminosidade()) {
+				m.setAlertaLuminosidade(true);
+				m.setCausaLuminosidade("O valor da medicao da luminosidade  esta proximo do limite inferior estabelecido.");
+			}
+			else if (sistema.getLimiteInferiorLuz() >= m.getLuminosidade()) {
+				m.setAlertaLuminosidade(true);
+				m.setCausaLuminosidade("O valor da medicao da luminosidade ultrapassou o limite inferior estabelecido.");
+			}
+			else if (  sistema.getLimiteSuperiorLuz() <= m.getLuminosidade()){
+				m.setAlertaLuminosidade(true);
+				m.setCausaLuminosidade("O valor da medicao da luminosidade ultrapassou o limite superior estabelecido.");
+			}
+				
+				
 				m.setAlertaLuminosidade(true);
 		}
 			
 		if(m.isErroTemperatura()==0) {
 			double margemAlertaTemp = (sistema.getLimiteSuperiorTemperatura() - sistema.getLimiteInferiorTemperatura()) * sistema.getMargemSegurancaTemperatura();
-		if(sistema.getLimiteSuperiorTemperatura() - margemAlertaTemp <= m.getTemperatura() || sistema.getLimiteInferiorTemperatura() + margemAlertaTemp >= m.getTemperatura() 
-				|| m.getTemperatura()>= sistema.getLimiteSuperiorTemperatura() || m.getTemperatura()<=sistema.getLimiteInferiorTemperatura())
+		if(sistema.getLimiteSuperiorTemperatura() - margemAlertaTemp <= m.getTemperatura() ) {
 			m.setAlertaTemperatura(true);
+			m.setCausaTemperatura("O valor da medicao da temperatura esta proximo do limite supeior estabelecido.");
+		}
+		else if ( sistema.getLimiteInferiorTemperatura() + margemAlertaTemp >= m.getTemperatura() ) {
+			m.setAlertaTemperatura(true);
+			m.setCausaTemperatura("O valor da medicao da temperatura esta proximo do limite inferior estabelecido.");
+		}
+		else if (m.getTemperatura()>= sistema.getLimiteSuperiorTemperatura() ) {
+			m.setAlertaTemperatura(true);
+			m.setCausaTemperatura("O valor da medicao da temperatura  ultrapassou o limite superior estabelecido.");
+		}
+		else if (m.getTemperatura()<=sistema.getLimiteInferiorTemperatura()) {
+			m.setAlertaTemperatura(true);
+			m.setCausaTemperatura("O valor da medicao da temperatura  ultrapassou o limite inferior estabelecido.");
+		}
 		}
 	}
 

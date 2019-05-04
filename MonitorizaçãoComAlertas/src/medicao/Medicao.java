@@ -14,6 +14,8 @@ public class Medicao {
 	private boolean erroTemperatura;
 	private boolean erroLuminosidade;
 	private boolean exportadoParaOMongo;
+	private String causaTemperatura;
+	private String causaLuminosidade;
 	
 	public Medicao(MqttMessage message) {
 		super();
@@ -23,8 +25,40 @@ public class Medicao {
 		erroTemperatura = false;
 		erroLuminosidade = false;
 		exportadoParaOMongo=false;
+		causaLuminosidade="";
+		causaTemperatura="";
 	}
 	
+
+	
+
+	public String getCausaTemperatura() {
+		return causaTemperatura;
+	}
+
+
+
+
+	public void setCausaTemperatura(String causaTemperatura) {
+		this.causaTemperatura = causaTemperatura;
+	}
+
+
+
+
+	public String getCausaLuminosidade() {
+		return causaLuminosidade;
+	}
+
+
+
+
+	public void setCausaLuminosidade(String causaLuminosidade) {
+		this.causaLuminosidade = causaLuminosidade;
+	}
+
+
+
 
 	public void parseMessage(MqttMessage message) {
 
