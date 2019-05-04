@@ -27,14 +27,15 @@ public class Medicao {
 	
 
 	public void parseMessage(MqttMessage message) {
-		String [] measures = message.toString().split(",");
-		String temp = measures[0].substring(8, measures[0].length()-1);
-		String[] lum = measures[4].toString().split("s");
-		System.out.println();
-		String res = lum[0].substring(8, lum[0].length()-2);
-		this.timestamp = parseDate();
-		this.temperatura = Double.parseDouble(temp);
-		this.luminosidade = Integer.parseInt(res);
+
+			String [] measures = message.toString().split(",");
+			String temp = measures[0].substring(8, measures[0].length()-1);
+			String[] lum = measures[4].toString().split("s");
+			String res = lum[0].substring(8, lum[0].length()-2);
+			this.timestamp = parseDate();
+			this.temperatura = Double.parseDouble(temp);
+			this.luminosidade = Integer.parseInt(res);
+		
 	}
 
 	public void setAlertaLuminosidade(boolean alertaLuminosidade) {

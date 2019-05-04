@@ -12,10 +12,10 @@ import medicao.Medicao;
 
 public class SensorsConnection implements MqttCallback {
 
-	String topic= "/sid_lab_2019";  
+	String topic= "/sid_lab_2019_2";  
 	MqttClient client;
-	//String broker= "tcp://broker.mqtt-dashboard.com:1883";
-	String broker= "tcp://iot.eclipse.org:1883";
+	String broker= "tcp://broker.mqtt-dashboard.com:1883";
+	//String broker= "tcp://iot.eclipse.org:1883";
 	String clientId= "clientId-OJtthizHtB";
 	GestorDeMedicoes ges;
 
@@ -33,10 +33,16 @@ public class SensorsConnection implements MqttCallback {
 	@Override
 	public void messageArrived(String topic, MqttMessage message) throws Exception {
 		System.out.println(message.toString());
-		Medicao medicao= new Medicao (message);
-		ges.adiciona(medicao);
+		String [] test = message.toString().split(":");
+		if(test.length == 9) {
+			Medicao medicao= new Medicao (message);
+			ges.adiciona(medicao);
 
-	}
+		}else {
+			System.out.println("Mensagem não reconhecida.");
+		}
+
+}
 
 	@Override
 	public void deliveryComplete(IMqttDeliveryToken token) {			
