@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 04-Maio-2019 às 00:45
+-- Generation Time: 04-Maio-2019 às 18:48
 -- Versão do servidor: 10.1.38-MariaDB
 -- versão do PHP: 7.3.2
 
@@ -269,31 +269,37 @@ CREATE TABLE `alertas` (
   `nomeCultura` varchar(100) DEFAULT NULL,
   `emailInvestigador` varchar(100) NOT NULL,
   `data` datetime NOT NULL,
+  `limiteInferiorVar` decimal(8,2) NOT NULL,
+  `limiteSuperiorVar` decimal(8,2) NOT NULL,
   `valor` decimal(8,2) NOT NULL,
-  `DescricaoAlertas` varchar(500) NOT NULL
+  `descricaoAlertas` varchar(500) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Extraindo dados da tabela `alertas`
 --
 
-INSERT INTO `alertas` (`idAlerta`, `nomeVariavel`, `nomeCultura`, `emailInvestigador`, `data`, `valor`, `DescricaoAlertas`) VALUES
-(9, 'Chumbo', 'Beterraba', 'root@localhost', '2019-05-03 23:21:57', '2.85', 'O valor da medição ultrapassou o limite inferior.'),
-(10, 'Chumbo', 'Beterraba', 'root@localhost', '2019-05-03 23:22:27', '2.50', 'O valor da medição ultrapassou o limite inferior.'),
-(11, 'Chumbo', 'Beterraba', 'root@localhost', '2019-05-03 23:23:14', '2.86', 'O valor da medição está próximo do limite inferior.'),
-(12, 'Chumbo', 'Beterraba', 'root@localhost', '2019-05-03 23:23:41', '3.01', 'O valor da medição está próximo do limite inferior.'),
-(13, 'Chumbo', 'Beterraba', 'root@localhost', '2019-05-03 23:24:19', '3.39', 'O valor da medição está próximo do limite inferior.'),
-(14, 'Chumbo', 'Beterraba', 'root@localhost', '2019-05-03 23:26:07', '7.71', 'O valor da medição está próximo do limite superior.'),
-(15, 'Chumbo', 'Beterraba', 'root@localhost', '2019-05-03 23:26:41', '7.95', 'O valor da medição está próximo do limite superior.'),
-(16, 'Chumbo', 'Beterraba', 'root@localhost', '2019-05-03 23:27:10', '8.24', 'O valor da medição está próximo do limite superior.'),
-(17, 'Chumbo', 'Beterraba', 'root@localhost', '2019-05-03 23:27:29', '8.25', 'O valor da medição ultrapassou o limite superior.'),
-(18, 'Chumbo', 'Beterraba', 'root@localhost', '2019-05-03 23:27:52', '9.56', 'O valor da medição ultrapassou o limite superior.'),
-(19, 'Chumbo', 'Beterraba', 'root@localhost', '2019-05-03 23:42:46', '2.85', 'O valor da medição atingiu o limite inferior.'),
-(20, 'Chumbo', 'Beterraba', 'root@localhost', '2019-05-03 23:43:13', '8.25', 'O valor da medição atingiu o limite superior.'),
-(21, 'Chumbo', 'Beterraba', 'root@localhost', '2019-05-03 23:43:48', '2.84', 'O valor da medição ultrapassou o limite inferior.'),
-(22, 'Chumbo', 'Beterraba', 'root@localhost', '2019-05-03 23:43:48', '2.86', 'O valor da medição está próximo do limite inferior.'),
-(23, 'Chumbo', 'Beterraba', 'root@localhost', '2019-05-03 23:44:29', '8.26', 'O valor da medição ultrapassou o limite superior.'),
-(24, 'Chumbo', 'Beterraba', 'root@localhost', '2019-05-03 23:44:29', '8.24', 'O valor da medição está próximo do limite superior.');
+INSERT INTO `alertas` (`idAlerta`, `nomeVariavel`, `nomeCultura`, `emailInvestigador`, `data`, `limiteInferiorVar`, `limiteSuperiorVar`, `valor`, `descricaoAlertas`) VALUES
+(9, 'Chumbo', 'Beterraba', 'root@localhost', '2019-05-03 23:21:57', '0.00', '0.00', '2.85', 'O valor da medição ultrapassou o limite inferior.'),
+(10, 'Chumbo', 'Beterraba', 'root@localhost', '2019-05-03 23:22:27', '0.00', '0.00', '2.50', 'O valor da medição ultrapassou o limite inferior.'),
+(11, 'Chumbo', 'Beterraba', 'root@localhost', '2019-05-03 23:23:14', '0.00', '0.00', '2.86', 'O valor da medição está próximo do limite inferior.'),
+(12, 'Chumbo', 'Beterraba', 'root@localhost', '2019-05-03 23:23:41', '0.00', '0.00', '3.01', 'O valor da medição está próximo do limite inferior.'),
+(13, 'Chumbo', 'Beterraba', 'root@localhost', '2019-05-03 23:24:19', '0.00', '0.00', '3.39', 'O valor da medição está próximo do limite inferior.'),
+(14, 'Chumbo', 'Beterraba', 'root@localhost', '2019-05-03 23:26:07', '0.00', '0.00', '7.71', 'O valor da medição está próximo do limite superior.'),
+(15, 'Chumbo', 'Beterraba', 'root@localhost', '2019-05-03 23:26:41', '0.00', '0.00', '7.95', 'O valor da medição está próximo do limite superior.'),
+(16, 'Chumbo', 'Beterraba', 'root@localhost', '2019-05-03 23:27:10', '0.00', '0.00', '8.24', 'O valor da medição está próximo do limite superior.'),
+(17, 'Chumbo', 'Beterraba', 'root@localhost', '2019-05-03 23:27:29', '0.00', '0.00', '8.25', 'O valor da medição ultrapassou o limite superior.'),
+(18, 'Chumbo', 'Beterraba', 'root@localhost', '2019-05-03 23:27:52', '0.00', '0.00', '9.56', 'O valor da medição ultrapassou o limite superior.'),
+(19, 'Chumbo', 'Beterraba', 'root@localhost', '2019-05-03 23:42:46', '0.00', '0.00', '2.85', 'O valor da medição atingiu o limite inferior.'),
+(20, 'Chumbo', 'Beterraba', 'root@localhost', '2019-05-03 23:43:13', '0.00', '0.00', '8.25', 'O valor da medição atingiu o limite superior.'),
+(21, 'Chumbo', 'Beterraba', 'root@localhost', '2019-05-03 23:43:48', '0.00', '0.00', '2.84', 'O valor da medição ultrapassou o limite inferior.'),
+(22, 'Chumbo', 'Beterraba', 'root@localhost', '2019-05-03 23:43:48', '0.00', '0.00', '2.86', 'O valor da medição está próximo do limite inferior.'),
+(23, 'Chumbo', 'Beterraba', 'root@localhost', '2019-05-03 23:44:29', '0.00', '0.00', '8.26', 'O valor da medição ultrapassou o limite superior.'),
+(24, 'Chumbo', 'Beterraba', 'root@localhost', '2019-05-03 23:44:29', '0.00', '0.00', '8.24', 'O valor da medição está próximo do limite superior.'),
+(25, 'Chumbo', 'Beterraba', 'root@localhost', '2019-05-04 17:42:48', '2.85', '8.25', '10.25', 'O valor da medição ultrapassou o limite superior.'),
+(26, 'Chumbo', 'Beterraba', 'root@localhost', '2019-05-04 17:43:24', '2.85', '8.25', '1.58', 'O valor da medição ultrapassou o limite inferior.'),
+(27, 'nomeDaVariavel', 'Tomate', 'root@localhost', '2019-05-04 17:44:45', '5.00', '9.50', '3.85', 'O valor da medição ultrapassou o limite inferior.'),
+(28, 'nomeDaVariavel', 'Tomate', 'root@localhost', '2019-05-04 17:45:21', '5.00', '9.50', '5.42', 'O valor da medição está próximo do limite inferior.');
 
 -- --------------------------------------------------------
 
@@ -429,7 +435,12 @@ INSERT INTO `logs` (`logId`, `username`, `nomeTabela`, `comandoUsado`, `linhaAnt
 (152, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 18  DataHoraMedicao: 2019-05-03 23:43:48  ValorMedicao: 2.84  IdVariaveisMedidas: 1', '2019-05-03 23:43:48', 0),
 (153, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 19  DataHoraMedicao: 2019-05-03 23:43:48  ValorMedicao: 2.86  IdVariaveisMedidas: 1', '2019-05-03 23:43:48', 0),
 (154, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 20  DataHoraMedicao: 2019-05-03 23:44:29  ValorMedicao: 8.26  IdVariaveisMedidas: 1', '2019-05-03 23:44:29', 0),
-(155, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 21  DataHoraMedicao: 2019-05-03 23:44:29  ValorMedicao: 8.24  IdVariaveisMedidas: 1', '2019-05-03 23:44:29', 0);
+(155, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 21  DataHoraMedicao: 2019-05-03 23:44:29  ValorMedicao: 8.24  IdVariaveisMedidas: 1', '2019-05-03 23:44:29', 0),
+(156, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 22  DataHoraMedicao: 2019-05-04 17:42:48  ValorMedicao: 10.25  IdVariaveisMedidas: 1', '2019-05-04 17:42:48', 0),
+(157, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 23  DataHoraMedicao: 2019-05-04 17:43:24  ValorMedicao: 1.58  IdVariaveisMedidas: 1', '2019-05-04 17:43:24', 0),
+(158, 'root@localhost', 'variaveis_medidas', 'INSERT', 'Não Aplicável', 'IDVariavel: 8  IDCultura: 2  LimiteInferior: 5.00  LimiteSuperior: 9.50  IdVariaveisMedidas: 2', '2019-05-04 17:44:22', 0),
+(159, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 24  DataHoraMedicao: 2019-05-04 17:44:45  ValorMedicao: 3.85  IdVariaveisMedidas: 2', '2019-05-04 17:44:45', 0),
+(160, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 25  DataHoraMedicao: 2019-05-04 17:45:21  ValorMedicao: 5.42  IdVariaveisMedidas: 2', '2019-05-04 17:45:21', 0);
 
 -- --------------------------------------------------------
 
@@ -468,7 +479,11 @@ INSERT INTO `medicoes` (`NumeroMedicao`, `DataHoraMedicao`, `ValorMedicao`, `IdV
 (18, '2019-05-03 22:43:48', '2.84', 1),
 (19, '2019-05-03 22:43:48', '2.86', 1),
 (20, '2019-05-03 22:44:29', '8.26', 1),
-(21, '2019-05-03 22:44:29', '8.24', 1);
+(21, '2019-05-03 22:44:29', '8.24', 1),
+(22, '2019-05-04 16:42:48', '10.25', 1),
+(23, '2019-05-04 16:43:24', '1.58', 1),
+(24, '2019-05-04 16:44:45', '3.85', 2),
+(25, '2019-05-04 16:45:21', '5.42', 2);
 
 --
 -- Acionadores `medicoes`
@@ -503,22 +518,22 @@ CREATE TRIGGER `insertMedicoes` AFTER INSERT ON `medicoes` FOR EACH ROW BEGIN
 	INSERT into logs VALUES (null, CURRENT_USER, "medicoes", "INSERT", "Não Aplicável", CONCAT("NumeroMedicao", ": ", new.NumeroMedicao, "  DataHoraMedicao", ": ", new.DataHoraMedicao, "  ValorMedicao", ": ", new.ValorMedicao, "  IdVariaveisMedidas", ": ", new.IdVariaveisMedidas), NOW(),0);
 
 	IF(new.ValorMedicao < limiteI)
-    THEN INSERT into alertas VALUES(null, nomeVariavel, nomeCultura, CURRENT_USER, NOW(), new.ValorMedicao, "O valor da medição ultrapassou o limite inferior.");
+    THEN INSERT into alertas VALUES(null, nomeVariavel, nomeCultura, CURRENT_USER, NOW(), limiteI, limiteS, new.ValorMedicao, "O valor da medição ultrapassou o limite inferior.");
     
     ELSEIF(new.ValorMedicao = limiteI)
-    THEN INSERT into alertas VALUES(null, nomeVariavel, nomeCultura, CURRENT_USER, NOW(), new.ValorMedicao, "O valor da medição atingiu o limite inferior.");
+    THEN INSERT into alertas VALUES(null, nomeVariavel, nomeCultura, CURRENT_USER, NOW(), limiteI, limiteS, new.ValorMedicao, "O valor da medição atingiu o limite inferior.");
     
     ELSEIF(new.ValorMedicao > limiteI AND new.ValorMedicao <= limiteI+margem)
-    THEN INSERT into alertas VALUES(null, nomeVariavel, nomeCultura, CURRENT_USER, NOW(), new.ValorMedicao, "O valor da medição está próximo do limite inferior.");
+    THEN INSERT into alertas VALUES(null, nomeVariavel, nomeCultura, CURRENT_USER, NOW(), limiteI, limiteS, new.ValorMedicao, "O valor da medição está próximo do limite inferior.");
     
     ELSEIF(new.ValorMedicao >= limiteS-margem AND new.ValorMedicao < limiteS)
-    THEN INSERT into alertas VALUES(null, nomeVariavel, nomeCultura, CURRENT_USER, NOW(), new.ValorMedicao, "O valor da medição está próximo do limite superior.");
+    THEN INSERT into alertas VALUES(null, nomeVariavel, nomeCultura, CURRENT_USER, NOW(), limiteI, limiteS, new.ValorMedicao, "O valor da medição está próximo do limite superior.");
     
     ELSEIF(new.ValorMedicao = limiteS)
-    THEN INSERT into alertas VALUES(null, nomeVariavel, nomeCultura, CURRENT_USER, NOW(), new.ValorMedicao, "O valor da medição atingiu o limite superior.");
+    THEN INSERT into alertas VALUES(null, nomeVariavel, nomeCultura, CURRENT_USER, NOW(), limiteI, limiteS, new.ValorMedicao, "O valor da medição atingiu o limite superior.");
     
     ELSEIF(new.ValorMedicao > limiteS)
-    THEN INSERT into alertas VALUES(null, nomeVariavel, nomeCultura, CURRENT_USER, NOW(), new.ValorMedicao, "O valor da medição ultrapassou o limite superior.");
+    THEN INSERT into alertas VALUES(null, nomeVariavel, nomeCultura, CURRENT_USER, NOW(), limiteI, limiteS, new.ValorMedicao, "O valor da medição ultrapassou o limite superior.");
     END IF;
 
 END
@@ -711,7 +726,8 @@ CREATE TABLE `variaveis_medidas` (
 --
 
 INSERT INTO `variaveis_medidas` (`IDVariavel`, `IDCultura`, `LimiteInferior`, `LimiteSuperior`, `MargemSegurancaVariavel`, `IdVariaveisMedidas`) VALUES
-(3, 4, '2.85', '8.25', '0.10', 1);
+(3, 4, '2.85', '8.25', '0.10', 1),
+(8, 2, '5.00', '9.50', '0.20', 2);
 
 --
 -- Acionadores `variaveis_medidas`
@@ -811,7 +827,7 @@ ALTER TABLE `variaveis_medidas`
 -- AUTO_INCREMENT for table `alertas`
 --
 ALTER TABLE `alertas`
-  MODIFY `idAlerta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `idAlerta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT for table `cultura`
@@ -823,13 +839,13 @@ ALTER TABLE `cultura`
 -- AUTO_INCREMENT for table `logs`
 --
 ALTER TABLE `logs`
-  MODIFY `logId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=156;
+  MODIFY `logId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=161;
 
 --
 -- AUTO_INCREMENT for table `medicoes`
 --
 ALTER TABLE `medicoes`
-  MODIFY `NumeroMedicao` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `NumeroMedicao` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `medicoes_luminosidade`
@@ -865,7 +881,7 @@ ALTER TABLE `variaveis`
 -- AUTO_INCREMENT for table `variaveis_medidas`
 --
 ALTER TABLE `variaveis_medidas`
-  MODIFY `IdVariaveisMedidas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `IdVariaveisMedidas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Constraints for dumped tables
