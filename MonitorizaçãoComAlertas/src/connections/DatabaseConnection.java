@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.sql.ResultSet;
 
 
@@ -82,11 +83,11 @@ public class DatabaseConnection {
 	}
 
 
-	public  double viewTable(Connection con, String column)
+	public double viewTable(Connection con,String table, String column)
 			throws SQLException {
 		double res = 0;
 		Statement stmt = null;
-		String query = "select sistema." + column + " from estufa.sistema"  ;
+		String query = "select " + table + "."  + column + " from estufa." + table  ;
 		try {
 			stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(query);
@@ -101,20 +102,42 @@ public class DatabaseConnection {
 		}
 		return res;
 	}
+	
+	public ArrayList<String> getEmails(Connection con,String table, String column)
+			throws SQLException {
+		ArrayList<String> res = new ArrayList<String>();
+		Statement stmt = null;
+		String query = "select " + table + "."  + column + " from estufa." + table  ;
+		try {
+			stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while (rs.next()) {
+				res.add(rs.getString(column));
+			}
+		} catch (SQLException e ) {
+			e.printStackTrace();
+		} finally {
+			if (stmt != null) { stmt.close(); }
+		}
+		return res;
+	}
 
 	public Sistema initializeSystem() {
 		Sistema sis = null;
+		EmailSender emailSender = null;
 		try {
-			double limiteInferiorTemperatura = viewTable(conn, "LimiteInferiorTemperatura");
-			double limiteSuperiorTemperatura = viewTable(conn, "LimiteSuperiorTemperatura");
-			double limiteInferiorLuz = viewTable(conn, "LimiteInferiorLuz");
-			double limiteSuperiorLuz = viewTable(conn, "LimiteSuperiorLuz");
-			double percentagemVariacaoTemperatura = viewTable(conn, "PercentagemVariacaoTemperatura");
-			double percentagemVariacaoLuz = viewTable(conn, "PercentagemVariacaoLuz");
-			double margemSegurancaLuz = viewTable(conn, "MargemSegurancaLuz");
-			double margemSegurancaTemperatura = viewTable(conn, "MargemSegurancaTemperatura");
+			double limiteInferiorTemperatura = viewTable(conn,"sistema", "LimiteInferiorTemperatura");
+			double limiteSuperiorTemperatura = viewTable(conn,"sistema", "LimiteSuperiorTemperatura");
+			double limiteInferiorLuz = viewTable(conn,"sistema", "LimiteInferiorLuz");
+			double limiteSuperiorLuz = viewTable(conn,"sistema", "LimiteSuperiorLuz");
+			double percentagemVariacaoTemperatura = viewTable(conn,"sistema", "PercentagemVariacaoTemperatura");
+			double percentagemVariacaoLuz = viewTable(conn,"sistema", "PercentagemVariacaoLuz");
+			double margemSegurancaLuz = viewTable(conn,"sistema", "MargemSegurancaLuz");
+			double margemSegurancaTemperatura = viewTable(conn,"sistema", "MargemSegurancaTemperatura");
+			ArrayList<String> emails = getEmails(conn, "investigador", "email");
 			sis= new Sistema (limiteInferiorTemperatura,limiteSuperiorTemperatura,limiteInferiorLuz,limiteSuperiorLuz,percentagemVariacaoTemperatura,percentagemVariacaoLuz,margemSegurancaLuz,margemSegurancaTemperatura);
 			ges = new GestorDeMedicoes(sis);
+			//emailSender= new EmailSender(emails);
 		} catch (SQLException e) {
 			System.out.println("Erro "+ e.getMessage());
 		}
