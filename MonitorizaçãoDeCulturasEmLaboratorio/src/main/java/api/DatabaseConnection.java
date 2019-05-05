@@ -80,7 +80,7 @@ public class DatabaseConnection {
 	}
 
     public void insert(String table, String values) {
-	    if(isConnected()) {
+        if(isConnected()) {
             String insertQuery = "Insert into " + table + " values " + values;
             try {
                 Statement statement = conn.createStatement();

@@ -1,5 +1,6 @@
 import api.DatabaseConnection;
 import api.Users;
+import cultura.CultureManager;
 import variaveis.Variable;
 import variaveis.VariableManager;
 import javafx.util.Pair;

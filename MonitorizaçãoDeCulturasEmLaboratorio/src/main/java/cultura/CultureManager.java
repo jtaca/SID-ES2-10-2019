@@ -64,9 +64,23 @@ public class CultureManager {
     }
 
 
-    public void upadateCultura (int culturaId) {
+    public void upadateCultura (int idCultura, String newNomeCultura, String newDescricaoCultura) {
 
-        //UPDATE `cultura` SET `DescricaoCultura` = 'Cultura Hidroponica ++' WHERE `cultura`.`IDCultura` = 4;
+        DatabaseConnection DB = DatabaseConnection.getInstance();
+
+        try {
+
+            CallableStatement cStmt = (CallableStatement) DatabaseConnection.getInstance().getConnection().prepareCall("{call updateCultura(?,?,?)}");
+            cStmt.setString(1, ""+idCultura);
+            cStmt.setString(2, newNomeCultura);
+            cStmt.setString(3, newDescricaoCultura);
+
+            if(cStmt.execute()==false) {
+                System.out.println("A cultura com id: " + idCultura + " foi atualizada com sucesso.");
+            }
+        } catch (SQLException e) {
+            System.out.println("Nao foi possível atualizar a cultura pretendida. Exception: " + e.getMessage());
+        }
     }
 
 
