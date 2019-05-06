@@ -1,6 +1,8 @@
 import api.DatabaseConnection;
 import api.Users;
 import cultura.CultureManager;
+import medicoes.Medicoes;
+import medicoes.MedicoesManager;
 import variaveis.Variable;
 import variaveis.VariableManager;
 import javafx.util.Pair;
