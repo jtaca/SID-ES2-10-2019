@@ -136,8 +136,8 @@ public class DatabaseConnection {
 			double margemSegurancaTemperatura = viewTable(conn,"sistema", "MargemSegurancaTemperatura");
 			ArrayList<String> emails = getEmails(conn, "investigador", "email");
 			sis= new Sistema (limiteInferiorTemperatura,limiteSuperiorTemperatura,limiteInferiorLuz,limiteSuperiorLuz,percentagemVariacaoTemperatura,percentagemVariacaoLuz,margemSegurancaLuz,margemSegurancaTemperatura);
-			ges = new GestorDeMedicoes(sis);
-			//emailSender= new EmailSender(emails);
+			emailSender = new EmailSender(emails,"alertasestufa@outlook.com");
+			ges = new GestorDeMedicoes(sis, emailSender);
 		} catch (SQLException e) {
 			System.out.println("Erro "+ e.getMessage());
 		}

@@ -1,7 +1,6 @@
 package connections;
 
 import java.sql.SQLException;
-
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 
@@ -15,8 +14,7 @@ public class Main {
 		dc.connect("java", "java");
 		dc.initializeSystem();
 		GestorDeMedicoes ges = dc.getGestor();
-		SensorsConnection sc = new SensorsConnection(ges);	
-	
+		SensorsConnection sc = new SensorsConnection(ges);
 	}
 
 }

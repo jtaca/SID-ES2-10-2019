@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
 
+import connections.EmailSender;
 import connections.MongoConnection;
 
 public class GestorDeMedicoes {
@@ -11,10 +12,12 @@ public class GestorDeMedicoes {
 	private int contador=0;
 	private BlockingQueue<Medicao> bq;
 	private MongoConnection mc = new MongoConnection();
+	private EmailSender emailSender;
 	
-	public GestorDeMedicoes(Sistema sistema) {
+	public GestorDeMedicoes(Sistema sistema, EmailSender emailSender) {
 		super();
 		this.sistema = sistema;
+		this.emailSender=emailSender;
 		bq = new LinkedBlockingDeque<>(3);
 	}
 	
@@ -66,18 +69,22 @@ public class GestorDeMedicoes {
 			if(sistema.getLimiteSuperiorLuz() - margemAlertaLuz <= m.getLuminosidade() ) {
 				m.setAlertaLuminosidade(true);
 				m.setCausaLuminosidade("O valor da medicao da luminosidade esta proximo do limite superior estabelecido.");
+				emailSender.send4All("Alerta luminosidade", m.getCausaLuminosidade());
 			}
 			else if(sistema.getLimiteInferiorLuz() + margemAlertaLuz >= m.getLuminosidade()) {
 				m.setAlertaLuminosidade(true);
 				m.setCausaLuminosidade("O valor da medicao da luminosidade  esta proximo do limite inferior estabelecido.");
+				emailSender.send4All("Alerta luminosidade", m.getCausaLuminosidade());
 			}
 			else if (sistema.getLimiteInferiorLuz() >= m.getLuminosidade()) {
 				m.setAlertaLuminosidade(true);
 				m.setCausaLuminosidade("O valor da medicao da luminosidade ultrapassou o limite inferior estabelecido.");
+				emailSender.send4All("Alerta luminosidade", m.getCausaLuminosidade());
 			}
 			else if (  sistema.getLimiteSuperiorLuz() <= m.getLuminosidade()){
 				m.setAlertaLuminosidade(true);
 				m.setCausaLuminosidade("O valor da medicao da luminosidade ultrapassou o limite superior estabelecido.");
+				emailSender.send4All("Alerta luminosidade", m.getCausaLuminosidade());
 			}
 				
 				
@@ -89,18 +96,22 @@ public class GestorDeMedicoes {
 		if(sistema.getLimiteSuperiorTemperatura() - margemAlertaTemp <= m.getTemperatura() ) {
 			m.setAlertaTemperatura(true);
 			m.setCausaTemperatura("O valor da medicao da temperatura esta proximo do limite supeior estabelecido.");
+			emailSender.send4All("Alerta temperatura", m.getCausaTemperatura());
 		}
 		else if ( sistema.getLimiteInferiorTemperatura() + margemAlertaTemp >= m.getTemperatura() ) {
 			m.setAlertaTemperatura(true);
 			m.setCausaTemperatura("O valor da medicao da temperatura esta proximo do limite inferior estabelecido.");
+			emailSender.send4All("Alerta temperatura", m.getCausaTemperatura());
 		}
 		else if (m.getTemperatura()>= sistema.getLimiteSuperiorTemperatura() ) {
 			m.setAlertaTemperatura(true);
 			m.setCausaTemperatura("O valor da medicao da temperatura  ultrapassou o limite superior estabelecido.");
+			emailSender.send4All("Alerta temperatura", m.getCausaTemperatura());
 		}
 		else if (m.getTemperatura()<=sistema.getLimiteInferiorTemperatura()) {
 			m.setAlertaTemperatura(true);
 			m.setCausaTemperatura("O valor da medicao da temperatura  ultrapassou o limite inferior estabelecido.");
+			emailSender.send4All("Alerta temperatura", m.getCausaTemperatura());
 		}
 		}
 	}
