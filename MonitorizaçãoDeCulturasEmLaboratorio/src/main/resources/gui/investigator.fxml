@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+
+<TabPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="430.0" prefWidth="900.0" style="-fx-background-color: white;" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.InvestigatorController">
+  <tabs>
+    <Tab style="-fx-background-color: white; -fx-border-style: solid; -fx-border-width: 1 1 0 1; -fx-border-color: rgb(210, 210, 210); -fx-focus-color: grey; -fx-faint-focus-color: white;" text="Cultures">
+      <content>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="400.0" prefWidth="884.0">
+               <children>
+                  <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                     <right>
+                        <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+                           <children>
+                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#addCulture" style="-fx-background-color: white; -fx-border-style: solid; -fx-border-width: 1; -fx-border-color: rgb(210, 210, 210);" text="Add">
+                                 <VBox.margin>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </VBox.margin>
+                              </Button>
+                              <Button alignment="CENTER" contentDisplay="CENTER" layoutX="15.0" layoutY="50.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#editCulture" style="-fx-background-color: white; -fx-border-style: solid; -fx-border-width: 1; -fx-border-color: rgb(210, 210, 210);" text="Edit" textAlignment="CENTER">
+                                 <VBox.margin>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" />
+                                 </VBox.margin>
+                              </Button>
+                              <Button alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#deleteCulture" style="-fx-background-color: white; -fx-border-style: solid; -fx-border-width: 1; -fx-border-color: rgb(210, 210, 210);" text="Delete" textAlignment="CENTER">
+                                 <VBox.margin>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" />
+                                 </VBox.margin>
+                              </Button>
+                              <Button alignment="CENTER" contentDisplay="CENTER" layoutX="15.0" layoutY="79.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#refreshCulturesTable" style="-fx-background-color: white; -fx-border-style: solid; -fx-border-width: 1; -fx-border-color: rgb(210, 210, 210);" text="Refresh" textAlignment="CENTER">
+                                 <VBox.margin>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" />
+                                 </VBox.margin>
+                              </Button>
+                           </children>
+                        </VBox>
+                     </right>
+                     <center>
+                        <TableView fx:id="users_table" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="800.0">
+                           <columns>
+                              <TableColumn fx:id="culture_name_col" maxWidth="1.7976931348623157E308" prefWidth="178.39990234375" style="-fx-background-color: white; -fx-border-style: solid; -fx-border-width: 0 1 1 0; -fx-border-color: rgb(210, 210, 210);" text="Name" />
+                              <TableColumn fx:id="culture_email_col" maxWidth="1.7976931348623157E308" prefWidth="272.0" style="-fx-background-color: white; -fx-border-style: solid; -fx-border-width: 0 1 1 0; -fx-border-color: rgb(210, 210, 210);" text="Investigator Email" />
+                              <TableColumn fx:id="culture_description_col" maxWidth="1.7976931348623157E308" prefWidth="348.8000183105469" style="-fx-background-color: white; -fx-border-style: solid; -fx-border-width: 0 1 1 0; -fx-border-color: rgb(210, 210, 210);" text="Description" />
+                           </columns>
+                        </TableView>
+                     </center>
+                  </BorderPane>
+               </children></AnchorPane>
+      </content>
+    </Tab>
+    <Tab style="-fx-background-color: white; -fx-border-style: solid; -fx-border-width: 1 1 0 1; -fx-border-color: rgb(210, 210, 210); -fx-focus-color: grey; -fx-faint-focus-color: white;" text="Measurements">
+      <content>
+        <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0">
+               <children>
+                  <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                     <right>
+                        <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+                           <children>
+                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#addMeasurement" style="-fx-background-color: white; -fx-border-style: solid; -fx-border-width: 1; -fx-border-color: rgb(210, 210, 210);" text="Add">
+                                 <VBox.margin>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </VBox.margin>
+                              </Button>
+                              <Button alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="36.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#editMeasurement" style="-fx-background-color: white; -fx-border-style: solid; -fx-border-width: 1; -fx-border-color: rgb(210, 210, 210);" text="Edit" textAlignment="CENTER">
+                                 <VBox.margin>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" />
+                                 </VBox.margin>
+                              </Button>
+                              <Button alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#deleteMeasurement" style="-fx-background-color: white; -fx-border-style: solid; -fx-border-width: 1; -fx-border-color: rgb(210, 210, 210);" text="Delete" textAlignment="CENTER">
+                                 <VBox.margin>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" />
+                                 </VBox.margin>
+                              </Button>
+                              <Button alignment="CENTER" contentDisplay="CENTER" layoutX="15.0" layoutY="79.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#refreshMeasurementsTable" style="-fx-background-color: white; -fx-border-style: solid; -fx-border-width: 1; -fx-border-color: rgb(210, 210, 210);" text="Refresh" textAlignment="CENTER">
+                                 <VBox.margin>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" />
+                                 </VBox.margin>
+                              </Button>
+                           </children>
+                        </VBox>
+                     </right>
+                     <center>
+                        <TableView fx:id="measurements_table" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="800.0">
+                           <columns>
+                              <TableColumn fx:id="timestamp" prefWidth="242.3999878168106" text="Timestamp" style="-fx-background-color: white; -fx-border-style: solid; -fx-border-width: 0 1 1 0; -fx-border-color: rgb(210, 210, 210);" />
+                              <TableColumn fx:id="measurementValue" minWidth="0.0" prefWidth="293.6000671386719" text="Measurment value" style="-fx-background-color: white; -fx-border-style: solid; -fx-border-width: 0 1 1 0; -fx-border-color: rgb(210, 210, 210);" />
+                              <TableColumn fx:id="idMeasuredVariable" prefWidth="265.59991455078125" text="ID Measured Variable" style="-fx-background-color: white; -fx-border-style: solid; -fx-border-width: 0 1 1 0; -fx-border-color: rgb(210, 210, 210);" />
+                           </columns>
+                        </TableView>
+                     </center>
+                  </BorderPane>
+               </children></AnchorPane>
+      </content>
+    </Tab>
+  </tabs>
+</TabPane>

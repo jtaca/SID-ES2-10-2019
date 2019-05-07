@@ -1,12 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
@@ -21,11 +14,11 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<StackPane style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.LoginController">
+<StackPane prefHeight="430.0" prefWidth="900.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.LoginController">
    <children>
       <HBox alignment="CENTER" maxWidth="1.7976931348623157E308">
          <children>
-            <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0">
+            <VBox alignment="CENTER_LEFT" prefHeight="425.0" prefWidth="441.0">
                <children>
                   <HBox alignment="CENTER_LEFT">
                      <children>
@@ -97,7 +90,7 @@
                   </Button>
                </children>
                <HBox.margin>
-                  <Insets left="30.0" />
+                  <Insets bottom="30.0" left="30.0" top="30.0" />
                </HBox.margin>
             </VBox>
             <VBox alignment="CENTER_RIGHT" maxHeight="1200.0" prefHeight="200.0" prefWidth="100.0">
@@ -110,7 +103,7 @@
                         <Insets />
                      </VBox.margin>
                   </ImageView>
-                  <ImageView fitHeight="579.0" fitWidth="595.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="579.0" fitWidth="375.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@greenhouse.jpg" />
                      </image>
