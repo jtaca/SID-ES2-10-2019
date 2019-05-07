@@ -59,7 +59,6 @@ public class VariableManager {
         if(db.isConnected()) {
             db.insert(NOME_TABELA, variable.toString());
         }
-
         updateLocalVariables();
     }
 

@@ -24,7 +24,6 @@ public class GUI extends Application {
      */
     private void mainGUI() {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/administrator.fxml"));
-        System.out.println(getClass().getResource("/"));
         Parent root;
         try {
             root = (Parent) loader.load();
@@ -32,6 +31,8 @@ public class GUI extends Application {
             e.printStackTrace();
             return;
         }
+        AdministratorController controller = loader.getController();
+        controller.setPrimaryStage(primaryStage);
 
         primaryStage.setTitle("The Greenhouse - Administrator Management Area");
         primaryStage.setScene(new Scene(root));
