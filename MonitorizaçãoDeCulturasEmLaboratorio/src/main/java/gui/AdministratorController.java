@@ -105,7 +105,7 @@ public class AdministratorController {
 
             String name = "Pessoa " + Character.toUpperCase(a) + Character.toUpperCase(b);
 
-            list.add(new User(i,name, a+"@"+b+".pt", "Agricultor","Investigador"));
+            list.add(new User(name, a+"@"+b+".pt", "Agricultor","Investigador"));
         }
         return list;
     }

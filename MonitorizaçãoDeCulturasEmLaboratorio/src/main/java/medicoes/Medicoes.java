@@ -1,7 +1,5 @@
 package medicoes;
 
-import java.util.Date;
-
 public class Medicoes {
 
     private Integer numeroMedicao;

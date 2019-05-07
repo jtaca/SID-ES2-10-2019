@@ -2,14 +2,14 @@ package api;
 
 public class User {
 
-    private int id;
+    private String password;
     private String name;
     private String email;
     private String category;
     private String user_type;
 
-    public User(int id, String name, String email, String category, String user_type) {
-        this.id = id;
+    public User(String password, String name, String email, String category, String user_type) {
+        this.password = password;
         this.name = name;
         this.email = email;
         this.category = category;
@@ -21,6 +21,10 @@ public class User {
         this.email = email;
         this.category = category;
         this.user_type = user_type;
+    }
+
+    public String getPassword(){
+        return password;
     }
 
     public String getName() {

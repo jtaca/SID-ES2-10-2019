@@ -38,9 +38,9 @@ public class DatabaseConnection {
      * @param password a password
      * @return a Boolean, String pair. The Boolean represents the success of the connection. If false, the connection failed and the String contains the appropriate error message.
      */
-	public Pair<Boolean, String> connect(String username, String password) {
+	public Pair<Boolean, String> connect(String username, String password, String database) {
 	    try {
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/estufa?&serverTimezone=UTC&user=" + username + "&password=" + password);
+            conn = DriverManager.getConnection("jdbc:mysql://localhost/" + database + "?&serverTimezone=UTC&user=" + username + "&password=" + password);
         } catch (SQLException ex){
             String error;
             if(ex.getErrorCode() == 1045) {

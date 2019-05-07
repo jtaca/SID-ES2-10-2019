@@ -24,7 +24,7 @@ public class MedicoesManager {
 
       if(DB.isConnected()) {
           listOfMedicoes.clear();
-          ResultSet medicoesResultSet = DB.select("SELECT * FROM medicoes");
+          ResultSet medicoesResultSet = DB.select("SELECT * FROM estufa.medicoes");
           try {
               addMedicoes(medicoesResultSet);
           } catch (SQLException sqlException) {

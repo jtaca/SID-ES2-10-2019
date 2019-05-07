@@ -22,7 +22,7 @@ public class VariableManager {
 
         if(db.isConnected()) {
             variables.clear();
-            ResultSet variableResultSet = db.select("SELECT * FROM variaveis");
+            ResultSet variableResultSet = db.select("SELECT * FROM estufa.variaveis");
             try {
                 processResultSet(variableResultSet);
             } catch (SQLException sqlException) {

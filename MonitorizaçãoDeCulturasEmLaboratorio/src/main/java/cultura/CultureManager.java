@@ -27,7 +27,7 @@ public class CultureManager {
 
         if(DB.isConnected()) {
             listOfCultures.clear();
-            ResultSet varCulture = DB.select("SELECT * FROM cultura");
+            ResultSet varCulture = DB.select("SELECT * FROM estufa.cultura");
             try {
                 addCultures(varCulture);
             } catch (SQLException sqlException) {
