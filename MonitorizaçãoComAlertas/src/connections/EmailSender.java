@@ -106,7 +106,6 @@ public class EmailSender {
                     }
                 });
     }
- 
     /**
      * Creates and sets the properties for the email session
      */

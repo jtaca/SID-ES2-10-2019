@@ -88,6 +88,7 @@ public class DatabaseConnection {
 		double res = 0;
 		Statement stmt = null;
 		String query = "select " + table + "."  + column + " from estufa." + table  ;
+		System.out.println(query);
 		try {
 			stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(query);
