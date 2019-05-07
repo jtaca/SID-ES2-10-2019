@@ -88,7 +88,6 @@ public class DatabaseConnection {
 		double res = 0;
 		Statement stmt = null;
 		String query = "select " + table + "."  + column + " from estufa." + table  ;
-		System.out.println(query);
 		try {
 			stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(query);
@@ -137,7 +136,7 @@ public class DatabaseConnection {
 			double margemSegurancaTemperatura = viewTable(conn,"sistema", "MargemSegurancaTemperatura");
 			ArrayList<String> emails = getEmails(conn, "investigador", "email");
 			sis= new Sistema (limiteInferiorTemperatura,limiteSuperiorTemperatura,limiteInferiorLuz,limiteSuperiorLuz,percentagemVariacaoTemperatura,percentagemVariacaoLuz,margemSegurancaLuz,margemSegurancaTemperatura);
-			emailSender = new EmailSender(emails,"alertasestufa@outlook.com");
+			emailSender = new EmailSender(emails,"alertasestufa@sapo.pt");
 			ges = new GestorDeMedicoes(sis, emailSender);
 		} catch (SQLException e) {
 			System.out.println("Erro "+ e.getMessage());

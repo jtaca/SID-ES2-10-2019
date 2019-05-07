@@ -40,7 +40,7 @@ public class EmailSender {
 	private String loadEmailAddress() {
         String addr = "";
         try {
-            addr = "alertasestufa@outlook.com";
+            addr = "alertasestufa@sapo.pt";
 			logger.info("Email address from email: " + addr);
         } catch (NullPointerException e) {
             e.printStackTrace();
@@ -71,7 +71,6 @@ public class EmailSender {
      */
     public void makeMessage(String recipient, String subject, String content) {
         try {
-            System.out.println("makeMessage");
             message = new MimeMessage(session);
             message.setFrom(new InternetAddress(email));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipient));
@@ -87,7 +86,6 @@ public class EmailSender {
      */
     public void sendMail() {
         try {
-            System.out.println("sendMail");
             Transport.send(message);
         } catch (MessagingException e) {
             throw new RuntimeException(e);
@@ -113,8 +111,8 @@ public class EmailSender {
         props = new Properties();
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.host", "outlook.office365.com");
-        props.put("mail.smtp.port", "587");
+        props.put("mail.smtp.host", "smtp.sapo.pt");
+        props.put("mail.smtp.port", "25");
     }
     
     
