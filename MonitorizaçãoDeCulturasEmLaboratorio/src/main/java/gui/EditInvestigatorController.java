@@ -5,7 +5,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 
-public class AddInvestigatorController {
+public class EditInvestigatorController {
 
     @FXML
     public TextField name;
@@ -17,7 +17,7 @@ public class AddInvestigatorController {
     public TextField category;
 
     public void register(MouseEvent mouseEvent) {
-        System.out.println("addInvestigator");
+        System.out.println("EditInvestigator");
         System.out.println(
                 name.getText()+"\n"+
                 password.getText()+"\n"+
