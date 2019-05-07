@@ -74,7 +74,7 @@ public class GestorDeMedicoes {
 			else if(sistema.getLimiteInferiorLuz() + margemAlertaLuz >= m.getLuminosidade()) {
 				m.setAlertaLuminosidade(true);
 				m.setCausaLuminosidade("O valor da medicao da luminosidade  esta proximo do limite inferior estabelecido.");
-				emailSender.send4All("Alerta luminosidade", m.getCausaLuminosidade());
+				emailSender.send4All("Alerta luminosidade", "Olá investigador! " + m.getCausaLuminosidade());
 			}
 			else if (sistema.getLimiteInferiorLuz() >= m.getLuminosidade()) {
 				m.setAlertaLuminosidade(true);
