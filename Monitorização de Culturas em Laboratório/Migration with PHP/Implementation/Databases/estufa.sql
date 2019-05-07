@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.3
+-- version 4.8.5
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 06, 2019 at 09:39 PM
--- Server version: 10.1.37-MariaDB
--- PHP Version: 7.2.12
+-- Generation Time: 07-Maio-2019 às 23:17
+-- Versão do servidor: 10.1.38-MariaDB
+-- versão do PHP: 7.3.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -160,7 +160,6 @@ GRANT SELECT ON estufa.logs TO phpUser;
 GRANT EXECUTE ON PROCEDURE estufa.selectDadosNaoMigrados TO phpUser;
 GRANT EXECUTE ON PROCEDURE estufa.updateMigrados TO phpUser;
 
-GRANT SELECT ON estufa.investigador TO javaUser;
 GRANT INSERT ON estufa.medicoes TO javaUser;
 GRANT INSERT ON estufa.medicoes_luminosidade TO javaUser;
 GRANT INSERT ON estufa.medicoes_temperatura TO javaUser;
@@ -211,13 +210,17 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `criarRoles` ()  CREATE ROLE IF NOT 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteUser` (IN `var_email` VARCHAR(100))  NO SQL
 BEGIN
 
-SET @sql := CONCAT('SELECT User INTO @user FROM mysql.user WHERE email = ', QUOTE(var_email));
-PREPARE statement FROM @sql;
-EXECUTE statement;
+	SET @sql := CONCAT('SELECT User INTO @user FROM mysql.user WHERE email = ', QUOTE(var_email));
+	PREPARE statement FROM @sql;
+	EXECUTE statement;
 
-SET @sql := CONCAT('DROP USER IF EXISTS ', @user);
-PREPARE statement FROM @sql;
-EXECUTE statement;
+	SET @sql := CONCAT('DROP USER IF EXISTS ', @user);
+	PREPARE statement FROM @sql;
+	EXECUTE statement;
+
+	SET @sql := CONCAT('DELETE FROM estufa.investigador WHERE Email = ', QUOTE(var_email));
+	PREPARE statement FROM @sql;
+	EXECUTE statement;
 
 END$$
 
@@ -254,6 +257,22 @@ BEGIN
 
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `updateCultura` (IN `culturaID` INT(11), IN `Nome` VARCHAR(100), IN `Descricao` TEXT)  NO SQL
+BEGIN
+
+	IF (Nome != "" AND Descricao = "")
+	THEN UPDATE `cultura` SET `NomeCultura` = Nome WHERE `cultura`.`IDCultura` = culturaID;
+	
+    ELSEIF(Nome = "" AND Descricao != "")
+	THEN UPDATE `cultura` SET `DescricaoCultura` = Descricao WHERE `cultura`.`IDCultura` = culturaID;
+	
+    ELSEIF (Nome != "" AND Descricao != "")
+	THEN UPDATE `cultura` SET `NomeCultura` = Nome, `DescricaoCultura` = Descricao WHERE `cultura`.`IDCultura` = culturaID;
+	
+    END IF;
+
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `updateMigrados` (IN `endID` INT(50))  UPDATE logs SET logs.exportado=1 WHERE logs.logId<=endID$$
 
 DELIMITER ;
@@ -261,7 +280,7 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `alertas`
+-- Estrutura da tabela `alertas`
 --
 
 CREATE TABLE `alertas` (
@@ -277,7 +296,7 @@ CREATE TABLE `alertas` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `alertas`
+-- Extraindo dados da tabela `alertas`
 --
 
 INSERT INTO `alertas` (`idAlerta`, `nomeVariavel`, `nomeCultura`, `emailInvestigador`, `data`, `limiteInferiorVar`, `limiteSuperiorVar`, `valor`, `descricaoAlertas`) VALUES
@@ -300,12 +319,14 @@ INSERT INTO `alertas` (`idAlerta`, `nomeVariavel`, `nomeCultura`, `emailInvestig
 (25, 'Chumbo', 'Beterraba', 'root@localhost', '2019-05-04 17:42:48', '2.85', '8.25', '10.25', 'O valor da medição ultrapassou o limite superior.'),
 (26, 'Chumbo', 'Beterraba', 'root@localhost', '2019-05-04 17:43:24', '2.85', '8.25', '1.58', 'O valor da medição ultrapassou o limite inferior.'),
 (27, 'nomeDaVariavel', 'Tomate', 'root@localhost', '2019-05-04 17:44:45', '5.00', '9.50', '3.85', 'O valor da medição ultrapassou o limite inferior.'),
-(28, 'nomeDaVariavel', 'Tomate', 'root@localhost', '2019-05-04 17:45:21', '5.00', '9.50', '5.42', 'O valor da medição está próximo do limite inferior.');
+(28, 'nomeDaVariavel', 'Tomate', 'root@localhost', '2019-05-04 17:45:21', '5.00', '9.50', '5.42', 'O valor da medição está próximo do limite inferior.'),
+(29, 'Chumbo', 'Cenouras', 'root@localhost', '2019-05-06 12:14:46', '2.85', '8.25', '1.52', 'O valor da medição ultrapassou o limite inferior.'),
+(30, 'Chumbo', 'Cenouras', 'root@localhost', '2019-05-06 12:16:44', '2.85', '8.25', '13.52', 'O valor da medição ultrapassou o limite superior.');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `cultura`
+-- Estrutura da tabela `cultura`
 --
 
 CREATE TABLE `cultura` (
@@ -316,15 +337,16 @@ CREATE TABLE `cultura` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `cultura`
+-- Extraindo dados da tabela `cultura`
 --
 
 INSERT INTO `cultura` (`IDCultura`, `NomeCultura`, `DescricaoCultura`, `EmailInvestigador`) VALUES
-(2, 'Tomate', 'fsdkjfvjksdjkfsd', 'lala@gmail.com'),
-(4, 'Beterraba', 'Cultura Hidroponica ++', 'hmbs@gmail.com');
+(2, 'Batatas', 'Cultura Hidropónica', 'lala@gmail.com'),
+(4, 'Cenouras', 'Cultura Hidropónica', 'hmbs@gmail.com'),
+(5, 'Pimentos', 'Cultura Hidropónica', 'afga');
 
 --
--- Triggers `cultura`
+-- Acionadores `cultura`
 --
 DELIMITER $$
 CREATE TRIGGER `deleteCultura` AFTER DELETE ON `cultura` FOR EACH ROW INSERT into logs VALUES (null, CURRENT_USER, "cultura", "DELETE", CONCAT("IdCultura", ": ", old.IdCultura, "  NomeCultura", ": ", old.NomeCultura, "  DescricaoCultura", ": ", old.DescricaoCultura, "  EmailInvestigador", ": ", old.EmailInvestigador), "Linha Eliminada", NOW(), 0)
@@ -342,7 +364,7 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `investigador`
+-- Estrutura da tabela `investigador`
 --
 
 CREATE TABLE `investigador` (
@@ -352,7 +374,7 @@ CREATE TABLE `investigador` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `investigador`
+-- Extraindo dados da tabela `investigador`
 --
 
 INSERT INTO `investigador` (`Email`, `NomeInvestigador`, `CategoriaProfissional`) VALUES
@@ -372,12 +394,11 @@ INSERT INTO `investigador` (`Email`, `NomeInvestigador`, `CategoriaProfissional`
 ('qwe', 'sens', 'asd'),
 ('qwerty', 'boneca', 'asdfg'),
 ('sdfvsdfvc', 'adscfsad', 'sfcvsfdcv'),
-('teste@gmail.com', 'testeeee', 'chefe'),
 ('v', 'v', 'v'),
 ('y', 'y', 'y');
 
 --
--- Triggers `investigador`
+-- Acionadores `investigador`
 --
 DELIMITER $$
 CREATE TRIGGER `deleteInvestigador` AFTER DELETE ON `investigador` FOR EACH ROW INSERT into logs VALUES (null, CURRENT_USER, "investigador", "DELETE", CONCAT("Email", ": ", old.Email, "  NomeInvestigador", ": ", old.NomeInvestigador, "  CategoriaProfissional", ": ", old.CategoriaProfissional), "Linha Eliminada", NOW(), 0)
@@ -395,7 +416,7 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `logs`
+-- Estrutura da tabela `logs`
 --
 
 CREATE TABLE `logs` (
@@ -410,7 +431,7 @@ CREATE TABLE `logs` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `logs`
+-- Extraindo dados da tabela `logs`
 --
 
 INSERT INTO `logs` (`logId`, `username`, `nomeTabela`, `comandoUsado`, `linhaAnterior`, `resultado`, `dataComando`, `exportado`) VALUES
@@ -441,12 +462,58 @@ INSERT INTO `logs` (`logId`, `username`, `nomeTabela`, `comandoUsado`, `linhaAnt
 (157, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 23  DataHoraMedicao: 2019-05-04 17:43:24  ValorMedicao: 1.58  IdVariaveisMedidas: 1', '2019-05-04 17:43:24', 0),
 (158, 'root@localhost', 'variaveis_medidas', 'INSERT', 'Não Aplicável', 'IDVariavel: 8  IDCultura: 2  LimiteInferior: 5.00  LimiteSuperior: 9.50  IdVariaveisMedidas: 2', '2019-05-04 17:44:22', 0),
 (159, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 24  DataHoraMedicao: 2019-05-04 17:44:45  ValorMedicao: 3.85  IdVariaveisMedidas: 2', '2019-05-04 17:44:45', 0),
-(160, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 25  DataHoraMedicao: 2019-05-04 17:45:21  ValorMedicao: 5.42  IdVariaveisMedidas: 2', '2019-05-04 17:45:21', 0);
+(160, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 25  DataHoraMedicao: 2019-05-04 17:45:21  ValorMedicao: 5.42  IdVariaveisMedidas: 2', '2019-05-04 17:45:21', 0),
+(161, 'root@localhost', 'cultura', 'UPDATE', 'IdCultura: 2  NomeCultura: Tomate  DescricaoCultura: fsdkjfvjksdjkfsd  EmailInvestigador: lala@gmail.com', 'IdCultura: 2  NomeCultura: Tomate  DescricaoCultura: dfsdfksdbkjdskjnf  EmailInvestigador: lala@gmail.com', '2019-05-05 16:40:12', 0),
+(162, 'root@localhost', 'cultura', 'UPDATE', 'IdCultura: 4  NomeCultura: Beterraba  DescricaoCultura: Cultura Hidroponica ++  EmailInvestigador: hmbs@gmail.com', 'IdCultura: 4  NomeCultura: Beterraba +  DescricaoCultura: Cultura Hidroponica +++  EmailInvestigador: hmbs@gmail.com', '2019-05-05 17:10:53', 0),
+(163, 'root@localhost', 'cultura', 'INSERT', 'Não Aplicável', 'IdCultura: 5  NomeCultura: jbhjjh  DescricaoCultura: jhbjhbhjbjhvj  EmailInvestigador: afga', '2019-05-05 17:11:35', 0),
+(164, 'root@localhost', 'cultura', 'UPDATE', 'IdCultura: 5  NomeCultura: jbhjjh  DescricaoCultura: jhbjhbhjbjhvj  EmailInvestigador: afga', 'IdCultura: 5  NomeCultura: jbhjjhku  DescricaoCultura: jhbjhbhjbjhvjuyf  EmailInvestigador: afga', '2019-05-05 17:22:42', 0),
+(165, 'root@localhost', 'cultura', 'UPDATE', 'IdCultura: 4  NomeCultura: Beterraba +  DescricaoCultura: Cultura Hidroponica +++  EmailInvestigador: hmbs@gmail.com', 'IdCultura: 4  NomeCultura: Beterraba  DescricaoCultura: Cultura Hidropónica  EmailInvestigador: hmbs@gmail.com', '2019-05-05 17:41:50', 0),
+(166, 'root@localhost', 'cultura', 'UPDATE', 'IdCultura: 5  NomeCultura: jbhjjhku  DescricaoCultura: jhbjhbhjbjhvjuyf  EmailInvestigador: afga', 'IdCultura: 5  NomeCultura: Pimentos  DescricaoCultura: jhbjhbhjbjhvjuyf  EmailInvestigador: afga', '2019-05-05 17:42:50', 0),
+(167, 'root@localhost', 'cultura', 'UPDATE', 'IdCultura: 5  NomeCultura: Pimentos  DescricaoCultura: jhbjhbhjbjhvjuyf  EmailInvestigador: afga', 'IdCultura: 5  NomeCultura: Pimentos  DescricaoCultura: Cultura HIdro  EmailInvestigador: afga', '2019-05-05 17:44:55', 0),
+(168, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 11  NomeVariavel: nomeDaVariavel', '2019-05-05 18:00:32', 0),
+(169, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 12  NomeVariavel: nomeDaVariavel', '2019-05-05 18:04:11', 0),
+(170, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 13  NomeVariavel: nomeDaVariavel', '2019-05-05 18:05:45', 0),
+(171, 'root@localhost', 'cultura', 'UPDATE', 'IdCultura: 2  NomeCultura: Tomate  DescricaoCultura: dfsdfksdbkjdskjnf  EmailInvestigador: lala@gmail.com', 'IdCultura: 2  NomeCultura: Batatas  DescricaoCultura: Cultura Hidropónica  EmailInvestigador: lala@gmail.com', '2019-05-05 18:05:45', 0),
+(172, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 14  NomeVariavel: nomeDaVariavel', '2019-05-05 18:06:37', 0),
+(173, 'root@localhost', 'cultura', 'UPDATE', 'IdCultura: 5  NomeCultura: Pimentos  DescricaoCultura: Cultura HIdro  EmailInvestigador: afga', 'IdCultura: 5  NomeCultura: Pimentos  DescricaoCultura: Cultura Hidropónica  EmailInvestigador: afga', '2019-05-05 18:06:37', 0),
+(174, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 15  NomeVariavel: nomeDaVariavel', '2019-05-05 18:07:22', 0),
+(175, 'root@localhost', 'cultura', 'UPDATE', 'IdCultura: 4  NomeCultura: Beterraba  DescricaoCultura: Cultura Hidropónica  EmailInvestigador: hmbs@gmail.com', 'IdCultura: 4  NomeCultura: Cenouras  DescricaoCultura: Cultura Hidropónica  EmailInvestigador: hmbs@gmail.com', '2019-05-05 18:07:22', 0),
+(176, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 2  DataHoraMedicao: 2019-05-03 23:21:13  ValorMedicao: 5.23  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-05 18:16:33', 0),
+(177, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 16  NomeVariavel: nomeDaVariavel', '2019-05-06 12:14:46', 0),
+(178, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 26  DataHoraMedicao: 2019-05-06 12:14:46  ValorMedicao: 1.52  IdVariaveisMedidas: 1', '2019-05-06 12:14:46', 0),
+(179, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 17  NomeVariavel: nomeDaVariavel', '2019-05-06 12:16:44', 0),
+(180, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 27  DataHoraMedicao: 2019-05-06 12:16:44  ValorMedicao: 13.52  IdVariaveisMedidas: 1', '2019-05-06 12:16:44', 0),
+(181, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 18  NomeVariavel: nomeDaVariavel', '2019-05-06 12:17:57', 0),
+(182, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 26  DataHoraMedicao: 2019-05-06 12:14:46  ValorMedicao: 1.52  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-06 12:17:57', 0),
+(183, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 19  NomeVariavel: nomeDaVariavel', '2019-05-06 12:18:24', 0),
+(184, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 27  DataHoraMedicao: 2019-05-06 12:16:44  ValorMedicao: 13.52  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-06 12:18:24', 0),
+(185, 'root@localhost', 'investigador', 'INSERT', 'Não Aplicável', 'Email: iscte@gmail.com  NomeInvestigador: iscte  CategoriaProfissional: uni', '2019-05-07 10:52:00', 0),
+(186, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 20  NomeVariavel: nomeDaVariavel', '2019-05-07 19:44:48', 0),
+(187, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 21  NomeVariavel: nomeDaVariavel', '2019-05-07 19:46:09', 0),
+(188, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 22  NomeVariavel: nomeDaVariavel', '2019-05-07 20:34:17', 0),
+(189, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 23  NomeVariavel: nomeDaVariavel', '2019-05-07 20:36:28', 0),
+(190, 'root@localhost', 'investigador', 'DELETE', 'Email: iscte@gmail.com  NomeInvestigador: iscte  CategoriaProfissional: uni', 'Linha Eliminada', '2019-05-07 20:40:37', 0),
+(191, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 24  NomeVariavel: nomeDaVariavel', '2019-05-07 20:41:17', 0),
+(192, 'root@localhost', 'investigador', 'DELETE', 'Email: teste@gmail.com  NomeInvestigador: testeeee  CategoriaProfissional: chefe', 'Linha Eliminada', '2019-05-07 20:45:24', 0),
+(193, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 25  NomeVariavel: nomeDaVariavel', '2019-05-07 20:46:06', 0),
+(194, 'root@localhost', 'investigador', 'INSERT', 'Não Aplicável', 'Email: testeUser@gmail.com  NomeInvestigador: testeUser  CategoriaProfissional: chefeTeste', '2019-05-07 20:52:51', 0),
+(195, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 26  NomeVariavel: nomeDaVariavel', '2019-05-07 20:52:51', 0),
+(196, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 27  NomeVariavel: nomeDaVariavel', '2019-05-07 20:54:03', 0),
+(197, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 28  NomeVariavel: nomeDaVariavel', '2019-05-07 20:57:08', 0),
+(198, 'root@localhost', 'investigador', 'DELETE', 'Email: testeUser@gmail.com  NomeInvestigador: testeUser  CategoriaProfissional: chefeTeste', 'Linha Eliminada', '2019-05-07 21:23:42', 0),
+(199, 'root@localhost', 'investigador', 'INSERT', 'Não Aplicável', 'Email: testeUser@gmail.com  NomeInvestigador: testeUser  CategoriaProfissional: chefeTeste', '2019-05-07 21:24:07', 0),
+(200, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 29  NomeVariavel: nomeDaVariavel', '2019-05-07 21:24:07', 0),
+(201, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 30  NomeVariavel: nomeDaVariavel', '2019-05-07 21:24:48', 0),
+(202, 'root@localhost', 'investigador', 'DELETE', 'Email: testeUser@gmail.com  NomeInvestigador: testeUser  CategoriaProfissional: chefeTeste', 'Linha Eliminada', '2019-05-07 21:26:56', 0),
+(203, 'root@localhost', 'investigador', 'INSERT', 'Não Aplicável', 'Email: testeUser@gmail.com  NomeInvestigador: testeUser  CategoriaProfissional: chefeTeste', '2019-05-07 21:27:47', 0),
+(204, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 31  NomeVariavel: nomeDaVariavel', '2019-05-07 21:27:47', 0),
+(205, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 32  NomeVariavel: nomeDaVariavel', '2019-05-07 21:28:32', 0),
+(206, 'root@localhost', 'investigador', 'DELETE', 'Email: testeUser@gmail.com  NomeInvestigador: testeUser  CategoriaProfissional: chefeTeste', 'Linha Eliminada', '2019-05-07 21:28:32', 0);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `medicoes`
+-- Estrutura da tabela `medicoes`
 --
 
 CREATE TABLE `medicoes` (
@@ -457,11 +524,10 @@ CREATE TABLE `medicoes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `medicoes`
+-- Extraindo dados da tabela `medicoes`
 --
 
 INSERT INTO `medicoes` (`NumeroMedicao`, `DataHoraMedicao`, `ValorMedicao`, `IdVariaveisMedidas`) VALUES
-(2, '2019-05-03 22:21:13', '5.23', 1),
 (3, '2019-05-03 22:21:57', '2.85', 1),
 (4, '2019-05-03 22:22:27', '2.50', 1),
 (5, '2019-05-03 22:23:14', '2.86', 1),
@@ -487,7 +553,7 @@ INSERT INTO `medicoes` (`NumeroMedicao`, `DataHoraMedicao`, `ValorMedicao`, `IdV
 (25, '2019-05-04 16:45:21', '5.42', 2);
 
 --
--- Triggers `medicoes`
+-- Acionadores `medicoes`
 --
 DELIMITER $$
 CREATE TRIGGER `deleteMedicoes` AFTER DELETE ON `medicoes` FOR EACH ROW INSERT into logs VALUES (null, CURRENT_USER, "medicoes", "DELETE", CONCAT("NumeroMedicao", ": ", old.NumeroMedicao, "  DataHoraMedicao", ": ", old.DataHoraMedicao, "  ValorMedicao", ": ", old.ValorMedicao, "  IdVariaveisMedidas", ": ", old.IdVariaveisMedidas), "Linha Eliminada", NOW(), 0)
@@ -548,7 +614,7 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `medicoes_luminosidade`
+-- Estrutura da tabela `medicoes_luminosidade`
 --
 
 CREATE TABLE `medicoes_luminosidade` (
@@ -558,7 +624,7 @@ CREATE TABLE `medicoes_luminosidade` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Triggers `medicoes_luminosidade`
+-- Acionadores `medicoes_luminosidade`
 --
 DELIMITER $$
 CREATE TRIGGER `deleteMedicoesLuminosidade` AFTER DELETE ON `medicoes_luminosidade` FOR EACH ROW INSERT into logs VALUES (null, CURRENT_USER, "medicoes_luminosidade", "DELETE", CONCAT("DataHoraMedicao", ": ", old.DataHoraMedicao, "  ValorMedicaoLuminosidade", ": ", old.ValorMedicaoLuminosidade, "  IDMedicao", ": ", old.IDMedicao), "Linha Eliminada", NOW(), 0)
@@ -576,7 +642,7 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `medicoes_luminosidade_incorretas`
+-- Estrutura da tabela `medicoes_luminosidade_incorretas`
 --
 
 CREATE TABLE `medicoes_luminosidade_incorretas` (
@@ -588,7 +654,7 @@ CREATE TABLE `medicoes_luminosidade_incorretas` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `medicoes_temperatura`
+-- Estrutura da tabela `medicoes_temperatura`
 --
 
 CREATE TABLE `medicoes_temperatura` (
@@ -598,7 +664,7 @@ CREATE TABLE `medicoes_temperatura` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Triggers `medicoes_temperatura`
+-- Acionadores `medicoes_temperatura`
 --
 DELIMITER $$
 CREATE TRIGGER `deleteMedicoesTemperatura` AFTER DELETE ON `medicoes_temperatura` FOR EACH ROW INSERT into logs VALUES (null, CURRENT_USER, "medicoes_temperatura", "DELETE", CONCAT("DataHoraMedicao", ": ", old.DataHoraMedicao, "  ValorMedicaoTemperatura", ": ", old.ValorMedicaoTemperatura, "  IDMedicao", ": ", old.IDMedicao), "Linha Eliminada", NOW(), 0)
@@ -616,7 +682,7 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `medicoes_temperatura_incorretas`
+-- Estrutura da tabela `medicoes_temperatura_incorretas`
 --
 
 CREATE TABLE `medicoes_temperatura_incorretas` (
@@ -628,7 +694,7 @@ CREATE TABLE `medicoes_temperatura_incorretas` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `sistema`
+-- Estrutura da tabela `sistema`
 --
 
 CREATE TABLE `sistema` (
@@ -644,14 +710,14 @@ CREATE TABLE `sistema` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `sistema`
+-- Extraindo dados da tabela `sistema`
 --
 
 INSERT INTO `sistema` (`LimiteInferiorTemperatura`, `LimiteSuperiorTemperatura`, `MargemSegurancaTemperatura`, `LimiteInferiorLuz`, `LimiteSuperiorLuz`, `MargemSegurancaLuz`, `PercentagemVariacaoTemperatura`, `PercentagemVariacaoLuz`, `TempoEntreAlertasConsecutivos`) VALUES
 ('1.00', '5.00', '0.00', '8.00', '10.00', '0.00', '0.00', '0.00', '0.00');
 
 --
--- Triggers `sistema`
+-- Acionadores `sistema`
 --
 DELIMITER $$
 CREATE TRIGGER `deleteSistema` AFTER DELETE ON `sistema` FOR EACH ROW INSERT into logs VALUES (null, CURRENT_USER, "sistema", "DELETE", CONCAT("LimiteInferiorTemperatura", ": ", old.LimiteInferiorTemperatura, "  LimiteSuperiorTemperatura", ": ", old.LimiteSuperiorTemperatura, "  LimiteInferiorLuz", ": ", old.LimiteInferiorLuz, "  LimiteSuperiorLuz", ": ", old.LimiteSuperiorLuz), "Linha Eliminada", NOW(), 0)
@@ -669,7 +735,7 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `variaveis`
+-- Estrutura da tabela `variaveis`
 --
 
 CREATE TABLE `variaveis` (
@@ -678,7 +744,7 @@ CREATE TABLE `variaveis` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `variaveis`
+-- Extraindo dados da tabela `variaveis`
 --
 
 INSERT INTO `variaveis` (`IDVariavel`, `NomeVariavel`) VALUES
@@ -689,10 +755,32 @@ INSERT INTO `variaveis` (`IDVariavel`, `NomeVariavel`) VALUES
 (7, 'nomeDaVariavel'),
 (8, 'nomeDaVariavel'),
 (9, 'nomeDaVariavel'),
-(10, 'nomeDaVariavel');
+(10, 'nomeDaVariavel'),
+(11, 'nomeDaVariavel'),
+(12, 'nomeDaVariavel'),
+(13, 'nomeDaVariavel'),
+(14, 'nomeDaVariavel'),
+(15, 'nomeDaVariavel'),
+(16, 'nomeDaVariavel'),
+(17, 'nomeDaVariavel'),
+(18, 'nomeDaVariavel'),
+(19, 'nomeDaVariavel'),
+(20, 'nomeDaVariavel'),
+(21, 'nomeDaVariavel'),
+(22, 'nomeDaVariavel'),
+(23, 'nomeDaVariavel'),
+(24, 'nomeDaVariavel'),
+(25, 'nomeDaVariavel'),
+(26, 'nomeDaVariavel'),
+(27, 'nomeDaVariavel'),
+(28, 'nomeDaVariavel'),
+(29, 'nomeDaVariavel'),
+(30, 'nomeDaVariavel'),
+(31, 'nomeDaVariavel'),
+(32, 'nomeDaVariavel');
 
 --
--- Triggers `variaveis`
+-- Acionadores `variaveis`
 --
 DELIMITER $$
 CREATE TRIGGER `deleteVariaveis` AFTER DELETE ON `variaveis` FOR EACH ROW INSERT into logs VALUES (null, CURRENT_USER, "variaveis", "DELETE", CONCAT("IDVariavel", ": ", old.IDVariavel, "  NomeVariavel", ": ", old.NomeVariavel), "Linha Eliminada", NOW(), 0)
@@ -710,7 +798,7 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `variaveis_medidas`
+-- Estrutura da tabela `variaveis_medidas`
 --
 
 CREATE TABLE `variaveis_medidas` (
@@ -723,7 +811,7 @@ CREATE TABLE `variaveis_medidas` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `variaveis_medidas`
+-- Extraindo dados da tabela `variaveis_medidas`
 --
 
 INSERT INTO `variaveis_medidas` (`IDVariavel`, `IDCultura`, `LimiteInferior`, `LimiteSuperior`, `MargemSegurancaVariavel`, `IdVariaveisMedidas`) VALUES
@@ -731,7 +819,7 @@ INSERT INTO `variaveis_medidas` (`IDVariavel`, `IDCultura`, `LimiteInferior`, `L
 (8, 2, '5.00', '9.50', '0.20', 2);
 
 --
--- Triggers `variaveis_medidas`
+-- Acionadores `variaveis_medidas`
 --
 DELIMITER $$
 CREATE TRIGGER `deleteVariaveisMedidas` AFTER DELETE ON `variaveis_medidas` FOR EACH ROW INSERT into logs VALUES (null, CURRENT_USER, "variaveis_medidas", "DELETE", CONCAT("IDVariavel", ": ", old.IDVariavel, "  IDCultura", ": ", old.IDCultura, "  LimiteInferior", ": ", old.LimiteInferior, "  LimiteSuperior", ": ", old.LimiteSuperior, "  IdVariaveisMedidas", ": ", old.IdVariaveisMedidas), "Linha Eliminada", NOW(), 0)
@@ -828,19 +916,19 @@ ALTER TABLE `variaveis_medidas`
 -- AUTO_INCREMENT for table `alertas`
 --
 ALTER TABLE `alertas`
-  MODIFY `idAlerta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `idAlerta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `cultura`
 --
 ALTER TABLE `cultura`
-  MODIFY `IDCultura` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `IDCultura` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `logs`
 --
 ALTER TABLE `logs`
-  MODIFY `logId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=161;
+  MODIFY `logId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=207;
 
 --
 -- AUTO_INCREMENT for table `medicoes`
@@ -876,7 +964,7 @@ ALTER TABLE `medicoes_temperatura_incorretas`
 -- AUTO_INCREMENT for table `variaveis`
 --
 ALTER TABLE `variaveis`
-  MODIFY `IDVariavel` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `IDVariavel` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT for table `variaveis_medidas`
@@ -889,19 +977,19 @@ ALTER TABLE `variaveis_medidas`
 --
 
 --
--- Constraints for table `cultura`
+-- Limitadores para a tabela `cultura`
 --
 ALTER TABLE `cultura`
   ADD CONSTRAINT `cultura_ibfk_1` FOREIGN KEY (`EmailInvestigador`) REFERENCES `investigador` (`Email`);
 
 --
--- Constraints for table `medicoes`
+-- Limitadores para a tabela `medicoes`
 --
 ALTER TABLE `medicoes`
   ADD CONSTRAINT `medicoes_ibfk_1` FOREIGN KEY (`IdVariaveisMedidas`) REFERENCES `variaveis_medidas` (`IdVariaveisMedidas`);
 
 --
--- Constraints for table `variaveis_medidas`
+-- Limitadores para a tabela `variaveis_medidas`
 --
 ALTER TABLE `variaveis_medidas`
   ADD CONSTRAINT `variaveis_medidas_ibfk_1` FOREIGN KEY (`IDCultura`) REFERENCES `cultura` (`IDCultura`),
