@@ -1,6 +1,6 @@
 package gui;
 
-import api.User;
+import api.Investigador;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -26,15 +26,15 @@ public class AdministratorController {
     private Stage primaryStage;
 
     @FXML
-    public TableView<User> users_table;
+    public TableView<Investigador> users_table;
     @FXML
-    public TableColumn<User, String> user_name_col;
+    public TableColumn<Investigador, String> user_name_col;
     @FXML
-    public TableColumn<User, String> user_email_col;
+    public TableColumn<Investigador, String> user_email_col;
     @FXML
-    public TableColumn<User, String> user_category_col;
+    public TableColumn<Investigador, String> user_category_col;
     @FXML
-    public TableColumn<User, String> user_type_col;
+    public TableColumn<Investigador, String> user_type_col;
     @FXML
     public Button add_user_btn;
     @FXML
@@ -110,8 +110,8 @@ public class AdministratorController {
         variables_table.setItems(randomVariableList());
     }
 
-    private ObservableList<User> randomUserList() {
-        ObservableList<User> list = FXCollections.observableArrayList();
+    private ObservableList<Investigador> randomUserList() {
+        ObservableList<Investigador> list = FXCollections.observableArrayList();
         for (int i=0; i<25; i++) {
             Random r = new Random();
             char a = (char)(r.nextInt(26) + 'a');
@@ -119,14 +119,14 @@ public class AdministratorController {
 
             String name = "Pessoa " + Character.toUpperCase(a) + Character.toUpperCase(b);
 
-            list.add(new User(name, a+"@"+b+".pt", "Agricultor","Investigador"));
+            list.add(new Investigador(name, a+"@"+b+".pt", "Agricultor","Investigador"));
         }
         return list;
     }
 
     public void addInvestigator(MouseEvent mouseEvent) {
         System.out.println("addInvestigator");
-        User selected_variable = users_table.getSelectionModel().getSelectedItem();
+        Investigador selected_variable = users_table.getSelectionModel().getSelectedItem();
         System.out.println("Selected: " + selected_variable);
 
         Task<Void> task = new Task<Void>() {
@@ -156,7 +156,7 @@ public class AdministratorController {
 
     public void editUser(MouseEvent mouseEvent) {
         System.out.println("editUser");
-        User selected_variable = users_table.getSelectionModel().getSelectedItem();
+        Investigador selected_variable = users_table.getSelectionModel().getSelectedItem();
         System.out.println("Selected: " + selected_variable);
 
         Task<Void> task = new Task<Void>() {
@@ -186,7 +186,7 @@ public class AdministratorController {
 
     public void deleteUser(MouseEvent mouseEvent) {
         System.out.println("deleteUser");
-        User selected_variable = users_table.getSelectionModel().getSelectedItem();
+        Investigador selected_variable = users_table.getSelectionModel().getSelectedItem();
         System.out.println("Selected: " + selected_variable);
     }
 

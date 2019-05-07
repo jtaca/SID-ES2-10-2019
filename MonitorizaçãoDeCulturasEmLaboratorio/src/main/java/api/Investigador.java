@@ -1,6 +1,6 @@
 package api;
 
-public class User {
+public class Investigador {
 
     private String password;
     private String name;
@@ -8,7 +8,7 @@ public class User {
     private String category;
     private String user_type;
 
-    public User(String password, String name, String email, String category, String user_type) {
+    public Investigador(String password, String name, String email, String category, String user_type) {
         this.password = password;
         this.name = name;
         this.email = email;
@@ -16,7 +16,7 @@ public class User {
         this.user_type = user_type;
     }
 
-    public User(String name, String email, String category, String user_type) {
+    public Investigador(String name, String email, String category, String user_type) {
         this.name = name;
         this.email = email;
         this.category = category;

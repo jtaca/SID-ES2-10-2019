@@ -81,6 +81,8 @@ public class CultureManager {
         } catch (SQLException e) {
             System.out.println("Nao foi possível atualizar a cultura pretendida. Exception: " + e.getMessage());
         }
+
+        getDBCultures();
     }
 
 
@@ -95,6 +97,8 @@ public class CultureManager {
         } catch (SQLException e) {
             System.out.println("Nao foi possível apagar a cultura pretendida. Exception: " + e.getMessage());
         }
+
+        getDBCultures();
 
     }
 }

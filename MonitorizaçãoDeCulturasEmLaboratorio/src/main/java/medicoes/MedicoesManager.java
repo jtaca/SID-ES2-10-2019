@@ -71,6 +71,8 @@ public class MedicoesManager {
           System.out.println("Não foi possível apagar a medição pretendida. Exception: " + e.getMessage());
       }
 
+      getDBMedicoes();
+
   }
 
 
