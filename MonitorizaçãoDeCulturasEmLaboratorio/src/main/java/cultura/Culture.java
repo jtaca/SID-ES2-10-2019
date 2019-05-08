@@ -25,6 +25,22 @@ public class Culture {
         this.investigatorEmail = investigatorEmail;
     }
 
+    public Integer getId() {
+        return id;
+    }
+
+    public String getCultureName() {
+        return cultureName;
+    }
+
+    public String getCultureDescription() {
+        return cultureDescription;
+    }
+
+    public String getInvestigatorEmail(){
+        return investigatorEmail;
+    }
+
     @Override
     public String toString() {
 

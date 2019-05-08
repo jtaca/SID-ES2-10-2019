@@ -75,17 +75,50 @@ public class InvestigadorManager {
         getDBInvestigador();
     }
 
+
+    public void updateInvestigador(Investigador oldInvestigador, Investigador newInvestigador) {
+
+        DatabaseConnection DB = DatabaseConnection.getInstance();
+
+        try {
+
+            CallableStatement cStmt = (CallableStatement) DatabaseConnection.getInstance().getConnection().prepareCall("{call updateCultura(?,?,?,?)}");
+            cStmt.setString(1, oldInvestigador.getEmail());
+            cStmt.setString(2, newInvestigador.getName());
+            cStmt.setString(3, newInvestigador.getCategory());
+            cStmt.setString(4, newInvestigador.getPassword());
+            cStmt.setString(5, newInvestigador.getEmail());
+
+            String emailAtual = "";
+            if(newInvestigador.getEmail() == "" || newInvestigador.getEmail() == null) {
+                emailAtual = oldInvestigador.getEmail();
+            } else {
+                emailAtual = newInvestigador.getEmail();
+            }
+
+            if(cStmt.execute()==false) {
+                System.out.println("O dados do investigador com email: " + emailAtual + " foi atualizado com sucesso.");
+            }
+        } catch (SQLException e) {
+            System.out.println("Nao foi possível atualizar os dados do investigador pretendido. Exception: " + e.getMessage());
+        }
+
+        getDBInvestigador();
+
+    }
+
+
     /**
      * Tries to delete a user by calling the stored procedure deleteUser with the given parameters.
      * @param email is the email of the user that we want to delete
      */
 
-    public void deleteInvestigador(String email) {
+    public void deleteInvestigador(Investigador investigador) {
         try {
             CallableStatement cStmt = (CallableStatement) DatabaseConnection.getInstance().getConnection().prepareCall("{call deleteUser(?)}");
-            cStmt.setString(1, email);
+            cStmt.setString(1, investigador.getEmail());
             if(cStmt.execute()==false) {
-                System.out.println("O utilizador com o email " + email +" foi apagado com sucesso" );
+                System.out.println("O utilizador com o email " + investigador.getEmail() +" foi apagado com sucesso" );
             }
         } catch (SQLException e) {
             System.out.println("Nao foi possivel executar com sucesso o seu pedido. Exception: " + e.getMessage() );

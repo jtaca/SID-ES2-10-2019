@@ -20,6 +20,22 @@ public class Medicoes {
         this.idVariaveisMedidas = idVariaveisMedidas;
     }
 
+    public Integer getNumeroMedicao() {
+        return numeroMedicao;
+    }
+
+    public String getDataHoraMedicao(){
+        return dataHoraMedicao;
+    }
+
+    public double getValorMedicao(){
+        return valorMedicao;
+    }
+
+    public Integer getIdVariaveisMedidas(){
+        return idVariaveisMedidas;
+    }
+
     @Override
     public String toString() {
         if(numeroMedicao == null) {

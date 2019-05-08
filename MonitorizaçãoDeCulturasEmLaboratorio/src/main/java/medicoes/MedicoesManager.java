@@ -58,14 +58,14 @@ public class MedicoesManager {
   }
 
 
-  public void deleteMedicoes (int numeroMedicao) {
+  public void deleteMedicoes (Medicoes medicao) {
 
       try {
           CallableStatement cStmt = (CallableStatement) DatabaseConnection.getInstance().getConnection().prepareCall("{call apagarMedicao(?)}");
-          cStmt.setString(1, ""+numeroMedicao);
+          cStmt.setString(1, ""+medicao.getNumeroMedicao());
 
           if(cStmt.execute() == false) {
-              System.out.println("A medição com número: " + numeroMedicao + " foi eliminada com sucesso.");
+              System.out.println("A medição com número: " + medicao.getNumeroMedicao() + " foi eliminada com sucesso.");
           }
       } catch (SQLException e) {
           System.out.println("Não foi possível apagar a medição pretendida. Exception: " + e.getMessage());

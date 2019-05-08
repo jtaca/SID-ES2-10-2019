@@ -64,19 +64,19 @@ public class CultureManager {
     }
 
 
-    public void upadateCultura (int idCultura, String newNomeCultura, String newDescricaoCultura) {
+    public void updateCultura (Culture oldCulture, Culture newCulture) {
 
         DatabaseConnection DB = DatabaseConnection.getInstance();
 
         try {
 
             CallableStatement cStmt = (CallableStatement) DatabaseConnection.getInstance().getConnection().prepareCall("{call updateCultura(?,?,?)}");
-            cStmt.setString(1, ""+idCultura);
-            cStmt.setString(2, newNomeCultura);
-            cStmt.setString(3, newDescricaoCultura);
+            cStmt.setString(1, ""+oldCulture.getId());
+            cStmt.setString(2, newCulture.getCultureName());
+            cStmt.setString(3, newCulture.getCultureDescription());
 
             if(cStmt.execute()==false) {
-                System.out.println("A cultura com id: " + idCultura + " foi atualizada com sucesso.");
+                System.out.println("A cultura com id: " + oldCulture.getId() + " foi atualizada com sucesso.");
             }
         } catch (SQLException e) {
             System.out.println("Nao foi possível atualizar a cultura pretendida. Exception: " + e.getMessage());
@@ -86,13 +86,13 @@ public class CultureManager {
     }
 
 
-    public void deleteCultura (int idCulture) {
+    public void deleteCultura (Culture culture) {
 
         try {
             CallableStatement cStmt = (CallableStatement) DatabaseConnection.getInstance().getConnection().prepareCall("{call apagarCultura(?)}");
-            cStmt.setString(1, ""+idCulture);
+            cStmt.setString(1, ""+culture.getId());
             if(cStmt.execute()==false) {
-                System.out.println("A cultura com id: " + idCulture + " e respectivas variaveis medidas e medicões foram eliminadas com sucesso.");
+                System.out.println("A cultura com id: " + culture.getId() + " e respectivas variaveis medidas e medicões foram eliminadas com sucesso.");
             }
         } catch (SQLException e) {
             System.out.println("Nao foi possível apagar a cultura pretendida. Exception: " + e.getMessage());
