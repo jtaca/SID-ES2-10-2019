@@ -82,4 +82,20 @@ public class VariableManager {
         }
     }
 
+    public void alterarLimitesTemperatura(double limiteInferior, double limiteSuperior){
+        try {
+            CallableStatement cStmt = (CallableStatement) DatabaseConnection.getInstance().getConnection().prepareCall
+                    ("{call alterarLimitesTemperatura(?,?)}");
+            cStmt.setDouble(1, limiteInferior);
+            cStmt.setDouble(2, limiteSuperior);
+
+            if(cStmt.execute()==false) {
+                System.out.println("Os limites de Temperatura foram atualizados: limite Inferior: " + limiteInferior +
+                        " e limite Superior: " + limiteSuperior );
+            }
+        } catch (SQLException e) {
+            System.out.println("Nao foi possivel executar com sucesso o seu pedido. Exception: " + e.getMessage() );
+        }
+    }
+
 }
