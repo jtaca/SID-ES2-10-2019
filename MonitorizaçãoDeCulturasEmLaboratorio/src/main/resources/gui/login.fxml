@@ -14,11 +14,11 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<StackPane style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane prefHeight="430.0" prefWidth="900.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.LoginController">
    <children>
       <HBox alignment="CENTER" maxWidth="1.7976931348623157E308">
          <children>
-            <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0">
+            <VBox alignment="CENTER_LEFT" prefHeight="425.0" prefWidth="441.0">
                <children>
                   <HBox alignment="CENTER_LEFT">
                      <children>
@@ -50,7 +50,7 @@
                         <Insets top="70.0" />
                      </VBox.margin>
                   </Label>
-                  <TextField style="-fx-border-width: 0 0 1 0; -fx-border-style: solid; -fx-background-color: white; -fx-border-insets: 0;">
+                  <TextField fx:id="username" style="-fx-border-width: 0 0 1 0; -fx-border-style: solid; -fx-background-color: white; -fx-border-insets: 0;">
                      <VBox.margin>
                         <Insets right="70.0" />
                      </VBox.margin>
@@ -66,7 +66,7 @@
                         <Insets top="40.0" />
                      </VBox.margin>
                   </Label>
-                  <PasswordField style="-fx-border-width: 0 0 1 0; -fx-border-style: solid; -fx-background-color: white;">
+                  <PasswordField fx:id="password" style="-fx-border-width: 0 0 1 0; -fx-border-style: solid; -fx-background-color: white;">
                      <VBox.margin>
                         <Insets right="70.0" />
                      </VBox.margin>
@@ -74,7 +74,7 @@
                         <Font size="16.0" />
                      </font>
                   </PasswordField>
-                  <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-background-color: white; -fx-border-style: solid;" text="Login">
+                  <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#login" style="-fx-background-color: white; -fx-border-style: solid;" text="Login">
                      <VBox.margin>
                         <Insets right="70.0" top="60.0" />
                      </VBox.margin>
@@ -90,7 +90,7 @@
                   </Button>
                </children>
                <HBox.margin>
-                  <Insets left="30.0" />
+                  <Insets bottom="30.0" left="30.0" top="30.0" />
                </HBox.margin>
             </VBox>
             <VBox alignment="CENTER_RIGHT" maxHeight="1200.0" prefHeight="200.0" prefWidth="100.0">
@@ -103,7 +103,7 @@
                         <Insets />
                      </VBox.margin>
                   </ImageView>
-                  <ImageView fitHeight="579.0" fitWidth="595.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="579.0" fitWidth="375.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@greenhouse.jpg" />
                      </image>

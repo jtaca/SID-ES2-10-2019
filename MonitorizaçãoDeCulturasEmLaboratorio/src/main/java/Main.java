@@ -1,5 +1,6 @@
 import api.DatabaseConnection;
-import api.Users;
+import api.Investigador;
+import api.InvestigadorManager;
 import variaveis.Variable;
 import variaveis.VariableManager;
 import javafx.util.Pair;
@@ -11,16 +12,12 @@ public class Main {
 
         // Connect to the database
         // For now we connect with the root account. This should be changed later to the user account.
-        DatabaseConnection db = DatabaseConnection.getInstance();
-        Pair<Boolean, String> connectionState = db.connect("root", "");
-        if(!connectionState.getKey()) {
-            System.out.println(connectionState.getValue());
+        DatabaseConnection db1 = DatabaseConnection.getInstance();
+        Pair<Boolean, String> connectionState1 = db1.connect("root", "");
+        if(!connectionState1.getKey()) {
+            System.out.println(connectionState1.getValue());
             System.exit(0);
         }
-
-        Users users= new Users();
-        users.addUser("testeeee", "teste@gmail.com", "chefe", "588", "investigador");
-
 
         // Prepare variables from the database
         VariableManager variableManager = new VariableManager();

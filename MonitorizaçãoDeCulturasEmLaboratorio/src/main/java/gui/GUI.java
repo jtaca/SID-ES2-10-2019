@@ -23,8 +23,7 @@ public class GUI extends Application {
      * Loads and shows the JavaFX main application
      */
     private void mainGUI() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/administrator.fxml"));
-        System.out.println(getClass().getResource("/"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/login.fxml"));
         Parent root;
         try {
             root = (Parent) loader.load();
@@ -32,6 +31,8 @@ public class GUI extends Application {
             e.printStackTrace();
             return;
         }
+        LoginController controller = loader.getController();
+        controller.setPrimaryStage(primaryStage);
 
         primaryStage.setTitle("The Greenhouse - Administrator Management Area");
         primaryStage.setScene(new Scene(root));

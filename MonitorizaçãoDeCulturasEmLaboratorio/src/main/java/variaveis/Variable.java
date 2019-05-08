@@ -3,27 +3,27 @@ package variaveis;
 public class Variable {
 
     private Integer id;
-    private String nome;
+    private String name;
 
-    public Variable(int id, String nome) {
+    public Variable(int id, String name) {
         this.id = id;
-        this.nome = nome;
+        this.name = name;
     }
 
-    public Variable(String nome) {
-        this.nome = nome;
+    public Variable(String name) {
+        this.name = name;
     }
 
-    public String getNome() {
-        return nome;
+    public String getName() {
+        return name;
     }
 
     @Override
     public String toString() {
         if(id == null) {
-            return "(NULL, \"" + nome +"\")";
+            return "(NULL, \"" + name +"\")";
         } else {
-            return "(" + id + ",\"" + nome +"\")";
+            return "(" + id + ",\"" + name +"\")";
         }
 
     }
