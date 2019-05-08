@@ -24,7 +24,8 @@ public class Main {
         variableManager.updateLocalVariables();
         // Insert a new variable into the database. If the variable does not have an ID it will be assigned one automatically (By the database auto-increment).
         variableManager.addVariable(new Variable("nomeDaVariavel"));
-        variableManager.alterarLimitesTemperatura(3,20);
+        variableManager.alterarLimitesTemperatura(19,30);
+
 
         for (Variable v: variableManager.getVariables()) {
             System.out.println(v);

@@ -68,34 +68,32 @@ public class VariableManager {
      * @param novoValor is the new value for the measurement.
      */
 
-    public void alterarValorMedido(int idMedicao, double novoValor) {
+    public void callStoredProcedure2Doubles(String sp,double arg1, double arg2, String message) {
         try {
-            CallableStatement cStmt = (CallableStatement) DatabaseConnection.getInstance().getConnection().prepareCall("{call alterarValorMedido(?,?)}");
-            cStmt.setInt(1, idMedicao);
-            cStmt.setDouble(2, novoValor);
+            CallableStatement cStmt = (CallableStatement) DatabaseConnection.getInstance().getConnection().prepareCall
+                    ("{call "+sp+"(?,?)}");
+            cStmt.setDouble(1, arg1);
+            cStmt.setDouble(2, arg2);
 
             if(cStmt.execute()==false) {
-                System.out.println("A mediçao com id " + idMedicao + " foi corretamente atualizado para " + novoValor );
+                System.out.println(message);
             }
         } catch (SQLException e) {
             System.out.println("Nao foi possivel executar com sucesso o seu pedido. Exception: " + e.getMessage() );
         }
     }
 
-    public void alterarLimitesTemperatura(double limiteInferior, double limiteSuperior){
-        try {
-            CallableStatement cStmt = (CallableStatement) DatabaseConnection.getInstance().getConnection().prepareCall
-                    ("{call alterarLimitesTemperatura(?,?)}");
-            cStmt.setDouble(1, limiteInferior);
-            cStmt.setDouble(2, limiteSuperior);
 
-            if(cStmt.execute()==false) {
-                System.out.println("Os limites de Temperatura foram atualizados: limite Inferior: " + limiteInferior +
+
+    public void alterarValorMedido(int idMedicao, double novoValor) {
+        callStoredProcedure2Doubles("alterarValorMedido",idMedicao,novoValor,
+                "A mediçao com id " + idMedicao + " foi corretamente atualizado para " + novoValor );
+    }
+
+    public void alterarLimitesTemperatura(double limiteInferior, double limiteSuperior){
+        callStoredProcedure2Doubles("alterarLimitesTemperatura",limiteInferior,limiteSuperior,
+                "Os limites de Temperatura foram atualizados: limite Inferior: " + limiteInferior +
                         " e limite Superior: " + limiteSuperior );
-            }
-        } catch (SQLException e) {
-            System.out.println("Nao foi possivel executar com sucesso o seu pedido. Exception: " + e.getMessage() );
-        }
     }
 
 }
