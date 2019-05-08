@@ -95,5 +95,10 @@ public class VariableManager {
                 "Os limites de Temperatura foram atualizados: limite Inferior: " + limiteInferior +
                         " e limite Superior: " + limiteSuperior );
     }
+    public void alterarLimitesLuz(double limiteInferior, double limiteSuperior){
+        callStoredProcedure2Doubles("alterarLimitesLuz",limiteInferior,limiteSuperior,
+                "Os limites de Luz foram atualizados: limite Inferior: " + limiteInferior +
+                        " e limite Superior: " + limiteSuperior );
+    }
 
 }
