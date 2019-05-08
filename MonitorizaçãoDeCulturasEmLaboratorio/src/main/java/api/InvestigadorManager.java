@@ -82,7 +82,7 @@ public class InvestigadorManager {
 
         try {
 
-            CallableStatement cStmt = (CallableStatement) DatabaseConnection.getInstance().getConnection().prepareCall("{call updateCultura(?,?,?,?)}");
+            CallableStatement cStmt = (CallableStatement) DatabaseConnection.getInstance().getConnection().prepareCall("{call updateInvestigador(?,?,?,?,?)}");
             cStmt.setString(1, oldInvestigador.getEmail());
             cStmt.setString(2, newInvestigador.getName());
             cStmt.setString(3, newInvestigador.getCategory());
