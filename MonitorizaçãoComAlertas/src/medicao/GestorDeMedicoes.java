@@ -104,22 +104,22 @@ public class GestorDeMedicoes {
 		if(sistema.getLimiteSuperiorLuz() - margemAlertaLuz <= m.getLuminosidade() ) {
 			m.setAlertaLuminosidade(true);
 			m.setCausaLuminosidade("O valor da medicao da luminosidade esta proximo do limite superior estabelecido.");
-			emailSender.send4All("Alerta luminosidade", m.getCausaLuminosidade());
+			//emailSender.send4All("Alerta luminosidade", m.getCausaLuminosidade());
 		}
 		else if(sistema.getLimiteInferiorLuz() + margemAlertaLuz >= m.getLuminosidade()) {
 			m.setAlertaLuminosidade(true);
 			m.setCausaLuminosidade("O valor da medicao da luminosidade  esta proximo do limite inferior estabelecido.");
-			emailSender.send4All("Alerta luminosidade", "Olá investigador! " + m.getCausaLuminosidade());
+			//emailSender.send4All("Alerta luminosidade", "Olá investigador! " + m.getCausaLuminosidade());
 		}
 		else if (sistema.getLimiteInferiorLuz() >= m.getLuminosidade()) {
 			m.setAlertaLuminosidade(true);
 			m.setCausaLuminosidade("O valor da medicao da luminosidade ultrapassou o limite inferior estabelecido.");
-			emailSender.send4All("Alerta luminosidade", m.getCausaLuminosidade());
+			//emailSender.send4All("Alerta luminosidade", m.getCausaLuminosidade());
 		}
 		else if (  sistema.getLimiteSuperiorLuz() <= m.getLuminosidade()){
 			m.setAlertaLuminosidade(true);
 			m.setCausaLuminosidade("O valor da medicao da luminosidade ultrapassou o limite superior estabelecido.");
-			emailSender.send4All("Alerta luminosidade", m.getCausaLuminosidade());
+			//emailSender.send4All("Alerta luminosidade", m.getCausaLuminosidade());
 		}	
 	}
 
@@ -133,22 +133,22 @@ public class GestorDeMedicoes {
 		if(sistema.getLimiteSuperiorTemperatura() - margemAlertaTemp <= m.getTemperatura() ) {
 			m.setAlertaTemperatura(true);
 			m.setCausaTemperatura("O valor da medicao da temperatura esta proximo do limite supeior estabelecido.");
-			emailSender.send4All("Alerta temperatura", m.getCausaTemperatura());
+			//emailSender.send4All("Alerta temperatura", m.getCausaTemperatura());
 		}
 		else if ( sistema.getLimiteInferiorTemperatura() + margemAlertaTemp >= m.getTemperatura() ) {
 			m.setAlertaTemperatura(true);
 			m.setCausaTemperatura("O valor da medicao da temperatura esta proximo do limite inferior estabelecido.");
-			emailSender.send4All("Alerta temperatura", m.getCausaTemperatura());
+			//emailSender.send4All("Alerta temperatura", m.getCausaTemperatura());
 		}
 		else if (m.getTemperatura()>= sistema.getLimiteSuperiorTemperatura() ) {
 			m.setAlertaTemperatura(true);
 			m.setCausaTemperatura("O valor da medicao da temperatura  ultrapassou o limite superior estabelecido.");
-			emailSender.send4All("Alerta temperatura", m.getCausaTemperatura());
+			//emailSender.send4All("Alerta temperatura", m.getCausaTemperatura());
 		}
 		else if (m.getTemperatura()<=sistema.getLimiteInferiorTemperatura()) {
 			m.setAlertaTemperatura(true);
 			m.setCausaTemperatura("O valor da medicao da temperatura  ultrapassou o limite inferior estabelecido.");
-			emailSender.send4All("Alerta temperatura", m.getCausaTemperatura());
+			//emailSender.send4All("Alerta temperatura", m.getCausaTemperatura());
 		}
 	}
 
