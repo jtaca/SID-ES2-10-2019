@@ -13,17 +13,17 @@ João Neto @jfpno-iscteiul nº72809 .
 João Saramago @JoaoSaramago nº77561 .  
 Rita Costa @rmsca111-iscteiul nº77778 . 
 
-### Monitorização de Culturas em Laboratório
+# Monitorização de Culturas em Laboratório
 
 ## Install Instructions  
 
-# Server (Includes Database)
+### Server (Includes Database)
 
-# LabClient
+### LabClient
 
 
 
-# AndroidClient
+### AndroidClient
 
 ![Login2](https://user-images.githubusercontent.com/26983006/57474327-c902ca00-7289-11e9-9534-08a53aeb5510.jpg)
 
