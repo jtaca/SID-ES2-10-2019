@@ -22,7 +22,8 @@ public class EmailSender {
 
 	/**
 	 * Constructor called by user with the account credentials of the user's email account calls the necessary setup functions
-	 * @param config config manager received from gui
+	 * @param emails is the list of email's
+	 * @param email is the email of the sender.
 	 */
 	public EmailSender(ArrayList<String> emails, String email) {
 		this.emails = emails;
@@ -49,7 +50,6 @@ public class EmailSender {
 	}
 
 	/**
-	 * Fetches password from config
 	 * @return password as a string
 	 */
 	private String loadPassword() {

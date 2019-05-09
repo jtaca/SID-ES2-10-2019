@@ -46,7 +46,7 @@ public class DatabaseConnection {
 
 	/**
 	 * 
-	 * @param query
+	 * @param query is the query to use in the select
 	 * @return a result set with the results of the query
 	 */
 	public ResultSet select(String query) {

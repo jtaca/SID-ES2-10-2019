@@ -18,7 +18,8 @@ public class Medicao {
 	private String causaLuminosidade;
 
 	/**
-	 * This class represents a sensor measurement.	 
+	 * This class represents a sensor measurement.
+	 * @param message is the measurement used to build the object.	 
 	 */
 
 	public Medicao(MqttMessage message) {
@@ -63,7 +64,7 @@ public class Medicao {
 
 	/**
 	 * Allows you to change the cause of the brightness alert.
-	 * @param causaTemperatura represents what motivated the brightness alert.
+	 * @param causaLuminosidade represents what motivated the brightness alert.
 	 */
 	public void setCausaLuminosidade(String causaLuminosidade) {
 		this.causaLuminosidade = causaLuminosidade;
