@@ -5,8 +5,11 @@ import medicao.Medicao;
 
 public class MongoConnection {
 
-	public void read(){
+	/**
+	 * Allows to read data from a mongo database.
+	 */
 
+	public void read(){
 		@SuppressWarnings("resource")
 		MongoClient mongoClient1 = new MongoClient( "localhost",27017);
 		@SuppressWarnings("deprecation")
@@ -16,8 +19,12 @@ public class MongoConnection {
 		while(cursor.hasNext()) {
 			System.out.println(cursor.next());
 		}
-
 	}
+
+	/**
+	 * Allows you to write data to a mongo database.
+	 * @param m is the measurement that must be recorded in the database.
+	 */
 
 	public void write(Medicao m){
 		MongoClient mongoClient1 = new MongoClient( "localhost",27017);
@@ -42,7 +49,7 @@ public class MongoConnection {
 		if(!m.getCausaLuminosidade().equals(""))
 			document.put("causaLuminosidade", m.getCausaLuminosidade());
 		document.put("exportado", 0 + "");
-		
+
 		try { table.insert(document);} catch (Exception e) {}
 		try{Thread.sleep(5000);} catch (InterruptedException  e) {Thread.currentThread().interrupt();}
 		mongoClient1.close();		

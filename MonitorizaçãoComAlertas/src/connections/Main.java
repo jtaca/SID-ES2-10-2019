@@ -9,7 +9,7 @@ import medicao.GestorDeMedicoes;
 public class Main {
 
 	public static void main(String[] args) throws SQLException, AddressException, MessagingException {
-	
+
 		DatabaseConnection dc = new DatabaseConnection();
 		dc.connect("java", "java");
 		dc.initializeSystem();

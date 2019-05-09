@@ -10,6 +10,11 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import medicao.GestorDeMedicoes;
 import medicao.Medicao;
 
+
+/**
+ * Connects to sensors.
+ */
+
 public class SensorsConnection implements MqttCallback {
 
 	String topic= "/sid_lab_2019_2";  
@@ -19,16 +24,31 @@ public class SensorsConnection implements MqttCallback {
 	String clientId= "clientId-OJtthizHtB";
 	GestorDeMedicoes ges;
 
+	/**
+	 * Creates a connection to sensors.
+	 * @param ges is an instance of the class that manages the measurements received from the sensor.
+	 */
+
 	public SensorsConnection(GestorDeMedicoes ges) {
 		this.ges=ges;
 		init();
 	}
 
+	/**
+	 * Reconnect the sensors if the previous one is lost.
+	 * @param cause is what motivated the loss of the link.
+	 */
 	@Override
 	public void connectionLost(Throwable cause) { 
 		System.out.println("Erro: " + cause.toString());
 		init();
 	}
+
+	/**
+	 *  Receives a message from the given topic as an argument.
+	 * @param topic is the topic.
+	 * @param message is the received message
+	 */
 
 	@Override
 	public void messageArrived(String topic, MqttMessage message) throws Exception {
@@ -42,11 +62,15 @@ public class SensorsConnection implements MqttCallback {
 			System.out.println("Mensagem não reconhecida.");
 		}
 
-}
+	}
 
 	@Override
 	public void deliveryComplete(IMqttDeliveryToken token) {			
 	}
+
+	/**
+	 *  Initializes the connection.
+	 */
 
 	public void init() {
 		try {
