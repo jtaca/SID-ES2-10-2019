@@ -31,12 +31,14 @@ public class Medicao {
 	
 
 	
+	/**
+	 * Returns the attribute 'causaTemperatura' which indicates the cause of the alert.
+	 * @return string causaTemperatura	 
+	 */
 
 	public String getCausaTemperatura() {
 		return causaTemperatura;
 	}
-
-
 
 
 	public void setCausaTemperatura(String causaTemperatura) {
@@ -44,19 +46,14 @@ public class Medicao {
 	}
 
 
-
-
 	public String getCausaLuminosidade() {
 		return causaLuminosidade;
 	}
 
 
-
-
 	public void setCausaLuminosidade(String causaLuminosidade) {
 		this.causaLuminosidade = causaLuminosidade;
 	}
-
 
 
 
