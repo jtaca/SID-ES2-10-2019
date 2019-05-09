@@ -1,4 +1,4 @@
-package variaveis_tests;
+package tests.medicoes_tests;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -6,7 +6,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class VariableManagerTest {
+class MedicoesTest {
 
 	@BeforeEach
 	void setUp() throws Exception {
@@ -17,37 +17,37 @@ class VariableManagerTest {
 	}
 
 	@Test
-	void testUpdateLocalVariables() {
+	void testMedicoesIntegerStringDoubleInteger() {
 		fail("Not yet implemented");
 	}
 
 	@Test
-	void testGetVariables() {
+	void testMedicoesDoubleInteger() {
 		fail("Not yet implemented");
 	}
 
 	@Test
-	void testAddVariable() {
+	void testGetNumeroMedicao() {
 		fail("Not yet implemented");
 	}
 
 	@Test
-	void testCallStoredProcedure2Doubles() {
+	void testGetDataHoraMedicao() {
 		fail("Not yet implemented");
 	}
 
 	@Test
-	void testAlterarValorMedido() {
+	void testGetValorMedicao() {
 		fail("Not yet implemented");
 	}
 
 	@Test
-	void testAlterarLimitesTemperatura() {
+	void testGetIdVariaveisMedidas() {
 		fail("Not yet implemented");
 	}
 
 	@Test
-	void testAlterarLimitesLuz() {
+	void testToString() {
 		fail("Not yet implemented");
 	}
 

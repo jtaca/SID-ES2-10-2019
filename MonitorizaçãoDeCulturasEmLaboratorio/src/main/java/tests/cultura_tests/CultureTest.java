@@ -1,4 +1,4 @@
-package gui_tests;
+package tests.cultura_tests;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -6,7 +6,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class InvestigatorControllerTest {
+class CultureTest {
 
 	@BeforeEach
 	void setUp() throws Exception {
@@ -17,42 +17,37 @@ class InvestigatorControllerTest {
 	}
 
 	@Test
-	void testAddCulture() {
+	void testCultureIntegerStringStringString() {
 		fail("Not yet implemented");
 	}
 
 	@Test
-	void testEditCulture() {
+	void testCultureStringStringString() {
 		fail("Not yet implemented");
 	}
 
 	@Test
-	void testDeleteCulture() {
+	void testGetId() {
 		fail("Not yet implemented");
 	}
 
 	@Test
-	void testRefreshCulturesTable() {
+	void testGetCultureName() {
 		fail("Not yet implemented");
 	}
 
 	@Test
-	void testAddMeasurement() {
+	void testGetCultureDescription() {
 		fail("Not yet implemented");
 	}
 
 	@Test
-	void testEditMeasurement() {
+	void testGetInvestigatorEmail() {
 		fail("Not yet implemented");
 	}
 
 	@Test
-	void testDeleteMeasurement() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testRefreshMeasurementsTable() {
+	void testToString() {
 		fail("Not yet implemented");
 	}
 

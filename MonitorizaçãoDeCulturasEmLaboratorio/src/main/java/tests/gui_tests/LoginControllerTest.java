@@ -1,4 +1,4 @@
-package gui_tests;
+package tests.gui_tests;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -6,7 +6,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class AddInvestigatorControllerTest {
+class LoginControllerTest {
 
 	@BeforeEach
 	void setUp() throws Exception {
@@ -17,7 +17,12 @@ class AddInvestigatorControllerTest {
 	}
 
 	@Test
-	void testRegister() {
+	void testSetPrimaryStage() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	void testLogin() {
 		fail("Not yet implemented");
 	}
 

@@ -1,4 +1,4 @@
-package gui_tests;
+package tests.variaveis_tests;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -6,7 +6,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class EditInvestigatorControllerTest {
+class VariableTest {
 
 	@BeforeEach
 	void setUp() throws Exception {
@@ -17,7 +17,22 @@ class EditInvestigatorControllerTest {
 	}
 
 	@Test
-	void testRegister() {
+	void testVariableIntString() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	void testVariableString() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	void testGetName() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	void testToString() {
 		fail("Not yet implemented");
 	}
 

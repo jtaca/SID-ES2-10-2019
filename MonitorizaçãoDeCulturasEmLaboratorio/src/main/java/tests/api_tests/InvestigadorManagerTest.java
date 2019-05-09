@@ -1,4 +1,4 @@
-package cultura_tests;
+package tests.api_tests;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -6,7 +6,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class CultureTest {
+class InvestigadorManagerTest {
 
 	@BeforeEach
 	void setUp() throws Exception {
@@ -17,37 +17,32 @@ class CultureTest {
 	}
 
 	@Test
-	void testCultureIntegerStringStringString() {
+	void testInvestigadorManager() {
 		fail("Not yet implemented");
 	}
 
 	@Test
-	void testCultureStringStringString() {
+	void testGetListOfInvestigadores() {
 		fail("Not yet implemented");
 	}
 
 	@Test
-	void testGetId() {
+	void testGetDBInvestigador() {
 		fail("Not yet implemented");
 	}
 
 	@Test
-	void testGetCultureName() {
+	void testInsertInvestigador() {
 		fail("Not yet implemented");
 	}
 
 	@Test
-	void testGetCultureDescription() {
+	void testUpdateInvestigador() {
 		fail("Not yet implemented");
 	}
 
 	@Test
-	void testGetInvestigatorEmail() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testToString() {
+	void testDeleteInvestigador() {
 		fail("Not yet implemented");
 	}
 

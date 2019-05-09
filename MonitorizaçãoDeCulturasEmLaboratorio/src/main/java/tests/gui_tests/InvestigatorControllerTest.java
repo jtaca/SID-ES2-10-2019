@@ -1,4 +1,4 @@
-package cultura_tests;
+package tests.gui_tests;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -6,7 +6,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class CultureManagerTest {
+class InvestigatorControllerTest {
 
 	@BeforeEach
 	void setUp() throws Exception {
@@ -17,27 +17,42 @@ class CultureManagerTest {
 	}
 
 	@Test
-	void testGetListOfCultures() {
+	void testAddCulture() {
 		fail("Not yet implemented");
 	}
 
 	@Test
-	void testGetDBCultures() {
+	void testEditCulture() {
 		fail("Not yet implemented");
 	}
 
 	@Test
-	void testInsertCultura() {
+	void testDeleteCulture() {
 		fail("Not yet implemented");
 	}
 
 	@Test
-	void testUpdateCultura() {
+	void testRefreshCulturesTable() {
 		fail("Not yet implemented");
 	}
 
 	@Test
-	void testDeleteCultura() {
+	void testAddMeasurement() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	void testEditMeasurement() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	void testDeleteMeasurement() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	void testRefreshMeasurementsTable() {
 		fail("Not yet implemented");
 	}
 

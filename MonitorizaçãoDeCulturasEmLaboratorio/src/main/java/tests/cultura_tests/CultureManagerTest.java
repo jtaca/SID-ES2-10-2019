@@ -1,4 +1,4 @@
-package medicoes_tests;
+package tests.cultura_tests;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -6,7 +6,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class MedicoesManagerTest {
+class CultureManagerTest {
 
 	@BeforeEach
 	void setUp() throws Exception {
@@ -17,27 +17,27 @@ class MedicoesManagerTest {
 	}
 
 	@Test
-	void testGetListOfMedicoes() {
+	void testGetListOfCultures() {
 		fail("Not yet implemented");
 	}
 
 	@Test
-	void testGetDBMedicoes() {
+	void testGetDBCultures() {
 		fail("Not yet implemented");
 	}
 
 	@Test
-	void testInsertMedicoes() {
+	void testInsertCultura() {
 		fail("Not yet implemented");
 	}
 
 	@Test
-	void testDeleteMedicoes() {
+	void testUpdateCultura() {
 		fail("Not yet implemented");
 	}
 
 	@Test
-	void testSelectMedicoes() {
+	void testDeleteCultura() {
 		fail("Not yet implemented");
 	}
 
