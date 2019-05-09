@@ -16,7 +16,12 @@ public class Medicao {
 	private boolean exportadoParaOMongo;
 	private String causaTemperatura;
 	private String causaLuminosidade;
-	
+
+	/**
+	 * This class represents a sensor measurement.
+	 * @param message is the measurement used to build the object.	 
+	 */
+
 	public Medicao(MqttMessage message) {
 		super();
 		parseMessage(message);
@@ -28,79 +33,111 @@ public class Medicao {
 		causaLuminosidade="";
 		causaTemperatura="";
 	}
-	
 
-	
+
+
+	/**
+	 * @return Returns what motivated the temperature alert.
+	 */
 
 	public String getCausaTemperatura() {
 		return causaTemperatura;
 	}
 
 
-
+	/**
+	 * Allows you to change the cause of the temperature alert.
+	 * @param causaTemperatura represents what motivated the temperature alert.
+	 */
 
 	public void setCausaTemperatura(String causaTemperatura) {
 		this.causaTemperatura = causaTemperatura;
 	}
 
-
-
+	/**
+	 * @return Returns what motivated the brightness alert.
+	 */
 
 	public String getCausaLuminosidade() {
 		return causaLuminosidade;
 	}
 
-
-
-
+	/**
+	 * Allows you to change the cause of the brightness alert.
+	 * @param causaLuminosidade represents what motivated the brightness alert.
+	 */
 	public void setCausaLuminosidade(String causaLuminosidade) {
 		this.causaLuminosidade = causaLuminosidade;
 	}
 
-
-
+	/**
+	 * It analyzes the received message from the sensor and assigns the values to the respective attributes of the measurement.
+	 * @param message is the measurement coming from the sensor.
+	 */
 
 	public void parseMessage(MqttMessage message) {
 
-			String [] measures = message.toString().split(",");
-			String temp = measures[0].substring(8, measures[0].length()-1);
-			String[] lum = measures[4].toString().split("s");
-			String res = lum[0].substring(8, lum[0].length()-2);
-			this.timestamp = parseDate();
-			this.temperatura = Double.parseDouble(temp);
-			this.luminosidade = Integer.parseInt(res);
-		
+		String [] measures = message.toString().split(",");
+		String temp = measures[0].substring(8, measures[0].length()-1);
+		String[] lum = measures[4].toString().split("s");
+		String res = lum[0].substring(8, lum[0].length()-2);
+		this.timestamp = parseDate();
+		this.temperatura = Double.parseDouble(temp);
+		this.luminosidade = Integer.parseInt(res);
+
 	}
+
+	/**
+	 * Lets you specify whether or not a temperature measurement is an alert.
+	 * @param alertaLuminosidade indicates whether or not the  temperature measurement is an alert.
+	 */
 
 	public void setAlertaLuminosidade(boolean alertaLuminosidade) {
 		this.alertaLuminosidade = alertaLuminosidade;
 	}
 
-
+	/**
+	 * Lets you specify whether or not a brightness measurement represents an alert.
+	 * @param alertaTemperatura indicates whether or not the brightness measurement is an alert.
+	 */
 	public void setAlertaTemperatura(boolean alertaTemperatura) {
 		this.alertaTemperatura = alertaTemperatura;
 	}
 
+	/**
+	 * Lets you specify whether or not a temperature measurement is a sensor measurement error.
+	 * @param erroTemperatura indicates whether or not the brightness measurement is a sensor measurement error.
+	 */
 
 	public void setErroTemperatura(boolean erroTemperatura) {
 		this.erroTemperatura = erroTemperatura;
 	}
 
+	/**
+	 * @return the date of measurement.
+	 */
 
 	public String getTimestamp() {
 		return timestamp;
 	}
 
-
+	/**
+	 * @return the temperature value.
+	 */
 	public double getTemperatura() {
 		return temperatura;
 	}
 
-
+	/**
+	 * @return the brightness value.
+	 */
 	public double getLuminosidade() {
 		return luminosidade;
 	}
 
+	/**
+	 * @return 1 if the brightness measurement is an alert and 0 otherwise.
+	 */
 
 	public int isAlertaLuminosidade() {
 		if(alertaLuminosidade){
@@ -110,6 +147,9 @@ public class Medicao {
 		}
 	}
 
+	/**
+	 * @return 1 if the temperature measurement is an alert and 0 otherwise.
+	 */
 
 	public int isAlertaTemperatura() {
 		if(alertaTemperatura){
@@ -119,6 +159,9 @@ public class Medicao {
 		}
 	}
 
+	/**
+	 * @return 1 if the temperature measurement is an error and 0 otherwise.
+	 */
 
 	public int isErroTemperatura() {
 		if(erroTemperatura){
@@ -128,7 +171,9 @@ public class Medicao {
 		}
 	}
 
-
+	/**
+	 * @return 1 if the brightness measurement is an error and 0 otherwise.
+	 */
 
 	public int isErroLuminosidade() {
 		if(erroLuminosidade){
@@ -138,29 +183,42 @@ public class Medicao {
 		}
 	}
 
-
+	/**
+	 * @return true if the measurement was exported to the mongo database and false otherwise.
+	 */
 	public boolean isExportadoParaOMongo() {
 		return exportadoParaOMongo;
 	}
 
+	/**
+	 * Lets you specify whether a measurement has been exported to the mongo database or not.
+	 * @param exportadoParaOMongo represents whether a measurement has been exported to the mongo database or not.
+	 */
 
 	public void setExportadoParaOMongo(boolean exportadoParaOMongo) {
 		this.exportadoParaOMongo = exportadoParaOMongo;
 	}
 
-
+	/**
+	 * Lets you specify whether a measurement of brightness is a sensor error or not.
+	 * @param erroLuminosidade represents whether a measurement of brightness is a measurement error or not.
+	 */
 	public void setErroLuminosidade(boolean erroLuminosidade) {
 		this.erroLuminosidade = erroLuminosidade;
 	}
-	
+
+	/**
+	 * @return the date in the desired format.
+	 */
+
 	public String parseDate() {
 		String currentDate = LocalDateTime.now() +"";
 		String replacedDate = currentDate.replace('T', ' ');
 		return replacedDate.substring(0, replacedDate.length()-4);
-		
+
 	}
-	
-	
+
+
 
 	@Override
 	public String toString() {
@@ -168,5 +226,5 @@ public class Medicao {
 				+ ", alertaLuminosidade=" + alertaLuminosidade + ", alertaTemperatura=" + alertaTemperatura
 				+ ", erroTemperatura=" + erroTemperatura + ", erroLuminosidade=" + erroLuminosidade + "]";
 	}
-	
+
 }

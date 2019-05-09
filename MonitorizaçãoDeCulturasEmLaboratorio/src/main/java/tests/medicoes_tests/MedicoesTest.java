@@ -1,4 +1,4 @@
-package api_tests;
+package tests.medicoes_tests;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -6,7 +6,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class InvestigadorManagerTest {
+class MedicoesTest {
 
 	@BeforeEach
 	void setUp() throws Exception {
@@ -17,32 +17,37 @@ class InvestigadorManagerTest {
 	}
 
 	@Test
-	void testInvestigadorManager() {
+	void testMedicoesIntegerStringDoubleInteger() {
 		fail("Not yet implemented");
 	}
 
 	@Test
-	void testGetListOfInvestigadores() {
+	void testMedicoesDoubleInteger() {
 		fail("Not yet implemented");
 	}
 
 	@Test
-	void testGetDBInvestigador() {
+	void testGetNumeroMedicao() {
 		fail("Not yet implemented");
 	}
 
 	@Test
-	void testInsertInvestigador() {
+	void testGetDataHoraMedicao() {
 		fail("Not yet implemented");
 	}
 
 	@Test
-	void testUpdateInvestigador() {
+	void testGetValorMedicao() {
 		fail("Not yet implemented");
 	}
 
 	@Test
-	void testDeleteInvestigador() {
+	void testGetIdVariaveisMedidas() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	void testToString() {
 		fail("Not yet implemented");
 	}
 

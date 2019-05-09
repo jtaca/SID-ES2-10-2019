@@ -21,8 +21,8 @@ public class DatabaseConnection {
 
 	/**
 	 * Attempts to establish a connection to the database with the given parameters.
-	 * @param username a username
-	 * @param password a password
+	 * @param username is the username.
+	 * @param password is the password.
 	 * @return a Boolean, String pair. The Boolean represents the success of the connection. If false, the connection failed and the String contains the appropriate error message.
 	 */
 
@@ -46,8 +46,8 @@ public class DatabaseConnection {
 
 	/**
 	 * 
-	 * @param query
-	 * @return
+	 * @param query is the query to use in the select
+	 * @return a result set with the results of the query
 	 */
 	public ResultSet select(String query) {
 		if (conn == null) {
@@ -70,10 +70,10 @@ public class DatabaseConnection {
 		return rs;
 	}
 
-	public Connection getConnection() {
-		return conn;
-	}
-
+	/**
+	 * Returns an instance of the connection.
+	 * @return an instance of the connection.
+	 */
 
 	public static DatabaseConnection getInstance(){
 		if(single_instance == null) {
@@ -82,6 +82,13 @@ public class DatabaseConnection {
 		return single_instance;
 	}
 
+	/**
+	 * Does a select to a table given by the param table.
+	 * @param con is the connection to the database.
+	 * @param table is the name of the table.
+	 * @param column is the column of the table that we want to select
+	 * @return a double value relative to the select.
+	 */
 
 	public double viewTable(Connection con,String table, String column)
 			throws SQLException {
@@ -102,7 +109,15 @@ public class DatabaseConnection {
 		}
 		return res;
 	}
-	
+
+	/**
+	 * Returns a list of emails.
+	 * @param con is the connection to the database.
+	 * @param table is the name of the table.
+	 * @param column is the column of the table that we want to select
+	 * @return a list of emails.
+	 */
+
 	public ArrayList<String> getEmails(Connection con,String table, String column)
 			throws SQLException {
 		ArrayList<String> res = new ArrayList<String>();
@@ -122,8 +137,15 @@ public class DatabaseConnection {
 		return res;
 	}
 
+	/**
+	 * Create the object 'system' which has all of limits defines to the greenhouse.
+	 * @return object sistema.
+	 */
+
+
 	public Sistema initializeSystem() {
 		Sistema sis = null;
+
 		EmailSender emailSender = null;
 		try {
 			double limiteInferiorTemperatura = viewTable(conn,"sistema", "LimiteInferiorTemperatura");
@@ -146,6 +168,10 @@ public class DatabaseConnection {
 
 	}
 
+	/**
+	 * Return the atribute 'Gestor de mediçoes'.
+	 * @return object 'GestorDeMedicoes'.
+	 */
 	public GestorDeMedicoes getGestor() {
 		return ges;
 	}

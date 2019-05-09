@@ -9,8 +9,19 @@ public class Sistema {
 	private double percentagemVariacaoLuz;
 	private double margemSegurancaLuz;
 	private double margemSegurancaTemperatura;
-	
-	
+
+	/**
+	 *  Creates the system that represents the greenhouse.
+	 *  @param limiteInferiorTemperatura is the lower limit of temperature of the stove.
+	 *  @param limiteSuperiorTemperatura is the upper limit of temperature of the stove.
+	 *  @param limiteInferiorLuz is the lower limit of brightness of the stove.
+	 *  @param limiteSuperiorLuz is the upper limit of brightness of the stove.
+	 *  @param percentagemVariacaoTemperatura is the maximum percentage of variation relative to the upper and lower limits of temperature between a measurement and the two previous ones so that it is considered a measurement error if it is exceeded.
+	 *  @param percentagemVariacaoLuz is the maximum percentage of variation relative to the upper and lower limits of brightness between a measurement and the two previous ones so that it is considered a measurement error if it is exceeded.
+	 *  @param margemSegurancaLuz is the maximum percentage of variation that a brightness measurement may be below the upper limit and above the lower limit so as not to be considered a measurement error.
+	 *  @param margemSegurancaTemperatura is the maximum percentage of variation that a temperature measurement may be below the upper limit and above the lower limit so as not to be considered a measurement error.
+	 */
+
 	public Sistema(double limiteInferiorTemperatura, double limiteSuperiorTemperatura, double limiteInferiorLuz,
 			double limiteSuperiorLuz, double percentagemVariacaoTemperatura, double percentagemVariacaoLuz,
 			double margemSegurancaLuz, double margemSegurancaTemperatura) {
@@ -25,39 +36,70 @@ public class Sistema {
 		this.margemSegurancaTemperatura = margemSegurancaTemperatura;
 	}
 
+	/**
+	 *  @return the lower limit of temperature.
+	 */
 
 	public double getLimiteInferiorTemperatura() {
 		return limiteInferiorTemperatura;
 	}
 
+	/**
+	 *  @return the upper limit of temperature.
+	 */
+
 	public double getLimiteSuperiorTemperatura() {
 		return limiteSuperiorTemperatura;
 	}
+
+	/**
+	 *  @return the lower limit of brightness.
+	 */
 
 	public double getLimiteInferiorLuz() {
 		return limiteInferiorLuz;
 	}
 
+	/**
+	 *  @return the upper limit of brightness.
+	 */
+
 	public double getLimiteSuperiorLuz() {
 		return limiteSuperiorLuz;
 	}
+
+	/**
+	 *  @return the maximum percentage of variation relative to the upper and lower limits of temperature between a measurement and the two previous ones so that it is considered a measurement error if it is exceeded.
+	 */ 
 
 	public double getPercentagemVariacaoTemperatura() {
 		return percentagemVariacaoTemperatura;
 	}
 
+	/**
+	 *  @return the maximum percentage of variation relative to the upper and lower limits of brightness between a measurement and the two previous ones so that it is considered a measurement error if it is exceeded.
+	 */ 
+
 	public double getPercentagemVariacaoLuz() {
 		return percentagemVariacaoLuz;
 	}
+
+	/**
+	 *  @return the maximum percentage of variation that a brightness measurement may be below the upper limit and above the lower limit so as not to be considered a measurement error.
+	 */ 
 
 	public double getMargemSegurancaLuz() {
 		return margemSegurancaLuz;
 	}
 
+	/**
+	 *  @return the maximum percentage of variation that a temperature measurement may be below the upper limit and above the lower limit so as not to be considered a measurement error.
+	 */ 
+
 	public double getMargemSegurancaTemperatura() {
 		return margemSegurancaTemperatura;
 	}
-	
-	
+
+
 
 }
