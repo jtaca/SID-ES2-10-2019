@@ -25,7 +25,7 @@ Rita Costa @rmsca111-iscteiul nº77778 .
 
 ### AndroidClient
 
-To install the android app, you have to copy the .apk generated
+To install the android app, you have to copy the .apk generated [here](https://github.com/jtaca/SID-ES2-10-2019/blob/master/AppAndroid/SID2019/app/release/app-release.apk) and install it on your android smartphone.
 
 ![Login2](https://user-images.githubusercontent.com/26983006/57474327-c902ca00-7289-11e9-9534-08a53aeb5510.jpg)
 
