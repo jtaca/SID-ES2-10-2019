@@ -7,7 +7,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 
 public class LoginController {
@@ -23,13 +22,14 @@ public class LoginController {
         this.primaryStage = primaryStage;
     }
 
+
     public void login(MouseEvent mouseEvent) {
         System.out.println("Logging in...");
         System.out.println("Username: "+username.getText());
         System.out.println("Password: "+password.getText());
-
         startAdminPanel();
     }
+
 
     private void startAdminPanel() {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/administrator.fxml"));

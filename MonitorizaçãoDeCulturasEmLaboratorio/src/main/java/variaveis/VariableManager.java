@@ -18,6 +18,7 @@ public class VariableManager {
     private ArrayList<Variable> variables = new ArrayList<Variable>();
 
     public void updateLocalVariables() {
+
         DatabaseConnection db = DatabaseConnection.getInstance();
 
         if(db.isConnected()) {

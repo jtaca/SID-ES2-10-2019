@@ -52,7 +52,7 @@ public class CultureManager {
     }
 
 
-    public void insertCultura (Culture culture) {
+    public void insertCulture (Culture culture) {
 
         DatabaseConnection DB = DatabaseConnection.getInstance();
 
@@ -64,7 +64,7 @@ public class CultureManager {
     }
 
 
-    public void updateCultura (Culture oldCulture, Culture newCulture) {
+    public void updateCulture (Culture oldCulture, Culture newCulture) {
 
         DatabaseConnection DB = DatabaseConnection.getInstance();
 
@@ -86,7 +86,7 @@ public class CultureManager {
     }
 
 
-    public void deleteCultura (Culture culture) {
+    public void deleteCulture (Culture culture) {
 
         try {
             CallableStatement cStmt = (CallableStatement) DatabaseConnection.getInstance().getConnection().prepareCall("{call apagarCultura(?)}");

@@ -14,7 +14,7 @@ public class Main {
         // Connect to the database
         // For now we connect with the root account. This should be changed later to the user account.
         DatabaseConnection db1 = DatabaseConnection.getInstance();
-        Pair<Boolean, String> connectionState1 = db1.connect("root", "");
+        Pair<Boolean, String> connectionState1 = db1.connect("TesteInvestigador", "iscte");
         if(!connectionState1.getKey()) {
             System.out.println(connectionState1.getValue());
             System.exit(0);
