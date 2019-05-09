@@ -21,6 +21,10 @@ Rita Costa @rmsca111-iscteiul nº77778 .
 
 # LabClient
 
+
+
+# AndroidClient
+
 ![Login2](https://user-images.githubusercontent.com/26983006/57474327-c902ca00-7289-11e9-9534-08a53aeb5510.jpg)
 
 ![ComboBox](https://user-images.githubusercontent.com/26983006/57474418-f0f22d80-7289-11e9-8522-0146b76ffb2d.jpg)
@@ -32,8 +36,4 @@ Rita Costa @rmsca111-iscteiul nº77778 .
 ![Alertas Globais](https://user-images.githubusercontent.com/26983006/57474519-28f97080-728a-11e9-9fe3-80039e12b598.jpg)
 
 ![Graficos sem dados](https://user-images.githubusercontent.com/26983006/57474563-4dede380-728a-11e9-8c49-b71d529a984a.jpg)
-
-# AndroidClient
-
-
 	
