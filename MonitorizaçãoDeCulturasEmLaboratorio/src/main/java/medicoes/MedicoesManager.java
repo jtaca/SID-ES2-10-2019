@@ -2,6 +2,8 @@ package medicoes;
 
 import api.DatabaseConnection;
 import com.mysql.cj.jdbc.CallableStatement;
+
+import java.awt.*;
 import java.util.List;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -61,7 +63,8 @@ public class MedicoesManager {
   public void deleteMedicoes (Medicoes medicao) {
 
       try {
-          CallableStatement cStmt = (CallableStatement) DatabaseConnection.getInstance().getConnection().prepareCall("{call apagarMedicao(?)}");
+          CallableStatement cStmt = (CallableStatement) DatabaseConnection.getInstance().getConnection().prepareCall
+                  ("{call apagarMedicao(?)}");
           cStmt.setString(1, ""+medicao.getNumeroMedicao());
 
           if(cStmt.execute() == false) {
@@ -74,6 +77,30 @@ public class MedicoesManager {
       getDBMedicoes();
 
   }
+
+    public void selectMedicoes() {
+
+        DatabaseConnection DB = DatabaseConnection.getInstance();
+
+        try {
+            CallableStatement cStmt = (CallableStatement) DatabaseConnection.getInstance().getConnection().prepareCall
+                    ("{call selectMedicoes()}");
+            boolean hadResults = cStmt.execute();
+            System.out.println("Medições tem entradas? "+ hadResults);
+
+            ResultSet rs = cStmt.getResultSet();
+            addMedicoes(rs);
+
+            //System.out.println("SelectMedicoesIn: "+ getListOfMedicoes().toString());
+
+
+            if(cStmt.execute()) {
+                System.out.println("SelectMedicoes foi executado com sucesso!");
+            }
+        } catch (SQLException e) {
+            System.out.println("Não foi possível executar selectMedicoes. Exception: " + e.getMessage());
+        }
+    }
 
 
 }
