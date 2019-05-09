@@ -6,7 +6,7 @@ This repository, is dedicated to the project "Monitorização de Culturas em Lab
 
 
 The team members are:   
-André Silva nº77981 @TheSilvandre .  
+André Silva @TheSilvandre nº77981  .  
 Gonçalo Fernandes @gbfso-iscteiul nº73538 .  
 João Aparício @jtaca nº77812 .  
 João Neto @jfpno-iscteiul nº72809 .  
@@ -21,9 +21,11 @@ Rita Costa @rmsca111-iscteiul nº77778 .
 
 ### LabClient
 
-
+![Web_1366_–_1](https://user-images.githubusercontent.com/26983006/57474830-f56b1600-728a-11e9-8d3d-be5cb239566d.png)
 
 ### AndroidClient
+
+To install the android app, you have to copy the .apk generated
 
 ![Login2](https://user-images.githubusercontent.com/26983006/57474327-c902ca00-7289-11e9-9534-08a53aeb5510.jpg)
 
