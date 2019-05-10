@@ -83,7 +83,7 @@ public class DatabaseConnection {
 	}
 
 	/**
-	 * Does a select to a table given by the param table.
+	 * Does a select to a table given by the parameter table.
 	 * @param con is the connection to the database.
 	 * @param table is the name of the table.
 	 * @param column is the column of the table that we want to select
@@ -111,11 +111,11 @@ public class DatabaseConnection {
 	}
 
 	/**
-	 * Returns a list of emails.
+	 * Returns a list of email's.
 	 * @param con is the connection to the database.
 	 * @param table is the name of the table.
-	 * @param column is the column of the table that we want to select
-	 * @return a list of emails.
+	 * @param column is the column of the table that we want to select.
+	 * @return a list of email's.
 	 */
 
 	public ArrayList<String> getEmails(Connection con,String table, String column)
@@ -138,8 +138,8 @@ public class DatabaseConnection {
 	}
 
 	/**
-	 * Create the object 'system' which has all of limits defines to the greenhouse.
-	 * @return object sistema.
+	 * Creates a'system' object which contains all the information on the greenhouse.
+	 * @return system object .
 	 */
 
 
@@ -169,7 +169,7 @@ public class DatabaseConnection {
 	}
 
 	/**
-	 * Return the atribute 'Gestor de mediçoes'.
+	 * Return the attribute relative to the measurement manager.
 	 * @return object 'GestorDeMedicoes'.
 	 */
 	public GestorDeMedicoes getGestor() {
