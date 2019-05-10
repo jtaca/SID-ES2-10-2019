@@ -1,6 +1,5 @@
 package api;
 import javafx.util.Pair;
-import variaveis.Variable;
 
 import java.sql.*;
 

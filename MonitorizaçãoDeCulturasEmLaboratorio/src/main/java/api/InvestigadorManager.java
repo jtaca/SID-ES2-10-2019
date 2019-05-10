@@ -6,24 +6,24 @@ import java.util.List;
 import java.util.ArrayList;
 import com.mysql.cj.jdbc.CallableStatement;
 
+
+/**
+ * Class responsible for the management of investigators in the respective table of the database.
+ *  Has methods to insert, remove and update.
+ */
+
 public class InvestigadorManager {
 
     private List<Investigador> listOfUsers = new ArrayList<Investigador>();
 
-    public InvestigadorManager() {}
-
-    /**
-     * Tries to create a user by calling the stored procedure addUser with the given parameters.
-     * @param nome is the name
-     * @param email is the email
-     * @param categoriaProfissional is the professional category
-     * @param password is the password
-     * @param role is the role  that the user we want to register plays in the database
-     */
 
     public List<Investigador> getListOfInvestigadores () {
         return listOfUsers;
     }
+
+    /**
+     * Extracts all records from the investigadores table from the database.
+     */
 
     public void getDBInvestigador () {
 
@@ -42,6 +42,11 @@ public class InvestigadorManager {
         }
     }
 
+    /**
+     * Transforms all the records obtained in the data base`s investigadores table in objects investigador. It inserts those objects in a investigadores list.
+     * @param varUser represents the record of a insvestigadores extrated from the data base for a post transformation.
+     */
+
     private void addInvestigadores (ResultSet varUser) throws SQLException {
 
         while(varUser.next()) {
@@ -55,6 +60,12 @@ public class InvestigadorManager {
         }
 
     }
+
+    /**
+     * Attempts to create an investigator in the database by calling the stored procedure addUser through the provided investigator object as argument.
+     * @param investigador is the object investigador to be inserted.
+     *
+     */
 
     public void insertInvestigador(Investigador investigador) {
 
@@ -75,6 +86,11 @@ public class InvestigadorManager {
         getDBInvestigador();
     }
 
+    /**
+     * Attempts to update an investigator's information in the database by calling the stored procedure updateInvestigador through the current investigator object and another investigator object instantiated with the parameters to be modified, provided as argument.
+     * @param oldInvestigador object investigador corresponding to the investigator and the his current information.
+     * @param newInvestigador investigador object corresponding to the same investigator instantiated only with the information to be changed.
+     */
 
     public void updateInvestigador(Investigador oldInvestigador, Investigador newInvestigador) {
 
@@ -110,7 +126,7 @@ public class InvestigadorManager {
 
     /**
      * Tries to delete a user by calling the stored procedure deleteUser with the given parameters.
-     * @param email is the email of the user that we want to delete
+     * @param investigador is the object investigador that we want to delete.
      */
 
     public void deleteInvestigador(Investigador investigador) {

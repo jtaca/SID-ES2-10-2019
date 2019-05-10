@@ -2,12 +2,15 @@ package medicoes;
 
 import api.DatabaseConnection;
 import com.mysql.cj.jdbc.CallableStatement;
-
-import java.awt.*;
 import java.util.List;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
+/**
+ * Class responsible for manipulating measurements made by investigators the respective variables for their cultures.
+ * Has methods to insert, remove and select measures.
+ */
 
 public class MedicoesManager {
 
@@ -15,10 +18,17 @@ public class MedicoesManager {
   private List<Medicoes> listOfMedicoes = new ArrayList<Medicoes>();
 
 
+    /**
+     * @return an ArrayList of all the measures in the database;
+     */
+
   public List<Medicoes> getListOfMedicoes() {
       return listOfMedicoes;
   }
 
+    /**
+     * Extracts all records from the medicoes table measurements from the database.
+     */
 
   public void getDBMedicoes() {
 
@@ -28,14 +38,19 @@ public class MedicoesManager {
           listOfMedicoes.clear();
           ResultSet medicoesResultSet = DB.select("SELECT * FROM estufa.medicoes");
           try {
-              addMedicoes(medicoesResultSet);
+              addMedicoesResultSet(medicoesResultSet);
           } catch (SQLException sqlException) {
               sqlException.printStackTrace();
           }
       }
   }
 
-  private void addMedicoes (ResultSet varMedicao) throws SQLException {
+    /**
+     * Transforms all the records obtained in the data base`s medicoes table in objects medicoes. It inserts those objects in a medicoes list.
+     * @param varMedicao represents the record of a medicao extrated from the data base for a post transformation.
+     */
+
+  private void addMedicoesResultSet(ResultSet varMedicao) throws SQLException {
 
       while(varMedicao.next()) {
           int numeroMedicao = varMedicao.getInt("NumeroMedicao");
@@ -48,6 +63,10 @@ public class MedicoesManager {
       }
   }
 
+    /**
+     * Insert a new measure into the database. If the measure does not have an ID it will be assigned one automatically by the database auto-increment.
+     * @param medicao the measure to be inserted.
+     */
   public void insertMedicoes (Medicoes medicao) {
 
       DatabaseConnection DB = DatabaseConnection.getInstance();
@@ -59,6 +78,10 @@ public class MedicoesManager {
       getDBMedicoes();
   }
 
+    /**
+     * Delete a measure into the database.
+     * @param medicao the measure to be deleted.
+     */
 
   public void deleteMedicoes (Medicoes medicao) {
 
@@ -89,7 +112,7 @@ public class MedicoesManager {
             System.out.println("Medições tem entradas? "+ hadResults);
 
             ResultSet rs = cStmt.getResultSet();
-            addMedicoes(rs);
+            addMedicoesResultSet(rs);
 
             //System.out.println("SelectMedicoesIn: "+ getListOfMedicoes().toString());
 

@@ -1,6 +1,4 @@
 import api.DatabaseConnection;
-import api.Investigador;
-import api.InvestigadorManager;
 import medicoes.MedicoesManager;
 import variaveis.Variable;
 import variaveis.VariableManager;
@@ -22,9 +20,9 @@ public class Main {
 
         // Prepare variables from the database
         VariableManager variableManager = new VariableManager();
-        variableManager.updateLocalVariables();
+        variableManager.getDBVariables();
         // Insert a new variable into the database. If the variable does not have an ID it will be assigned one automatically (By the database auto-increment).
-        variableManager.addVariable(new Variable("nomeDaVariavel"));
+        variableManager.insertVariable(new Variable("nomeDaVariavel"));
         variableManager.alterarLimitesTemperatura(19,30);
         variableManager.alterarLimitesLuz(1,3);
         MedicoesManager med = new MedicoesManager();
