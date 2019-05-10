@@ -1,6 +1,5 @@
 package api;
 import javafx.util.Pair;
-import variaveis.Variable;
 
 import java.sql.*;
 
@@ -32,12 +31,14 @@ public class DatabaseConnection {
     private DatabaseConnection() {
     }
 
+
     /**
      * Attempts to establish a connection to the database with the given parameters.
      * @param username a username
      * @param password a password
      * @return a Boolean, String pair. The Boolean represents the success of the connection. If false, the connection failed and the String contains the appropriate error message.
      */
+
 	public Pair<Boolean, String> connect(String username, String password) {
 	    try {
             conn = DriverManager.getConnection("jdbc:mysql://localhost/estufa?&serverTimezone=UTC&user=" + username + "&password=" + password);
@@ -53,7 +54,29 @@ public class DatabaseConnection {
 
             return(new Pair<Boolean, String>(false, error));
         }
-        return(new Pair<Boolean, String>(true, ""));
+	    System.out.println(new Pair<Boolean, String>(true, getRoleLogin()).toString());
+        return(new Pair<Boolean, String>(true, getRoleLogin()));
+    }
+
+
+    private String getRoleLogin(){
+
+        DatabaseConnection DB = DatabaseConnection.getInstance();
+        String roleLogin = "";
+
+        if(DB.isConnected()) {
+            ResultSet variableResultSet = DB.select("SELECT default_role from mysql.user where CONCAT(User, \"@%\")=CURRENT_USER");
+            try {
+
+                variableResultSet.next();
+                roleLogin = variableResultSet.getString("default_role");
+
+
+            } catch (SQLException sqlException) {
+                sqlException.printStackTrace();
+            }
+        }
+        return roleLogin;
     }
 
 

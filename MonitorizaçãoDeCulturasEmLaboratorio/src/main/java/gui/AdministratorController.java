@@ -88,7 +88,7 @@ public class AdministratorController {
     }
 
     public void addVariable(MouseEvent mouseEvent) {
-        System.out.println("addVariable");
+        System.out.println("insertVariable");
         Variable selected_variable = variables_table.getSelectionModel().getSelectedItem();
         System.out.println("Selected: " + selected_variable);
     }
