@@ -51,9 +51,8 @@ public class SensorsConnection implements MqttCallback {
 
 	@Override
 	public void messageArrived(String topic, MqttMessage message) throws Exception {
-		System.out.println(message.toString());
-		String [] test = message.toString().split(":");
-		if(test.length == 9) {
+		
+		if(message.toString().contains("{") && message.toString().contains("}") &&( message.toString().contains("cell")) || message.toString().contains("tmp")){
 			Medicao medicao= new Medicao (message);
 			ges.adiciona(medicao);
 

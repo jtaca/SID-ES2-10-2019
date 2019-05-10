@@ -34,8 +34,10 @@ public class MongoConnection {
 
 		BasicDBObject document = new BasicDBObject();
 		document.put("timestamp",m.getTimestamp());
-		document.put("temperatura",m.getTemperatura() + "");
-		document.put("luminosidade",m.getLuminosidade()+ "");
+		if(m.getTemperatura()==-10000)
+			document.put("temperatura",m.getTemperatura() + "");
+		if(m.getLuminosidade()==-999)
+			document.put("luminosidade",m.getLuminosidade()+ "");
 		if(m.isAlertaTemperatura() == 1)
 			document.put("alertaTemperatura",1 + "");
 		if(m.isAlertaLuminosidade() == 1)

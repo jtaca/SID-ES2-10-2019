@@ -4,6 +4,7 @@ package medicao;
 import java.time.LocalDateTime;
 
 import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.json.JSONObject;
 
 public class Medicao {
 	private String timestamp;
@@ -77,15 +78,27 @@ public class Medicao {
 
 	public void parseMessage(MqttMessage message) {
 
-		String [] measures = message.toString().split(",");
-		String temp = measures[0].substring(8, measures[0].length()-1);
-		String[] lum = measures[4].toString().split("s");
-		String res = lum[0].substring(8, lum[0].length()-2);
+		String aux = message.toString().replace("\"\"sens", "\",\"sens");
+		JSONObject obj = new JSONObject(aux);
+
+
+		if( aux.contains("cell")) {
+			String luz = obj.getString("cell");
+			this.luminosidade = Integer.parseInt(luz);
+		} else {
+			this.luminosidade = -999;
+		}
+		if( aux.contains("tmp")) {
+			String temperatura = obj.getString("tmp");
+			this.temperatura = Double.parseDouble(temperatura);
+		}else {
+			this.temperatura = -10000;
+		}
+
 		this.timestamp = parseDate();
-		this.temperatura = Double.parseDouble(temp);
-		this.luminosidade = Integer.parseInt(res);
 
 	}
+
 
 	/**
 	 * Lets you specify whether or not a temperature measurement is an alert.
@@ -217,7 +230,6 @@ public class Medicao {
 		return replacedDate.substring(0, replacedDate.length()-4);
 
 	}
-
 
 
 	@Override
