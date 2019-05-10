@@ -50,8 +50,10 @@ public class MongoConnection {
 			document.put("causaLuminosidade", m.getCausaLuminosidade());
 		document.put("exportado", 0 + "");
 
-		try { table.insert(document);} catch (Exception e) {}
-		try{Thread.sleep(5000);} catch (InterruptedException  e) {Thread.currentThread().interrupt();}
+		try { table.insert(document);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		mongoClient1.close();		
 	}
 }	
