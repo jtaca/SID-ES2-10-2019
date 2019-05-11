@@ -71,7 +71,7 @@ public class InvestigadorManager {
 
         try {
             CallableStatement cStmt = (CallableStatement) DatabaseConnection.getInstance().getConnection().prepareCall("{call addUser(?,?,?,?,?)}");
-            cStmt.setString(1, investigador.getUser_type());
+            cStmt.setString(1, "investigador");
             cStmt.setString(2, investigador.getName());
             cStmt.setString(3, investigador.getPassword());
             cStmt.setString(4, investigador.getEmail());
@@ -122,7 +122,6 @@ public class InvestigadorManager {
         getDBInvestigador();
 
     }
-
 
     /**
      * Tries to delete a user by calling the stored procedure deleteUser with the given parameters.

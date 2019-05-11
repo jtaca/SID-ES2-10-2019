@@ -31,7 +31,6 @@ public class DatabaseConnection {
     private DatabaseConnection() {
     }
 
-
     /**
      * Attempts to establish a connection to the database with the given parameters.
      * @param username a username
@@ -55,7 +54,8 @@ public class DatabaseConnection {
             return(new Pair<Boolean, String>(false, error));
         }
 	    System.out.println(new Pair<Boolean, String>(true, getRoleLogin()).toString());
-        return(new Pair<Boolean, String>(true, getRoleLogin()));
+
+	    return(new Pair<Boolean, String>(true, getRoleLogin()));
     }
 
 

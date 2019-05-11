@@ -88,8 +88,6 @@ public class CultureManager {
 
     public void updateCulture (Culture oldCulture, Culture newCulture) {
 
-        DatabaseConnection DB = DatabaseConnection.getInstance();
-
         try {
 
             CallableStatement cStmt = (CallableStatement) DatabaseConnection.getInstance().getConnection().prepareCall("{call updateCultura(?,?,?)}");
