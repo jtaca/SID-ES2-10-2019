@@ -1,4 +1,4 @@
-package testesUnitarios;
+package JUnitTests;
 
 public class MongoConnectionTest {
 

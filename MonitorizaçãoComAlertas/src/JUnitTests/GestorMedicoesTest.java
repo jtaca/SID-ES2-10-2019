@@ -1,10 +1,10 @@
-package testesUnitarios;
+package JUnitTests;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-class MedicaoTest {
+class GestorMedicoesTest {
 
 	@Test
 	void test() {
