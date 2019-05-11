@@ -7,7 +7,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.sql.ResultSet;
 
 
@@ -44,31 +43,6 @@ public class DatabaseConnection {
 		return(new Pair<Boolean, String>(true, ""));
 	}
 
-	/**
-	 * 
-	 * @param query is the query to use in the select
-	 * @return a result set with the results of the query
-	 */
-	public ResultSet select(String query) {
-		if (conn == null) {
-			return null;
-		}
-
-		Statement stmt = null;
-		ResultSet rs = null;
-
-		try {
-			stmt = conn.createStatement();
-			rs = stmt.executeQuery(query);
-
-		} catch (SQLException ex){
-			System.out.println("SQLException: " + ex.getMessage());
-			System.out.println("SQLState: " + ex.getSQLState());
-			System.out.println("VendorError: " + ex.getErrorCode());
-		}
-
-		return rs;
-	}
 	
 	public static Connection getConnection() {
 		return conn;
@@ -114,33 +88,7 @@ public class DatabaseConnection {
 		return res;
 	}
 
-	/**
-	 * Returns a list of email's.
-	 * @param con is the connection to the database.
-	 * @param table is the name of the table.
-	 * @param column is the column of the table that we want to select.
-	 * @return a list of email's.
-	 */
-
-	public ArrayList<String> getEmails(Connection con,String table, String column)
-			throws SQLException {
-		ArrayList<String> res = new ArrayList<String>();
-		Statement stmt = null;
-		String query = "select " + table + "."  + column + " from estufa." + table  ;
-		try {
-			stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery(query);
-			while (rs.next()) {
-				res.add(rs.getString(column));
-			}
-		} catch (SQLException e ) {
-			e.printStackTrace();
-		} finally {
-			if (stmt != null) { stmt.close(); }
-		}
-		return res;
-	}
-
+	
 	/**
 	 * Creates a'system' object which contains all the information on the greenhouse.
 	 * @return system object .
@@ -148,9 +96,8 @@ public class DatabaseConnection {
 
 
 	public Sistema initializeSystem() {
-		Sistema sis = null;
+		Sistema sis=null;
 
-		EmailSender emailSender = null;
 		try {
 			double limiteInferiorTemperatura = viewTable(conn,"sistema", "LimiteInferiorTemperatura");
 			double limiteSuperiorTemperatura = viewTable(conn,"sistema", "LimiteSuperiorTemperatura");
@@ -160,10 +107,8 @@ public class DatabaseConnection {
 			double percentagemVariacaoLuz = viewTable(conn,"sistema", "PercentagemVariacaoLuz");
 			double margemSegurancaLuz = viewTable(conn,"sistema", "MargemSegurancaLuz");
 			double margemSegurancaTemperatura = viewTable(conn,"sistema", "MargemSegurancaTemperatura");
-			ArrayList<String> emails = getEmails(conn, "investigador", "email");
 			sis= new Sistema (limiteInferiorTemperatura,limiteSuperiorTemperatura,limiteInferiorLuz,limiteSuperiorLuz,percentagemVariacaoTemperatura,percentagemVariacaoLuz,margemSegurancaLuz,margemSegurancaTemperatura);
-			emailSender = new EmailSender(emails,"alertasestufa@sapo.pt");
-			ges = new GestorDeMedicoes(sis, emailSender);
+			ges = new GestorDeMedicoes(sis);
 		} catch (SQLException e) {
 			System.out.println("Erro "+ e.getMessage());
 		}
@@ -179,7 +124,5 @@ public class DatabaseConnection {
 	public GestorDeMedicoes getGestor() {
 		return ges;
 	}
-	
-	
 
 }
