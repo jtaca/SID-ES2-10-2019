@@ -69,6 +69,10 @@ public class DatabaseConnection {
 
 		return rs;
 	}
+	
+	public static Connection getConnection() {
+		return conn;
+	}
 
 	/**
 	 * Returns an instance of the connection.
@@ -175,5 +179,7 @@ public class DatabaseConnection {
 	public GestorDeMedicoes getGestor() {
 		return ges;
 	}
+	
+	
 
 }
