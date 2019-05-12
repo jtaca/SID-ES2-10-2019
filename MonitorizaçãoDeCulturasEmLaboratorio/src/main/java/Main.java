@@ -1,7 +1,7 @@
 import api.DatabaseConnection;
 import api.Investigador;
 import api.InvestigadorManager;
-import medicoes.MedicoesManager;
+import medicoes.MeasurementManager;
 import variaveis.Variable;
 import variaveis.VariableManager;
 import javafx.util.Pair;
@@ -32,7 +32,7 @@ public class Main {
         variableManager.insertVariable(new Variable("nomeDaVariavel"));
         variableManager.alterarLimitesTemperatura(19,30);
         variableManager.alterarLimitesLuz(1,3);
-        MedicoesManager med = new MedicoesManager();
+        MeasurementManager med = new MeasurementManager();
         //med.selectMedicoes();
 
 

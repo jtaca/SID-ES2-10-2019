@@ -4,7 +4,7 @@ package medicoes;
  *Class that represents an measurement and the respective attributes that define it.
  */
 
-public class Medicoes {
+public class Measurement {
 
     private Integer numeroMedicao;
     private String dataHoraMedicao;
@@ -19,7 +19,7 @@ public class Medicoes {
      * @param idVariaveisMedidas the identifier of the variable-culture pair for which the measurement was made.
      */
 
-    public Medicoes (Integer numeroMedicao, String dataHoraMedicao, double valorMedicao, Integer idVariaveisMedidas){
+    public Measurement(Integer numeroMedicao, String dataHoraMedicao, double valorMedicao, Integer idVariaveisMedidas){
         this.numeroMedicao = numeroMedicao;
         this.dataHoraMedicao = dataHoraMedicao;
         this.valorMedicao = valorMedicao;
@@ -32,7 +32,7 @@ public class Medicoes {
      * @param idVariaveisMedidas the identifier of the variable-culture pair for which the measurement was made.
      */
 
-    public Medicoes (double valorMedicao, Integer idVariaveisMedidas){
+    public Measurement(double valorMedicao, Integer idVariaveisMedidas){
         this.dataHoraMedicao = dataHoraMedicao;
         this.valorMedicao = valorMedicao;
         this.idVariaveisMedidas = idVariaveisMedidas;
