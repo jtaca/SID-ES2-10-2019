@@ -105,28 +105,47 @@ public class AdministratorController {
         for (Variable ivar: vars) {
             list.add(ivar);
         }
-        System.out.println("I was here");
-/*
-        for (int i=0; i<25; i++) {
-            Random r = new Random();
-            char a = (char)(r.nextInt(26) + 'a');
-            char b = (char)(r.nextInt(26) + 'a');
-
-            String finalString = "Mineral " + Character.toUpperCase(a) + Character.toUpperCase(b);
-
-            list.add(new Variable(i, finalString));
-        }*/
         return list;
     }
 
     public void addVariable(MouseEvent mouseEvent) {
-        System.out.println("insertVariable");
-        Variable selected_variable = variables_table.getSelectionModel().getSelectedItem();
-        System.out.println(selected_variable.toString());
-        VariableManager var = new VariableManager();
-                var.insertVariable(selected_variable);
 
-        System.out.println("Selected: " + selected_variable);
+        System.out.println("insertVariable");
+        try {
+            Variable selected_variable = variables_table.getSelectionModel().getSelectedItem();
+            System.out.println("Selected: " + selected_variable.toString());
+        }catch (Exception e){
+            System.out.println("Select add variable: "+ e.toString());
+        }
+
+
+/*        VariableManager var = new VariableManager();
+                var.insertVariable(selected_variable);*/
+
+
+        Task<Void> task = new Task<Void>() {
+            @Override
+            public Void call() {
+                System.out.println("Opening addVariavel modal...");
+                final Stage dialog = new Stage();
+                dialog.initModality(Modality.APPLICATION_MODAL);
+                dialog.initOwner(primaryStage);
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/addVariavel.fxml"));
+                StackPane root;
+                try {
+                    root = loader.load();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return null;
+                }
+
+                dialog.setScene(new Scene(root));
+                dialog.show();
+
+                return null;
+            }
+        };
+        Platform.runLater(task);
     }
 
     public void editVariable(MouseEvent mouseEvent) {
@@ -158,16 +177,6 @@ public class AdministratorController {
         for (Investigador ivar: invs) {
             list.add(ivar);
         }
-
-/*        for (int i=0; i<25; i++) {
-            Random r = new Random();
-            char a = (char)(r.nextInt(26) + 'a');
-            char b = (char)(r.nextInt(26) + 'a');
-
-            String name = "Pessoa " + Character.toUpperCase(a) + Character.toUpperCase(b);
-
-            list.add(new Investigador("pass", name, a+"@"+b+".pt", "Agricultor"));
-        }*/
         return list;
     }
 
