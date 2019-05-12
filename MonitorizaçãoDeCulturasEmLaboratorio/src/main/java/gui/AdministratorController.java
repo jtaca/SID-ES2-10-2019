@@ -62,6 +62,8 @@ public class AdministratorController {
     @FXML
     public Button refresh_variable_btn;
 
+
+    private Investigador selected_variable;
     private DatabaseConnection db1;
 
     @FXML
@@ -85,6 +87,17 @@ public class AdministratorController {
             System.exit(0);
         }
 
+    }
+    public AdministratorController getInstance(){
+        return this;
+    }
+
+    public Investigador getSelected_variable() {
+        return selected_variable;
+    }
+
+    public void setSelected_variable(Investigador selected_variable) {
+        this.selected_variable = selected_variable;
     }
 
     public void setPrimaryStage(Stage primaryStage) {
@@ -201,8 +214,8 @@ public class AdministratorController {
 
     public void editUser(MouseEvent mouseEvent) {
         System.out.println("editUser");
-        Investigador selected_variable = users_table.getSelectionModel().getSelectedItem();
-        System.out.println("Selected: " + selected_variable);
+        Investigador selected_variable1 = users_table.getSelectionModel().getSelectedItem();
+        System.out.println("Selected: " + selected_variable1 +"  +  "+ this.selected_variable);
 
         Task<Void> task = new Task<Void>() {
             @Override
@@ -220,13 +233,41 @@ public class AdministratorController {
                     return null;
                 }
 
+
+                EditInvestigatorController controller = loader.getController();
+                controller.setCategory(selected_variable1.getCategory());
+                controller.setEmail(selected_variable1.getEmail());
+                controller.setName(selected_variable1.getName());
+                controller.setPassword(selected_variable1.getPassword());
+
+
                 dialog.setScene(new Scene(root));
                 dialog.show();
 
                 return null;
             }
         };
+
         Platform.runLater(task);
+        System.out.println("Selected: " + selected_variable1 +"  +  "+ this.selected_variable);
+/*        this.getSelected_variable();
+
+        if (this.getSelected_variable().getPassword().equals("")){
+            this.getSelected_variable().setPassword();
+        }
+        if (this.getSelected_variable().getName().equals("")){
+            name1 = admin.getSelected_variable().getName();
+        }
+        if (this.getSelected_variable().getEmail().equals("")){
+            email1 = admin.getSelected_variable().getEmail();
+        }
+        if (this.getSelected_variable().getCategory().equals("")){
+            category1 = admin.getSelected_variable().getCategory();
+        }
+        System.out.println(inv2.toString());
+        System.out.println("try");
+        InvestigadorManager inv = new InvestigadorManager();
+        inv.updateInvestigador(selected_variable,inv2);*/
     }
 
     public void deleteUser(MouseEvent mouseEvent) {

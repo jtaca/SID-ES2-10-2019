@@ -19,6 +19,28 @@ public class EditInvestigatorController {
     public TextField email;
     @FXML
     public TextField category;
+    private Investigador inv;
+
+
+    public void setName(String name) {
+        this.name.setText(name);
+    }
+
+    public void setPassword(String password) {
+        this.password.setText( password);
+    }
+
+    public void setEmail(String email) {
+        this.email.setText(email);
+    }
+
+    public void setCategory(String category) {
+        this.category.setText(category);
+    }
+
+    public void setInv(Investigador inv) {
+        this.inv = inv;
+    }
 
     public void register(MouseEvent mouseEvent) {
         System.out.println("EditInvestigator");
@@ -29,18 +51,7 @@ public class EditInvestigatorController {
                 category.getText()
         );
 
-        DatabaseConnection db1 = DatabaseConnection.getInstance();
-        Pair<Boolean, String> connectionState1 = db1.connect("root", "");
-        if(!connectionState1.getKey()) {
-            System.out.println(connectionState1.getValue());
-            System.exit(0);
-        }
-
-        InvestigadorManager inv = new InvestigadorManager();
-        inv.insertInvestigador(new Investigador(password.getText(),name.getText(),email.getText(),category.getText()));
-
-
-
+        InvestigadorManager.updateInvestigador(inv,new Investigador(password.getText(),name.getText(),email.getText(),category.getText()));
 
 
     }

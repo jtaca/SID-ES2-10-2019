@@ -94,7 +94,7 @@ public class InvestigadorManager {
      * @param newInvestigador investigador object corresponding to the same investigator instantiated only with the information to be changed.
      */
 
-    public void updateInvestigador(Investigador oldInvestigador, Investigador newInvestigador) {
+    public static void updateInvestigador(Investigador oldInvestigador, Investigador newInvestigador) {
 
         DatabaseConnection DB = DatabaseConnection.getInstance();
 
