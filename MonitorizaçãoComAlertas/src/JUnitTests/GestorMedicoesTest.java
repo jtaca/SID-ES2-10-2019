@@ -32,10 +32,16 @@ class GestorMedicoesTest {
 		assertEquals(med.getLuminosidade() == 456.0,true);
 
 		ges.adiciona(med);
+
+		assertEquals(ges.getBq().contains(med),true);
 		
-	
 		
 		
+		assertEquals(med.isAlertaTemperatura()==1,true);
+		assertEquals(med.getCausaTemperatura().equals("O valor da medicao da temperatura  ultrapassou o limite superior estabelecido."),true);
+		
+		assertEquals(med.isAlertaLuminosidade()==1,true);
+		assertEquals(med.getCausaLuminosidade().equals("O valor da medicao da luminosidade ultrapassou o limite superior estabelecido."),true);
 		
 		
 	}
