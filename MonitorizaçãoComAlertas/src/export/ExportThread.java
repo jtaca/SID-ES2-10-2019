@@ -41,34 +41,7 @@ public class ExportThread extends Thread {
 
             readFromMongo();
 
-            // Check if was woken by an alert
-            if(lightAlerts.size() > 0) {
-                timeSinceLastLightAlert = 0;
-
-                lightAlerts.forEach(alert -> {
-                    try {
-                        databaseConnection.insertAlert(alert);
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-                });
-
-                lightAlerts.clear();
-            }
-
-            if(temperatureAlerts.size() > 0) {
-                timeSinceLastTemperatureAlert = 0;
-
-                temperatureAlerts.forEach(alert -> {
-                    try {
-                        databaseConnection.insertAlert(alert);
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-                });
-
-                temperatureAlerts.clear();
-            }
+            checkAlerts();
 
             // export measurements
             for(Measurement measurement: measurements) {
@@ -82,6 +55,39 @@ public class ExportThread extends Thread {
             measurements.clear();
         }
 
+    }
+
+    /**
+     * Checks if there are any alerts and adds them to the alerts lists
+     */
+    private void checkAlerts() {
+        if(lightAlerts.size() > 0) {
+            timeSinceLastLightAlert = 0;
+
+            lightAlerts.forEach(alert -> {
+                try {
+                    databaseConnection.insertAlert(alert);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            });
+
+            lightAlerts.clear();
+        }
+
+        if(temperatureAlerts.size() > 0) {
+            timeSinceLastTemperatureAlert = 0;
+
+            temperatureAlerts.forEach(alert -> {
+                try {
+                    databaseConnection.insertAlert(alert);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            });
+
+            temperatureAlerts.clear();
+        }
     }
 
     /**
