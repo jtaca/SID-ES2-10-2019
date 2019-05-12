@@ -64,6 +64,11 @@ public class Investigador {
 
     @Override
     public String toString() {
-        return super.toString();
+        return "Investigador{" +
+                "password='" + password + '\'' +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", category='" + category + '\'' +
+                '}';
     }
 }

@@ -1,6 +1,9 @@
 package gui;
 
+import api.DatabaseConnection;
 import api.Investigador;
+import javafx.util.Pair;
+import variaveis.VariableManager;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -19,6 +22,7 @@ import javafx.stage.Stage;
 import variaveis.Variable;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class AdministratorController {
@@ -57,6 +61,8 @@ public class AdministratorController {
     @FXML
     public Button refresh_variable_btn;
 
+    private DatabaseConnection db1;
+
     @FXML
     public void initialize() {
         variable_name_col.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -66,6 +72,18 @@ public class AdministratorController {
         user_email_col.setCellValueFactory(new PropertyValueFactory<>("email"));
         user_category_col.setCellValueFactory(new PropertyValueFactory<>("category"));
         users_table.setItems(randomUserList());
+
+        System.out.println("Starting app...");
+
+        // Connect to the database
+        // For now we connect with the root account. This should be changed later to the user account.
+        db1 = DatabaseConnection.getInstance();
+        Pair<Boolean, String> connectionState1 = db1.connect("root", "");
+        if(!connectionState1.getKey()) {
+            System.out.println(connectionState1.getValue());
+            System.exit(0);
+        }
+
     }
 
     public void setPrimaryStage(Stage primaryStage) {
@@ -74,6 +92,17 @@ public class AdministratorController {
 
     private ObservableList<Variable> randomVariableList() {
         ObservableList<Variable> list = FXCollections.observableArrayList();
+
+        VariableManager var = new VariableManager();
+        var.getDBVariables();
+        ArrayList<Variable> vars = var.getVariables();
+        System.out.println(vars.toString());
+
+        for (Variable ivar: vars) {
+            list.add(ivar);
+        }
+        System.out.println("I was here");
+/*
         for (int i=0; i<25; i++) {
             Random r = new Random();
             char a = (char)(r.nextInt(26) + 'a');
@@ -82,13 +111,17 @@ public class AdministratorController {
             String finalString = "Mineral " + Character.toUpperCase(a) + Character.toUpperCase(b);
 
             list.add(new Variable(i, finalString));
-        }
+        }*/
         return list;
     }
 
     public void addVariable(MouseEvent mouseEvent) {
         System.out.println("insertVariable");
         Variable selected_variable = variables_table.getSelectionModel().getSelectedItem();
+        System.out.println(selected_variable.toString());
+        VariableManager var = new VariableManager();
+                var.insertVariable(selected_variable);
+
         System.out.println("Selected: " + selected_variable);
     }
 

@@ -18,6 +18,8 @@ public class Main {
             System.exit(0);
         }
 
+
+
         // Prepare variables from the database
         VariableManager variableManager = new VariableManager();
         variableManager.getDBVariables();

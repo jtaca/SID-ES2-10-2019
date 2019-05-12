@@ -16,6 +16,11 @@ public class VariableManager {
 
     private ArrayList<Variable> variables = new ArrayList<Variable>();
 
+    public VariableManager(){
+        getDBVariables();
+
+    }
+
     public void getDBVariables() {
 
         DatabaseConnection db = DatabaseConnection.getInstance();

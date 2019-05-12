@@ -5,6 +5,8 @@ import javafx.scene.input.MouseEvent;
 public class InvestigatorController {
 
     public void addCulture(MouseEvent mouseEvent) {
+
+
     }
     
     public void editCulture(MouseEvent mouseEvent) {
