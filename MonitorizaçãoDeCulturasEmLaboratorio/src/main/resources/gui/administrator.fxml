@@ -84,6 +84,16 @@
                                     <Insets bottom="5.0" left="5.0" right="5.0" />
                                  </VBox.margin>
                               </Button>
+                               <Button fx:id="change_temperature_btn" alignment="CENTER" contentDisplay="CENTER" layoutX="15.0" layoutY="79.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#changeTemperature" style="-fx-background-color: white; -fx-border-style: solid; -fx-border-width: 1; -fx-border-color: rgb(210, 210, 210);" text="C/ Temperature" textAlignment="CENTER">
+                                   <VBox.margin>
+                                       <Insets bottom="5.0" left="5.0" right="5.0" />
+                                   </VBox.margin>
+                               </Button>
+                               <Button fx:id="change_light_btn" alignment="CENTER" contentDisplay="CENTER" layoutX="15.0" layoutY="79.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#changeLight" style="-fx-background-color: white; -fx-border-style: solid; -fx-border-width: 1; -fx-border-color: rgb(210, 210, 210);" text="C/ Light" textAlignment="CENTER">
+                                   <VBox.margin>
+                                       <Insets bottom="5.0" left="5.0" right="5.0" />
+                                   </VBox.margin>
+                               </Button>
                            </children>
                         </VBox>
                      </right>
