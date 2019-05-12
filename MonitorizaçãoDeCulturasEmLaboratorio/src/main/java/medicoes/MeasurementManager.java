@@ -5,7 +5,6 @@ import cultura.Culture;
 
 import com.mysql.cj.jdbc.CallableStatement;
 
-import java.awt.*;
 import java.util.List;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,16 +15,16 @@ import java.util.ArrayList;
  * Has methods to insert, remove and select measures.
  */
 
-public class MedicoesManager {
+public class MeasurementManager {
 
     private final String TABELA_CULTURA = "medicoes";
-    private List<Medicoes> listOfMedicoes = new ArrayList<Medicoes>();
+    private List<Measurement> listOfMedicoes = new ArrayList<Measurement>();
 
     /**
      * @return an ArrayList of all the measures in the database;
      */
 
-    public List<Medicoes> getListOfMedicoes() {
+    public List<Measurement> getListOfMedicoes() {
         return listOfMedicoes;
     }
 
@@ -49,15 +48,15 @@ public class MedicoesManager {
         }
     }
 
-    private List<Medicoes> extractMedicoes (ResultSet varMedicao) throws SQLException {
-        List<Medicoes> AuxlistOfMedicoes = new ArrayList<Medicoes>();
+    private List<Measurement> extractMedicoes (ResultSet varMedicao) throws SQLException {
+        List<Measurement> AuxlistOfMedicoes = new ArrayList<Measurement>();
         while(varMedicao.next()) {
             int numeroMedicao = varMedicao.getInt("NumeroMedicao");
             String dataHoraMedicao = varMedicao.getString("DataHoraMedicao");
             double valorMedicao = varMedicao.getDouble("ValorMedicao");
             int idVariaveisMedidas = varMedicao.getInt("idVariaveisMedidas");
 
-            AuxlistOfMedicoes.add(new Medicoes(numeroMedicao, dataHoraMedicao,
+            AuxlistOfMedicoes.add(new Measurement(numeroMedicao, dataHoraMedicao,
                     valorMedicao, idVariaveisMedidas));
 
         }
@@ -69,8 +68,8 @@ public class MedicoesManager {
      * @param varMedicao represents the record of a medicao extrated from the data base for a post transformation.
      */
 
-    private void addMedicoes (List<Medicoes> extracted) {
-        for (Medicoes medicoes : extracted) {
+    private void addMedicoes (List<Measurement> extracted) {
+        for (Measurement medicoes : extracted) {
             listOfMedicoes.add(medicoes);
         }
     }
@@ -80,7 +79,7 @@ public class MedicoesManager {
      * @param medicao the measure to be inserted.
      */
 
-    public void insertMedicoes (Medicoes medicao) {
+    public void insertMedicoes (Measurement medicao) {
 
         DatabaseConnection DB = DatabaseConnection.getInstance();
 
@@ -97,7 +96,7 @@ public class MedicoesManager {
      * @param newMedicao the newMedicao object corresponding to the same measurement instantiated only with of new value to changed.
      */
 
-    public void updateMedicoes (Medicoes oldMedicao, Medicoes newMedicao) {
+    public void updateMedicoes (Measurement oldMedicao, Measurement newMedicao) {
 
         try {
 
@@ -121,7 +120,7 @@ public class MedicoesManager {
      */
 
 
-    public void deleteMedicoes (Medicoes medicao) {
+    public void deleteMedicoes (Measurement medicao) {
 
         try {
             CallableStatement cStmt = (CallableStatement) DatabaseConnection.getInstance().
@@ -140,7 +139,7 @@ public class MedicoesManager {
 
     }
 
-    public List<Medicoes>  selectMedicoes(Culture cultura) {
+    public List<Measurement>  selectMedicoes(Culture cultura) {
 
         DatabaseConnection DB = DatabaseConnection.getInstance();
 
@@ -148,7 +147,7 @@ public class MedicoesManager {
             CallableStatement cStmt = (CallableStatement) DatabaseConnection.getInstance().getConnection().prepareCall
                     ("{call selectMedicoes()}");
             boolean hadResults = cStmt.execute();
-            System.out.println("Medicoes tem entradas? "+ hadResults);
+            System.out.println("Measurement tem entradas? "+ hadResults);
 
             if(DB.isConnected()) {
                 ResultSet medicoesResultSet = DB.select("Select * FROM medicoes, variaveis_medidas WHERE IDCultura = "
@@ -157,7 +156,7 @@ public class MedicoesManager {
             }
             ResultSet rs = cStmt.getResultSet();
 
-            List<Medicoes> AuxList =  extractMedicoes(rs);
+            List<Measurement> AuxList =  extractMedicoes(rs);
 
             if(cStmt.execute()) {
                 System.out.println("SelectMedicoes foi executado com sucesso!");
