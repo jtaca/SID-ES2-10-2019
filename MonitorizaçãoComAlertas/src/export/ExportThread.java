@@ -25,13 +25,10 @@ public class ExportThread extends Thread {
 
     private Sistema sistema;
 
-    public ExportThread() {
-        this.sistema = DatabaseConnection.getInstance().initializeSystem();
-    }
-
     @Override
     public synchronized void start() {
         super.start();
+        this.sistema = DatabaseConnection.getInstance().initializeSystem();
         lastTimestamp = System.currentTimeMillis();
     }
 
@@ -198,5 +195,24 @@ public class ExportThread extends Thread {
             measurements.add(temperatureMeasurement);
     }
 
+    //region Unit Testing Methods
+
+    public void setSistema(Sistema sistema) {
+        this.sistema = sistema;
+    }
+
+    public void getTemperatureMeasurement(JSONObject obj) {
+        getTemperatureMeasurement(obj, "0");
+    }
+
+    public void getLightMeasurement(JSONObject obj) {
+        getLightMeasurement(obj, "0");
+    }
+
+    public ArrayList<Measurement> getMeasurements() {
+        return this.measurements;
+    }
+
+    //endregion
 
 }
