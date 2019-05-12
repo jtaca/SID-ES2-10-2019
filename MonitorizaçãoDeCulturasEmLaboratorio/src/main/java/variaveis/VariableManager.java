@@ -2,8 +2,11 @@ package variaveis;
 
 import api.DatabaseConnection;
 import com.mysql.cj.jdbc.CallableStatement;
+
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 /**
@@ -71,6 +74,25 @@ public class VariableManager {
 
         if(db.isConnected()) {
             db.insert(NOME_TABELA, variable.toString());
+        }
+        getDBVariables();
+    }
+
+    public void editVariable(Variable oldVariable,Variable newVariable){
+        DatabaseConnection db = DatabaseConnection.getInstance();
+
+
+        if(db.isConnected()){
+            try{
+                String sql = "UPDATE variaveis SET NomeVariavel ='"+newVariable.getName()+"'WHERE IDVariavel = "+oldVariable.getId();
+                Connection conn = DatabaseConnection.getInstance().getConnection();
+                Statement statement = conn.createStatement();
+                int result = statement.executeUpdate(sql);
+                System.out.println(result);
+
+            }catch (Exception e){
+                System.out.println("Edit Var: "+e.toString());
+            }
         }
         getDBVariables();
     }
