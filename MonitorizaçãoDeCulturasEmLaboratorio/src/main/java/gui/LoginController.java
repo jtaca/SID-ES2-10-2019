@@ -37,7 +37,7 @@ public class LoginController {
         if (!result.getKey())
             System.out.println("Erro no login");
         else if (result.getKey() && result.getValue().equals("investigador"))
-            System.out.println("Sucesso");
+            startInvestigatorPanel();
         else if (result.getKey() && result.getValue().equals("administrador"))
             startAdminPanel();
         else
@@ -55,6 +55,22 @@ public class LoginController {
             return;
         }
         AdministratorController controller = loader.getController();
+        controller.setPrimaryStage(primaryStage);
+
+        primaryStage.setScene(new Scene(root));
+    }
+
+
+    private void startInvestigatorPanel() {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/investigator.fxml"));
+        Parent root;
+        try {
+            root = (Parent) loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
+        InvestigatorController controller = loader.getController();
         controller.setPrimaryStage(primaryStage);
 
         primaryStage.setScene(new Scene(root));

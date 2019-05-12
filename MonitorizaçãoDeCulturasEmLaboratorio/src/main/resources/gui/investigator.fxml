@@ -44,7 +44,7 @@
                         </VBox>
                      </right>
                      <center>
-                        <TableView fx:id="users_table" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="800.0">
+                        <TableView fx:id="cultures_table" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="800.0">
                            <columns>
                               <TableColumn fx:id="culture_name_col" maxWidth="1.7976931348623157E308" prefWidth="178.39990234375" style="-fx-background-color: white; -fx-border-style: solid; -fx-border-width: 0 1 1 0; -fx-border-color: rgb(210, 210, 210);" text="Name" />
                               <TableColumn fx:id="culture_email_col" maxWidth="1.7976931348623157E308" prefWidth="272.0" style="-fx-background-color: white; -fx-border-style: solid; -fx-border-width: 0 1 1 0; -fx-border-color: rgb(210, 210, 210);" text="Investigator Email" />

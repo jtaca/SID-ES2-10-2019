@@ -1,4 +1,6 @@
 import api.DatabaseConnection;
+import api.Investigador;
+import api.InvestigadorManager;
 import medicoes.MedicoesManager;
 import variaveis.Variable;
 import variaveis.VariableManager;
@@ -17,6 +19,9 @@ public class Main {
             System.out.println(connectionState1.getValue());
             System.exit(0);
         }
+        InvestigadorManager inv = new InvestigadorManager();
+            inv.insertInvestigador(new Investigador("aaa","aaa","aaa","investigador"));
+
 
 
 

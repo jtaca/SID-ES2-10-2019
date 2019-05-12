@@ -110,6 +110,10 @@ public class ExportThread extends Thread {
         mongoConnection.deleteAll();
     }
 
+    /**
+     * Interprets the DBObject object and adds all corresponding values to their appropriate lists.
+     * @param object the object to be interpreted
+     */
     private void interpretJSON(DBObject object) {
         System.out.println("Time since last light alert: " + timeSinceLastLightAlert);
         System.out.println("Time since last temperature alert: " + timeSinceLastTemperatureAlert);
@@ -124,55 +128,74 @@ public class ExportThread extends Thread {
             e.printStackTrace();
         }
 
-        Measurement lightMeasurement = null;
-        Measurement temperatureMeasurement = null;
-
         if(obj != null) {
             String timestamp = (String) obj.get("timestamp");
 
-            Object lightObject = obj.get("luminosidade");
+            getLightMeasurement(obj, timestamp);
 
-            if(lightObject != null) {
-                int light = (int) Double.parseDouble((String) lightObject);
-                String lightReason = (String) obj.get("causaLuminosidade");
-                boolean lightError = Boolean.parseBoolean((String)obj.get("erroLuminosidade"));
+            getTemperatureMeasurement(obj, timestamp);
+        }
 
-                lightMeasurement = new Measurement(Measurement.MeasurementType.LIGHT, timestamp, light, lightReason, lightError);
+    }
 
-                String lightAlert = (String) obj.get("alertaLuminosidade");
-                if(lightAlert != null && timeSinceLastLightAlert >= 15000) { // TODO replace hardcoded value
+    /**
+     * Adds a light measurement to the measurements lists by interpreting a JSONObject.
+     * @param obj the JSONObject.
+     * @param timestamp the time sent by the sensors.
+     */
+    private void getLightMeasurement(JSONObject obj, String timestamp) {
+        Object lightObject = obj.get("luminosidade");
 
-                    String description = "Description here";
+        Measurement lightMeasurement = null;
 
-                    lightAlerts.add(new AndroidAlert("luz", timestamp, -11111, -11111, light, description));
-                    timeSinceLastLightAlert = 0;
-                }
-            }
+        if(lightObject != null) {
+            int light = (int) Double.parseDouble((String) lightObject);
+            String lightReason = (String) obj.get("causaLuminosidade");
+            boolean lightError = Boolean.parseBoolean((String)obj.get("erroLuminosidade"));
 
-            Object tempObject = obj.get("temperatura");
+            lightMeasurement = new Measurement(Measurement.MeasurementType.LIGHT, timestamp, light, lightReason, lightError);
 
-            if(tempObject != null) {
-                int temp = (int) Double.parseDouble((String)tempObject);
-                String tempReason = (String) obj.get("causaTemperatura");
-                boolean tempError = Boolean.parseBoolean((String)obj.get("erroTemperatura"));
+            String lightAlert = (String) obj.get("alertaLuminosidade");
+            if(lightAlert != null && timeSinceLastLightAlert >= 15000) { // TODO replace hardcoded value
 
-                temperatureMeasurement = new Measurement(Measurement.MeasurementType.TEMP, timestamp, temp, tempReason, tempError);
+                String description = "Description here";
 
-                String temperatureAlert = (String) obj.get("alertaTemperatura");
-                if(temperatureAlert != null && timeSinceLastTemperatureAlert > 15000) { // TODO replace hardcoded value
-                    temperatureAlerts.add(new AndroidAlert("temperatura", timestamp, -11111, -11111, temp, "Descri aqui!"));
-                    timeSinceLastTemperatureAlert = 0;
-                }
+                lightAlerts.add(new AndroidAlert("luz", timestamp, -11111, -11111, light, description));
+                timeSinceLastLightAlert = 0;
             }
         }
 
         if(lightMeasurement != null)
             measurements.add(lightMeasurement);
-        if(temperatureMeasurement != null)
-            measurements.add(temperatureMeasurement);
-
     }
 
+    /**
+     * Adds a temperature measurement to the measurements lists by interpreting a JSONObject.
+     * @param obj the JSONObject.
+     * @param timestamp the time sent by the sensors.
+     */
+    private void getTemperatureMeasurement(JSONObject obj, String timestamp) {
+        Object tempObject = obj.get("temperatura");
+
+        Measurement temperatureMeasurement = null;
+
+        if(tempObject != null) {
+            int temp = (int) Double.parseDouble((String) tempObject);
+            String tempReason = (String) obj.get("causaTemperatura");
+            boolean tempError = Boolean.parseBoolean((String)obj.get("erroTemperatura"));
+
+            temperatureMeasurement = new Measurement(Measurement.MeasurementType.TEMP, timestamp, temp, tempReason, tempError);
+
+            String temperatureAlert = (String) obj.get("alertaTemperatura");
+            if(temperatureAlert != null && timeSinceLastTemperatureAlert > 15000) { // TODO replace hardcoded value
+                temperatureAlerts.add(new AndroidAlert("temperatura", timestamp, -11111, -11111, temp, "Descri aqui!"));
+                timeSinceLastTemperatureAlert = 0;
+            }
+        }
+
+        if(temperatureMeasurement != null)
+            measurements.add(temperatureMeasurement);
+    }
 
 
 }
