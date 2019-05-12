@@ -158,9 +158,7 @@ public class ExportThread extends Thread {
             String lightAlert = (String) obj.get("alertaLuminosidade");
             if(lightAlert != null && timeSinceLastLightAlert >= 15000) { // TODO replace hardcoded value
 
-                String description = "Description here";
-
-                lightAlerts.add(new AndroidAlert("luz", timestamp, -11111, -11111, light, description));
+                lightAlerts.add(new AndroidAlert("luz", timestamp, -11111, -11111, light, lightReason));
                 timeSinceLastLightAlert = 0;
             }
         }
@@ -188,7 +186,7 @@ public class ExportThread extends Thread {
 
             String temperatureAlert = (String) obj.get("alertaTemperatura");
             if(temperatureAlert != null && timeSinceLastTemperatureAlert > 15000) { // TODO replace hardcoded value
-                temperatureAlerts.add(new AndroidAlert("temperatura", timestamp, -11111, -11111, temp, "Descri aqui!"));
+                temperatureAlerts.add(new AndroidAlert("temperatura", timestamp, -11111, -11111, temp, tempReason));
                 timeSinceLastTemperatureAlert = 0;
             }
         }
