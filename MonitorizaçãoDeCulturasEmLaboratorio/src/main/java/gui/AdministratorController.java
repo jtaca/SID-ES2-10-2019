@@ -2,6 +2,7 @@ package gui;
 
 import api.DatabaseConnection;
 import api.Investigador;
+import api.InvestigadorManager;
 import javafx.util.Pair;
 import variaveis.VariableManager;
 import javafx.application.Platform;
@@ -23,6 +24,7 @@ import variaveis.Variable;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class AdministratorController {
@@ -66,7 +68,7 @@ public class AdministratorController {
     @FXML
     public void initialize() {
         variable_name_col.setCellValueFactory(new PropertyValueFactory<>("name"));
-        variables_table.setItems(randomVariableList());
+        variables_table.setItems(VariableList());
 
         user_name_col.setCellValueFactory(new PropertyValueFactory<>("name"));
         user_email_col.setCellValueFactory(new PropertyValueFactory<>("email"));
@@ -90,7 +92,7 @@ public class AdministratorController {
         this.primaryStage = primaryStage;
     }
 
-    private ObservableList<Variable> randomVariableList() {
+    private ObservableList<Variable> VariableList() {
         ObservableList<Variable> list = FXCollections.observableArrayList();
 
         VariableManager var = new VariableManager();
@@ -139,12 +141,24 @@ public class AdministratorController {
 
     public void refreshVariablesTable(MouseEvent mouseEvent) {
         System.out.println("refreshVariablesTable");
-        variables_table.setItems(randomVariableList());
+        variables_table.setItems(VariableList());
     }
 
     private ObservableList<Investigador> randomUserList() {
         ObservableList<Investigador> list = FXCollections.observableArrayList();
-        for (int i=0; i<25; i++) {
+
+        InvestigadorManager inv = new InvestigadorManager();
+        inv.getDBInvestigador();
+
+        List<Investigador> invs = inv.getListOfInvestigadores();
+        System.out.println(invs.toString());
+
+        for (Investigador ivar: invs) {
+            list.add(ivar);
+        }
+        System.out.println("I was here too! ^_^");
+
+/*        for (int i=0; i<25; i++) {
             Random r = new Random();
             char a = (char)(r.nextInt(26) + 'a');
             char b = (char)(r.nextInt(26) + 'a');
@@ -152,7 +166,7 @@ public class AdministratorController {
             String name = "Pessoa " + Character.toUpperCase(a) + Character.toUpperCase(b);
 
             list.add(new Investigador("pass", name, a+"@"+b+".pt", "Agricultor"));
-        }
+        }*/
         return list;
     }
 
