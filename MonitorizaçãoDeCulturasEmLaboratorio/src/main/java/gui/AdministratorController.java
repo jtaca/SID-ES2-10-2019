@@ -75,16 +75,6 @@ public class AdministratorController {
         users_table.setItems(UserList());
 
         System.out.println("Starting app...");
-
-        // Connect to the database
-        // For now we connect with the root account. This should be changed later to the user account.
-        db1 = DatabaseConnection.getInstance();
-        Pair<Boolean, String> connectionState1 = db1.connect("root", "");
-        if(!connectionState1.getKey()) {
-            System.out.println(connectionState1.getValue());
-            System.exit(0);
-        }
-
     }
 
     public void setPrimaryStage(Stage primaryStage) {

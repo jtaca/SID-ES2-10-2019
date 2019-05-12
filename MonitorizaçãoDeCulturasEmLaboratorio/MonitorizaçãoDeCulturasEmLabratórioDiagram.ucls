@@ -118,7 +118,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="13" language="java" name="medicoes.Medicoes" project="MonitorizaçãoDeCulturasEmLaboratorio" 
+  <class id="13" language="java" name="medicoes.Measurement" project="MonitorizaçãoDeCulturasEmLaboratorio"
     file="/MonitorizaçãoDeCulturasEmLaboratorio/src/main/java/medicoes/Medicoes.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="268" width="251" x="41" y="1177"/>    
@@ -128,7 +128,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="14" language="java" name="medicoes.MedicoesManager" project="MonitorizaçãoDeCulturasEmLaboratorio" 
+  <class id="14" language="java" name="medicoes.MeasurementManager" project="MonitorizaçãoDeCulturasEmLaboratorio"
     file="/MonitorizaçãoDeCulturasEmLaboratorio/src/main/java/medicoes/MedicoesManager.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="214" width="239" x="41" y="545"/>    
