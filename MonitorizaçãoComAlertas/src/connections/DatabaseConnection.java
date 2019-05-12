@@ -108,7 +108,8 @@ public class DatabaseConnection {
 			double percentagemVariacaoLuz = viewTable(conn,"sistema", "PercentagemVariacaoLuz");
 			double margemSegurancaLuz = viewTable(conn,"sistema", "MargemSegurancaLuz");
 			double margemSegurancaTemperatura = viewTable(conn,"sistema", "MargemSegurancaTemperatura");
-			sis= new Sistema (limiteInferiorTemperatura,limiteSuperiorTemperatura,limiteInferiorLuz,limiteSuperiorLuz,percentagemVariacaoTemperatura,percentagemVariacaoLuz,margemSegurancaLuz,margemSegurancaTemperatura);
+			double tempoEntreAlertasConsecutivos = viewTable(conn,"sistema", "TempoEntreAlertasConsecutivos");
+			sis= new Sistema (limiteInferiorTemperatura,limiteSuperiorTemperatura,limiteInferiorLuz,limiteSuperiorLuz,percentagemVariacaoTemperatura,percentagemVariacaoLuz,margemSegurancaLuz,margemSegurancaTemperatura, tempoEntreAlertasConsecutivos);
 			ges = new GestorDeMedicoes(sis);
 		} catch (SQLException e) {
 			System.out.println("Erro "+ e.getMessage());

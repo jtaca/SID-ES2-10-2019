@@ -3,6 +3,7 @@ package export;
 import com.mongodb.DBObject;
 import connections.DatabaseConnection;
 import connections.MongoConnection;
+import medicao.Sistema;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -21,6 +22,12 @@ public class ExportThread extends Thread {
     private ArrayList<Measurement> measurements = new ArrayList<>();
     private ArrayList<AndroidAlert> lightAlerts = new ArrayList<>();
     private ArrayList<AndroidAlert> temperatureAlerts = new ArrayList<>();
+
+    private Sistema sistema;
+
+    public ExportThread() {
+        this.sistema = DatabaseConnection.getInstance().initializeSystem();
+    }
 
     @Override
     public synchronized void start() {
@@ -115,11 +122,7 @@ public class ExportThread extends Thread {
      * @param object the object to be interpreted
      */
     private void interpretJSON(DBObject object) {
-        System.out.println("Time since last light alert: " + timeSinceLastLightAlert);
-        System.out.println("Time since last temperature alert: " + timeSinceLastTemperatureAlert);
         JSONParser parser = new JSONParser();
-
-        System.out.println(object.toString());
 
         JSONObject obj = null;
         try {
@@ -156,9 +159,9 @@ public class ExportThread extends Thread {
             lightMeasurement = new Measurement(Measurement.MeasurementType.LIGHT, timestamp, light, lightReason, lightError);
 
             String lightAlert = (String) obj.get("alertaLuminosidade");
-            if(lightAlert != null && timeSinceLastLightAlert >= 15000) { // TODO replace hardcoded value
+            if(lightAlert != null && timeSinceLastLightAlert >= sistema.getTempoEntreAlertasConsecutivos()) {
 
-                lightAlerts.add(new AndroidAlert("luz", timestamp, -11111, -11111, light, lightReason));
+                lightAlerts.add(new AndroidAlert("luz", timestamp, sistema.getLimiteInferiorLuz(), sistema.getLimiteSuperiorLuz(), light, lightReason));
                 timeSinceLastLightAlert = 0;
             }
         }
@@ -185,8 +188,8 @@ public class ExportThread extends Thread {
             temperatureMeasurement = new Measurement(Measurement.MeasurementType.TEMP, timestamp, temp, tempReason, tempError);
 
             String temperatureAlert = (String) obj.get("alertaTemperatura");
-            if(temperatureAlert != null && timeSinceLastTemperatureAlert > 15000) { // TODO replace hardcoded value
-                temperatureAlerts.add(new AndroidAlert("temperatura", timestamp, -11111, -11111, temp, tempReason));
+            if(temperatureAlert != null && timeSinceLastTemperatureAlert > sistema.getTempoEntreAlertasConsecutivos()) {
+                temperatureAlerts.add(new AndroidAlert("temperatura", timestamp, sistema.getLimiteInferiorTemperatura(), sistema.getLimiteSuperiorTemperatura(), temp, tempReason));
                 timeSinceLastTemperatureAlert = 0;
             }
         }
