@@ -1,9 +1,13 @@
 package gui;
 
+import api.DatabaseConnection;
+import api.Investigador;
+import api.InvestigadorManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.util.Pair;
 
 public class AddInvestigatorController {
 
@@ -24,6 +28,15 @@ public class AddInvestigatorController {
                 email.getText()+"\n"+
                 category.getText()
         );
+        DatabaseConnection db1 = DatabaseConnection.getInstance();
+        Pair<Boolean, String> connectionState1 = db1.connect("root", "");
+        if(!connectionState1.getKey()) {
+            System.out.println(connectionState1.getValue());
+            System.exit(0);
+        }
+
+        InvestigadorManager inv = new InvestigadorManager();
+        inv.insertInvestigador(new Investigador(password.getText(),name.getText(),email.getText(),category.getText()));
     }
 
 }

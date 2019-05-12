@@ -1,9 +1,13 @@
 package gui;
 
+import api.DatabaseConnection;
+import api.Investigador;
+import api.InvestigadorManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.util.Pair;
 
 public class EditInvestigatorController {
 
@@ -24,6 +28,11 @@ public class EditInvestigatorController {
                 email.getText()+"\n"+
                 category.getText()
         );
+
+
+
+
+
     }
 
 }
