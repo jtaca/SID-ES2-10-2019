@@ -125,6 +125,8 @@ class DatabaseConnectionTest {
 		}
 		assertEquals(exists7,true);
 		
+		String className =db.getGestor().getClass().getSimpleName(); 
+		assertEquals(className.equals("GestorDeMedicoes"),true);
 	}
 
 }
