@@ -6,9 +6,11 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -16,6 +18,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import medicoes.Measurement;
+import medicoes.MeasurementManager;
 
 import java.io.IOException;
 import java.util.List;
@@ -31,8 +35,21 @@ public class InvestigatorController {
     @FXML
     public TableColumn<Culture, String> culture_description_col;
 
+    @FXML
+    public TableView<Measurement> measurements_table;
+    @FXML
+    public TableColumn<Measurement, String> timestamp;
+    @FXML
+    public TableColumn<Measurement, String> measurementValue;
+    @FXML
+    public TableColumn<Measurement, String> idMeasuredVariable;
+    @FXML
+    public ComboBox<Culture> cultureSelector;
+
+
     private Stage primaryStage;
     private CultureManager cultureManager;
+    private MeasurementManager measurementManager;
 
     @FXML
     public void initialize() {
@@ -42,14 +59,17 @@ public class InvestigatorController {
         cultureManager = new CultureManager();
         ObservableList<Culture> cultureList = FXCollections.observableArrayList(cultureManager.getListOfCultures());
         cultures_table.setItems(cultureList);
+
+        measurementManager = new MeasurementManager();
+        cultureSelector.getItems().addAll(cultureManager.getListOfCultures());
+
+        timestamp.setCellValueFactory(new PropertyValueFactory<>("dataHoraMedicao"));
+        measurementValue.setCellValueFactory(new PropertyValueFactory<>("valorMedicao"));
+        idMeasuredVariable.setCellValueFactory(new PropertyValueFactory<>("idVariaveisMedidas"));
     }
 
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
-    }
-
-    private void openModal(String fxmlName) {
-
     }
 
     public void addCulture(MouseEvent mouseEvent) {
@@ -132,5 +152,12 @@ public class InvestigatorController {
     }
 
     public void refreshMeasurementsTable(MouseEvent mouseEvent) {
+    }
+
+    public void getMeasurementsFromCulture(ActionEvent actionEvent) {
+        List<Measurement> list = measurementManager.selectMedicoes(cultureSelector.getSelectionModel().getSelectedItem());
+        System.out.println("list "+list);
+        ObservableList<Measurement> obsList = FXCollections.observableArrayList(list);
+        measurements_table.setItems(obsList);
     }
 }

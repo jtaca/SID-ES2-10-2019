@@ -25,6 +25,7 @@ public class MeasurementManager {
      */
 
     public List<Measurement> getListOfMedicoes() {
+        getDBMedicoes();
         return listOfMedicoes;
     }
 
@@ -120,7 +121,7 @@ public class MeasurementManager {
      */
 
 
-    public void deleteMedicoes (Measurement medicao) {
+    public void deleteMedicoes(Measurement medicao) {
 
         try {
             CallableStatement cStmt = (CallableStatement) DatabaseConnection.getInstance().
@@ -145,18 +146,16 @@ public class MeasurementManager {
 
         try {
             CallableStatement cStmt = (CallableStatement) DatabaseConnection.getInstance().getConnection().prepareCall
-                    ("{call selectMedicoes()}");
-            boolean hadResults = cStmt.execute();
-            System.out.println("Measurement tem entradas? "+ hadResults);
-
-            if(DB.isConnected()) {
-                ResultSet medicoesResultSet = DB.select("Select * FROM medicoes, variaveis_medidas WHERE IDCultura = "
-                        + cultura.getId() +" and medicoes.IdVariaveisMedidas = variaveis_medidas.IdVariaveisMedidas");
-
-            }
+                    ("{call selectMedicoes(?)}");
+            cStmt.setString(1, "variaveis_medidas.IDCultura = " + cultura.getId() +" and medicoes.IdVariaveisMedidas = variaveis_medidas.IdVariaveisMedidas");
+            cStmt.execute();
             ResultSet rs = cStmt.getResultSet();
 
+            System.out.println(rs);
+
             List<Measurement> AuxList =  extractMedicoes(rs);
+
+            System.out.println(AuxList);
 
             if(cStmt.execute()) {
                 System.out.println("SelectMedicoes foi executado com sucesso!");
