@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.5
+-- version 4.8.4
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 12-Maio-2019 às 17:17
--- Versão do servidor: 10.1.38-MariaDB
--- versão do PHP: 7.3.2
+-- Generation Time: 13-Maio-2019 às 00:48
+-- Versão do servidor: 10.1.37-MariaDB
+-- versão do PHP: 7.3.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -194,6 +194,8 @@ END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `criarPrivilegiosExecute` ()  BEGIN
 
+GRANT EXECUTE ON PROCEDURE estufa.selectMedicoes TO investigador;
+GRANT EXECUTE ON PROCEDURE estufa.updateCultura TO investigador;
 GRANT EXECUTE ON PROCEDURE estufa.apagarCultura TO administrador,investigador;
 GRANT EXECUTE ON PROCEDURE estufa.apagarVariaveis TO administrador,investigador;
 GRANT EXECUTE ON PROCEDURE estufa.apagarMedicao TO administrador,investigador;
@@ -255,7 +257,7 @@ BEGIN
     PREPARE statement FROM @sql;
     EXECUTE statement;
 
-	SET @sql := CONCAT('SELECT * FROM estufa.medicoes WHERE ', var_condicao);
+	SET @sql := CONCAT('SELECT medicoes.NumeroMedicao, medicoes.DataHoraMedicao, medicoes.ValorMedicao, medicoes.IdVariaveisMedidas FROM estufa.medicoes, estufa.variaveis_medidas WHERE ', var_condicao);
     PREPARE statement FROM @sql;
     EXECUTE statement; 
 
@@ -306,6 +308,9 @@ END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `updateMigrados` (IN `endID` INT(50))  UPDATE logs SET logs.exportado=1 WHERE logs.logId<=endID$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `updateVariaveis` (IN `variableId` INT, IN `newName` VARCHAR(100))  NO SQL
+UPDATE variaveis SET variaveis.NomeVariavel = newName WHERE variaveis.IDVariavel = variableId$$
+
 DELIMITER ;
 
 -- --------------------------------------------------------
@@ -352,7 +357,8 @@ INSERT INTO `alertas` (`idAlerta`, `nomeVariavel`, `nomeCultura`, `emailInvestig
 (27, 'nomeDaVariavel', 'Tomate', 'root@localhost', '2019-05-04 17:44:45', '5.00', '9.50', '3.85', 'O valor da medição ultrapassou o limite inferior.'),
 (28, 'nomeDaVariavel', 'Tomate', 'root@localhost', '2019-05-04 17:45:21', '5.00', '9.50', '5.42', 'O valor da medição está próximo do limite inferior.'),
 (29, 'Chumbo', 'Cenouras', 'root@localhost', '2019-05-06 12:14:46', '2.85', '8.25', '1.52', 'O valor da medição ultrapassou o limite inferior.'),
-(30, 'Chumbo', 'Cenouras', 'root@localhost', '2019-05-06 12:16:44', '2.85', '8.25', '13.52', 'O valor da medição ultrapassou o limite superior.');
+(30, 'Chumbo', 'Cenouras', 'root@localhost', '2019-05-06 12:16:44', '2.85', '8.25', '13.52', 'O valor da medição ultrapassou o limite superior.'),
+(31, 'Mercurio', 'Ossos', 'root@localhost', '2019-05-12 23:22:56', '1.00', '10.00', '4.00', 'O valor da medição está próximo do limite inferior.');
 
 -- --------------------------------------------------------
 
@@ -376,7 +382,10 @@ INSERT INTO `cultura` (`IDCultura`, `NomeCultura`, `DescricaoCultura`, `EmailInv
 (4, 'Cenouras', 'Cultura Hidropónica', 'hmbs@gmail.com'),
 (5, 'Pimentos', 'Cultura Hidropónica', 'afga'),
 (6, 'battas', 'sd', 'joaofneto97@gmail.com'),
-(8, 'Cerejas', 'Cultura hidroponica', 'hmbs@gmail.com');
+(8, 'Cerejas', 'Cultura hidroponica', 'hmbs@gmail.com'),
+(9, 'Ossos', 'Nao sei porque', 'inv@a.p'),
+(10, 'esta', 'aquela', 'inv@a.p'),
+(11, 'hum', 'hummmmmm', 'inv@a.p');
 
 --
 -- Acionadores `cultura`
@@ -414,6 +423,8 @@ INSERT INTO `investigador` (`Email`, `NomeInvestigador`, `CategoriaProfissional`
 ('a', 'a', 'a'),
 ('a.@b.c', 'Alberto', 'wer'),
 ('a@b.c', 'qwer', 'nao sei'),
+('a@e.i', 'you', 'koite'),
+('ab@ab.pt', 'ab', 'nao sei'),
 ('abc', 'El Chap', 'abc'),
 ('aDFSDFV', 'sfdafd', 'sadsd'),
 ('afga', 'asddsa', 'wcafdv'),
@@ -421,6 +432,7 @@ INSERT INTO `investigador` (`Email`, `NomeInvestigador`, `CategoriaProfissional`
 ('c', 'c', 'c'),
 ('eumail', 'eu', 'sadad'),
 ('hmbs@gmail.com', 'hmbs', 'eng'),
+('inv@a.p', 'inv', 'goia'),
 ('joaofneto97@gmail.com', 'joao', 'chefe'),
 ('jonas@gmail.com', 'jonas', 'programador'),
 ('jorge@gmail.com', 'Jorge', 'admin'),
@@ -429,6 +441,7 @@ INSERT INTO `investigador` (`Email`, `NomeInvestigador`, `CategoriaProfissional`
 ('qwe', 'sens', 'asd'),
 ('qwerty', 'boneca', 'asdfg'),
 ('sdfvsdfvc', 'adscfsad', 'sfcvsfdcv'),
+('testeAdministrador@gmail.com', 'testeAdministrador', 'admin'),
 ('testeinvestigador@gmail.com', 'TesteInvestigador', 'teste teste'),
 ('v', 'v', 'v'),
 ('y', 'y', 'y');
@@ -671,7 +684,60 @@ INSERT INTO `logs` (`logId`, `username`, `nomeTabela`, `comandoUsado`, `linhaAnt
 (330, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 24  DataHoraMedicao: 2019-05-04 17:44:45  ValorMedicao: 3.85  IdVariaveisMedidas: 2', 'Linha Eliminada', '2019-05-12 15:37:34', 0),
 (331, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 25  DataHoraMedicao: 2019-05-04 17:45:21  ValorMedicao: 5.42  IdVariaveisMedidas: 2', 'Linha Eliminada', '2019-05-12 15:37:34', 0),
 (332, 'root@localhost', 'variaveis_medidas', 'DELETE', 'IDVariavel: 8  IDCultura: 2  LimiteInferior: 5.00  LimiteSuperior: 9.50  IdVariaveisMedidas: 2', 'Linha Eliminada', '2019-05-12 15:37:34', 0),
-(333, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 8  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-12 15:37:34', 0);
+(333, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 8  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-12 15:37:34', 0),
+(334, 'root@localhost', 'variaveis', 'UPDATE', 'IDVariavel: 13  NomeVariavel: nomeDaVariavel', 'IDVariavel: 13  NomeVariavel: Mercurio', '2019-05-12 16:33:14', 0),
+(335, 'root@localhost', 'investigador', 'INSERT', 'Não Aplicável', 'Email: testeAdministrador@gmail.com  NomeInvestigador: testeAdministrador  CategoriaProfissional: admin', '2019-05-12 16:56:25', 0),
+(336, 'root@localhost', 'investigador', 'INSERT', 'Não Aplicável', 'Email: a@e.i  NomeInvestigador: you  CategoriaProfissional: koite', '2019-05-12 17:08:40', 0),
+(337, 'root@localhost', 'investigador', 'INSERT', 'Não Aplicável', 'Email: inv@a.p  NomeInvestigador: inv  CategoriaProfissional: goia', '2019-05-12 17:09:53', 0),
+(338, 'root@localhost', 'cultura', 'INSERT', 'Não Aplicável', 'IdCultura: 9  NomeCultura: Ossos  DescricaoCultura: Nao sei porque  EmailInvestigador: inv@a.p', '2019-05-12 19:37:25', 0),
+(339, 'root@localhost', 'cultura', 'INSERT', 'Não Aplicável', 'IdCultura: 10  NomeCultura: esta  DescricaoCultura: aquela  EmailInvestigador: inv@a.p', '2019-05-12 19:53:48', 0),
+(340, 'root@localhost', 'cultura', 'INSERT', 'Não Aplicável', 'IdCultura: 11  NomeCultura: hum  DescricaoCultura: hummmmmm  EmailInvestigador: inv@a.p', '2019-05-12 20:05:47', 0),
+(341, 'root@localhost', 'investigador', 'INSERT', 'Não Aplicável', 'Email: ab@ab.pt  NomeInvestigador: ab  CategoriaProfissional: nao sei', '2019-05-12 20:53:33', 0),
+(342, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', '1=1', '2019-05-12 22:27:55', 0),
+(343, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', 'variaveis_medidas.IDCultura = 1 and medicoes.IdVariaveisMedidas = variaveis_medidas.IdVariaveisMedidas', '2019-05-12 22:29:37', 0),
+(344, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', '1=1', '2019-05-12 22:30:17', 0),
+(345, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', '1=1', '2019-05-12 22:32:08', 0),
+(346, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', 'variaveis_medidas.IDCultura = 1 and medicoes.IdVariaveisMedidas = variaveis_medidas.IdVariaveisMedidas', '2019-05-12 22:32:15', 0),
+(347, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', 'variaveis_medidas.IDCultura = 4 and medicoes.IdVariaveisMedidas = variaveis_medidas.IdVariaveisMedidas', '2019-05-12 22:32:41', 0),
+(348, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', 'variaveis_medidas.IDCultura = 4 and medicoes.IdVariaveisMedidas = variaveis_medidas.IdVariaveisMedidas', '2019-05-12 22:59:59', 0),
+(349, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', 'variaveis_medidas.IDCultura = 4 and medicoes.IdVariaveisMedidas = variaveis_medidas.IdVariaveisMedidas', '2019-05-12 22:59:59', 0),
+(350, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', 'variaveis_medidas.IDCultura = 4 and medicoes.IdVariaveisMedidas = variaveis_medidas.IdVariaveisMedidas', '2019-05-12 23:00:15', 0),
+(351, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', 'variaveis_medidas.IDCultura = 4 and medicoes.IdVariaveisMedidas = variaveis_medidas.IdVariaveisMedidas', '2019-05-12 23:00:15', 0),
+(352, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', 'variaveis_medidas.IDCultura = 4 and medicoes.IdVariaveisMedidas = variaveis_medidas.IdVariaveisMedidas', '2019-05-12 23:01:04', 0),
+(353, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', 'variaveis_medidas.IDCultura = 4 and medicoes.IdVariaveisMedidas = variaveis_medidas.IdVariaveisMedidas', '2019-05-12 23:01:04', 0),
+(354, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', 'variaveis_medidas.IDCultura = 4 and medicoes.IdVariaveisMedidas = variaveis_medidas.IdVariaveisMedidas', '2019-05-12 23:03:27', 0),
+(355, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', 'variaveis_medidas.IDCultura = 4 and medicoes.IdVariaveisMedidas = variaveis_medidas.IdVariaveisMedidas', '2019-05-12 23:03:27', 0),
+(356, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', 'variaveis_medidas.IDCultura = 4 and medicoes.IdVariaveisMedidas = variaveis_medidas.IdVariaveisMedidas', '2019-05-12 23:04:54', 0),
+(357, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', 'variaveis_medidas.IDCultura = 4 and medicoes.IdVariaveisMedidas = variaveis_medidas.IdVariaveisMedidas', '2019-05-12 23:04:54', 0),
+(358, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', 'variaveis_medidas.IDCultura = 2 and medicoes.IdVariaveisMedidas = variaveis_medidas.IdVariaveisMedidas', '2019-05-12 23:05:01', 0),
+(359, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', 'variaveis_medidas.IDCultura = 2 and medicoes.IdVariaveisMedidas = variaveis_medidas.IdVariaveisMedidas', '2019-05-12 23:05:01', 0),
+(360, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', 'variaveis_medidas.IDCultura = 5 and medicoes.IdVariaveisMedidas = variaveis_medidas.IdVariaveisMedidas', '2019-05-12 23:05:02', 0),
+(361, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', 'variaveis_medidas.IDCultura = 5 and medicoes.IdVariaveisMedidas = variaveis_medidas.IdVariaveisMedidas', '2019-05-12 23:05:02', 0),
+(362, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', 'variaveis_medidas.IDCultura = 4 and medicoes.IdVariaveisMedidas = variaveis_medidas.IdVariaveisMedidas', '2019-05-12 23:05:04', 0),
+(363, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', 'variaveis_medidas.IDCultura = 4 and medicoes.IdVariaveisMedidas = variaveis_medidas.IdVariaveisMedidas', '2019-05-12 23:05:04', 0),
+(364, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', 'variaveis_medidas.IDCultura = 9 and medicoes.IdVariaveisMedidas = variaveis_medidas.IdVariaveisMedidas', '2019-05-12 23:21:44', 0),
+(365, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', 'variaveis_medidas.IDCultura = 9 and medicoes.IdVariaveisMedidas = variaveis_medidas.IdVariaveisMedidas', '2019-05-12 23:21:44', 0),
+(366, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', 'variaveis_medidas.IDCultura = 10 and medicoes.IdVariaveisMedidas = variaveis_medidas.IdVariaveisMedidas', '2019-05-12 23:21:45', 0),
+(367, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', 'variaveis_medidas.IDCultura = 10 and medicoes.IdVariaveisMedidas = variaveis_medidas.IdVariaveisMedidas', '2019-05-12 23:21:45', 0),
+(368, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', 'variaveis_medidas.IDCultura = 11 and medicoes.IdVariaveisMedidas = variaveis_medidas.IdVariaveisMedidas', '2019-05-12 23:21:48', 0),
+(369, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', 'variaveis_medidas.IDCultura = 11 and medicoes.IdVariaveisMedidas = variaveis_medidas.IdVariaveisMedidas', '2019-05-12 23:21:48', 0),
+(370, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', 'variaveis_medidas.IDCultura = 10 and medicoes.IdVariaveisMedidas = variaveis_medidas.IdVariaveisMedidas', '2019-05-12 23:21:49', 0),
+(371, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', 'variaveis_medidas.IDCultura = 10 and medicoes.IdVariaveisMedidas = variaveis_medidas.IdVariaveisMedidas', '2019-05-12 23:21:49', 0),
+(372, 'root@localhost', 'variaveis_medidas', 'INSERT', 'Não Aplicável', 'IDVariavel: 13  IDCultura: 9  LimiteInferior: 1.00  LimiteSuperior: 10.00  IdVariaveisMedidas: 3', '2019-05-12 23:22:29', 0),
+(373, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 26  DataHoraMedicao: 2019-05-12 23:22:56  ValorMedicao: 4.00  IdVariaveisMedidas: 3', '2019-05-12 23:22:56', 0),
+(374, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', 'variaveis_medidas.IDCultura = 9 and medicoes.IdVariaveisMedidas = variaveis_medidas.IdVariaveisMedidas', '2019-05-12 23:23:01', 0),
+(375, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', 'variaveis_medidas.IDCultura = 9 and medicoes.IdVariaveisMedidas = variaveis_medidas.IdVariaveisMedidas', '2019-05-12 23:23:01', 0);
+INSERT INTO `logs` (`logId`, `username`, `nomeTabela`, `comandoUsado`, `linhaAnterior`, `resultado`, `dataComando`, `exportado`) VALUES
+(376, 'root@localhost', 'cultura', 'INSERT', 'Não Aplicável', 'IdCultura: 12  NomeCultura: oioi  DescricaoCultura: asdfwedfwa  EmailInvestigador: inv@a.p', '2019-05-12 23:24:06', 0),
+(377, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', 'variaveis_medidas.IDCultura = 11 and medicoes.IdVariaveisMedidas = variaveis_medidas.IdVariaveisMedidas', '2019-05-12 23:25:59', 0),
+(378, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', 'variaveis_medidas.IDCultura = 11 and medicoes.IdVariaveisMedidas = variaveis_medidas.IdVariaveisMedidas', '2019-05-12 23:25:59', 0),
+(379, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', 'variaveis_medidas.IDCultura = 9 and medicoes.IdVariaveisMedidas = variaveis_medidas.IdVariaveisMedidas', '2019-05-12 23:26:00', 0),
+(380, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', 'variaveis_medidas.IDCultura = 9 and medicoes.IdVariaveisMedidas = variaveis_medidas.IdVariaveisMedidas', '2019-05-12 23:26:00', 0),
+(381, 'root@localhost', 'cultura', 'UPDATE', 'IdCultura: 12  NomeCultura: oioi  DescricaoCultura: asdfwedfwa  EmailInvestigador: inv@a.p', 'IdCultura: 12  NomeCultura: ooooiiii  DescricaoCultura: adfksaudfi i asdf i dfiua   EmailInvestigador: inv@a.p', '2019-05-12 23:28:30', 0),
+(382, 'root@localhost', 'cultura', 'DELETE', 'IdCultura: 12  NomeCultura: ooooiiii  DescricaoCultura: adfksaudfi i asdf i dfiua   EmailInvestigador: inv@a.p', 'Linha Eliminada', '2019-05-12 23:29:02', 0),
+(383, 'root@localhost', 'cultura', 'UPDATE', 'IdCultura: 11  NomeCultura: hum  DescricaoCultura: hummmmmm  EmailInvestigador: inv@a.p', 'IdCultura: 11  NomeCultura: hum  DescricaoCultura: hummmmmm  EmailInvestigador: inv@a.p', '2019-05-12 23:41:29', 0),
+(384, 'root@localhost', 'cultura', 'INSERT', 'Não Aplicável', 'IdCultura: 13  NomeCultura: asdf  DescricaoCultura: adsfdwsafdcv  EmailInvestigador: inv@a.p', '2019-05-12 23:44:00', 0),
+(385, 'root@localhost', 'cultura', 'DELETE', 'IdCultura: 13  NomeCultura: asdf  DescricaoCultura: adsfdwsafdcv  EmailInvestigador: inv@a.p', 'Linha Eliminada', '2019-05-12 23:44:04', 0);
 
 -- --------------------------------------------------------
 
@@ -711,7 +777,8 @@ INSERT INTO `medicoes` (`NumeroMedicao`, `DataHoraMedicao`, `ValorMedicao`, `IdV
 (20, '2019-05-03 22:44:29', '8.26', 1),
 (21, '2019-05-03 22:44:29', '8.24', 1),
 (22, '2019-05-04 16:42:48', '10.25', 1),
-(23, '2019-05-04 16:43:24', '1.58', 1);
+(23, '2019-05-04 16:43:24', '1.58', 1),
+(26, '2019-05-12 22:22:56', '4.00', 3);
 
 --
 -- Acionadores `medicoes`
@@ -918,7 +985,7 @@ INSERT INTO `variaveis` (`IDVariavel`, `NomeVariavel`) VALUES
 (10, 'nomeDaVariavel'),
 (11, 'nomeDaVariavel'),
 (12, 'nomeDaVariavel'),
-(13, 'nomeDaVariavel'),
+(13, 'Mercurio'),
 (14, 'nomeDaVariavel'),
 (15, 'nomeDaVariavel'),
 (16, 'nomeDaVariavel'),
@@ -1029,7 +1096,8 @@ CREATE TABLE `variaveis_medidas` (
 --
 
 INSERT INTO `variaveis_medidas` (`IDVariavel`, `IDCultura`, `LimiteInferior`, `LimiteSuperior`, `MargemSegurancaVariavel`, `IdVariaveisMedidas`) VALUES
-(3, 4, '2.85', '8.25', '0.10', 1);
+(3, 4, '2.85', '8.25', '0.10', 1),
+(13, 9, '1.00', '10.00', '2.00', 3);
 
 --
 -- Acionadores `variaveis_medidas`
@@ -1129,25 +1197,25 @@ ALTER TABLE `variaveis_medidas`
 -- AUTO_INCREMENT for table `alertas`
 --
 ALTER TABLE `alertas`
-  MODIFY `idAlerta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `idAlerta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT for table `cultura`
 --
 ALTER TABLE `cultura`
-  MODIFY `IDCultura` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `IDCultura` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `logs`
 --
 ALTER TABLE `logs`
-  MODIFY `logId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=334;
+  MODIFY `logId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=386;
 
 --
 -- AUTO_INCREMENT for table `medicoes`
 --
 ALTER TABLE `medicoes`
-  MODIFY `NumeroMedicao` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `NumeroMedicao` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `medicoes_luminosidade`
@@ -1183,7 +1251,7 @@ ALTER TABLE `variaveis`
 -- AUTO_INCREMENT for table `variaveis_medidas`
 --
 ALTER TABLE `variaveis_medidas`
-  MODIFY `IdVariaveisMedidas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `IdVariaveisMedidas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints for dumped tables
