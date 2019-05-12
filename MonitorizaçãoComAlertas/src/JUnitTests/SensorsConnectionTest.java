@@ -13,7 +13,7 @@ class SensorsConnectionTest {
 	@Test
 	void test() {
 		
-		Sistema sis = new Sistema (0,20,0,300,0.5,0.5,0.5,0.5);
+		Sistema sis = new Sistema (0,20,0,300,0.5,0.5,0.5,0.5, 15);
 		
 		GestorDeMedicoes ges = new GestorDeMedicoes (sis);
 		
@@ -21,7 +21,7 @@ class SensorsConnectionTest {
 		assertEquals(sc.getGes().equals(ges),true);
 
 		assertEquals(sc.getClient().getClass().getCanonicalName().equals("org.eclipse.paho.client.mqttv3.MqttClient"),true);
-		
+		assertEquals(sc.getGes().equals(ges),true);
 		
 		
 		
