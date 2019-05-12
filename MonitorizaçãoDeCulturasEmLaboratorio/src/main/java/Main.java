@@ -26,7 +26,7 @@ public class Main {
         variableManager.alterarLimitesTemperatura(19,30);
         variableManager.alterarLimitesLuz(1,3);
         MedicoesManager med = new MedicoesManager();
-        med.selectMedicoes();
+        //med.selectMedicoes();
 
 
         for (Variable v: variableManager.getVariables()) {

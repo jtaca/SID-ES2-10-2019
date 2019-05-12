@@ -46,10 +46,9 @@
                      <center>
                         <TableView fx:id="users_table" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="800.0">
                            <columns>
-                              <TableColumn fx:id="user_name_col" maxWidth="1.7976931348623157E308" prefWidth="178.39990234375" style="-fx-background-color: white; -fx-border-style: solid; -fx-border-width: 0 1 1 0; -fx-border-color: rgb(210, 210, 210);" text="Name" />
-                              <TableColumn fx:id="user_email_col" maxWidth="1.7976931348623157E308" prefWidth="272.0" style="-fx-background-color: white; -fx-border-style: solid; -fx-border-width: 0 1 1 0; -fx-border-color: rgb(210, 210, 210);" text="Email" />
-                              <TableColumn fx:id="user_category_col" maxWidth="1.7976931348623157E308" prefWidth="184.0" style="-fx-background-color: white; -fx-border-style: solid; -fx-border-width: 0 1 1 0; -fx-border-color: rgb(210, 210, 210);" text="Professional Category" />
-                              <TableColumn fx:id="user_type_col" maxWidth="1.7976931348623157E308" prefWidth="164.800048828125" style="-fx-background-color: white; -fx-border-style: solid; -fx-border-width: 0 0 1 0; -fx-border-color: rgb(210, 210, 210);" text="User type" />
+                              <TableColumn fx:id="user_name_col" maxWidth="1.7976931348623157E308" prefWidth="264.00012814998627" style="-fx-background-color: white; -fx-border-style: solid; -fx-border-width: 0 1 1 0; -fx-border-color: rgb(210, 210, 210);" text="Name" />
+                              <TableColumn fx:id="user_email_col" maxWidth="1.7976931348623157E308" prefWidth="311.9998474121094" style="-fx-background-color: white; -fx-border-style: solid; -fx-border-width: 0 1 1 0; -fx-border-color: rgb(210, 210, 210);" text="Email" />
+                              <TableColumn fx:id="user_category_col" maxWidth="1.7976931348623157E308" prefWidth="223.2000732421875" style="-fx-background-color: white; -fx-border-style: solid; -fx-border-width: 0 1 1 0; -fx-border-color: rgb(210, 210, 210);" text="Professional Category" />
                            </columns>
                         </TableView>
                      </center>

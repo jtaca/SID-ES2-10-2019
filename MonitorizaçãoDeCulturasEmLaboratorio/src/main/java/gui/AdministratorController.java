@@ -65,7 +65,6 @@ public class AdministratorController {
         user_name_col.setCellValueFactory(new PropertyValueFactory<>("name"));
         user_email_col.setCellValueFactory(new PropertyValueFactory<>("email"));
         user_category_col.setCellValueFactory(new PropertyValueFactory<>("category"));
-        user_type_col.setCellValueFactory(new PropertyValueFactory<>("user_type"));
         users_table.setItems(randomUserList());
     }
 
@@ -119,7 +118,7 @@ public class AdministratorController {
 
             String name = "Pessoa " + Character.toUpperCase(a) + Character.toUpperCase(b);
 
-            list.add(new Investigador(name, a+"@"+b+".pt", "Agricultor","Investigador"));
+            list.add(new Investigador("pass", name, a+"@"+b+".pt", "Agricultor"));
         }
         return list;
     }

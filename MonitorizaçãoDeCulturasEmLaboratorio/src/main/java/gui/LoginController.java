@@ -1,5 +1,6 @@
 package gui;
 
+import api.DatabaseConnection;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -7,6 +8,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import javafx.util.Pair;
+
 import java.io.IOException;
 
 public class LoginController {
@@ -27,6 +30,15 @@ public class LoginController {
         System.out.println("Logging in...");
         System.out.println("Username: "+username.getText());
         System.out.println("Password: "+password.getText());
+
+        DatabaseConnection db = DatabaseConnection.getInstance();
+        Pair<Boolean, String> result = db.connect(username.getText(), password.getText());
+
+        /*if (!result.getKey())
+            System.out.println("Erro");
+        else if (result.getKey() && result.getValue().equals("investigador"))
+            System.out.println("Sucesso");*/
+
         startAdminPanel();
     }
 
