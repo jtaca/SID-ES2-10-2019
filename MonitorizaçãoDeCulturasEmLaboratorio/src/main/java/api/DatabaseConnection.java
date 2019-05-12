@@ -61,7 +61,7 @@ public class DatabaseConnection {
 
     private String getRoleLogin(){
 
-        DatabaseConnection DB = DatabaseConnection.getInstance();
+        DatabaseConnection DB = getInstance();
         String roleLogin = "";
 
         if(DB.isConnected()) {
