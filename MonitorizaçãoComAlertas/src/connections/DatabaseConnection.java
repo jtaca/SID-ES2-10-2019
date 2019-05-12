@@ -1,5 +1,7 @@
 package connections;
 
+import export.AndroidAlert;
+import export.Measurement;
 import javafx.util.Pair;
 import medicao.GestorDeMedicoes;
 import medicao.Sistema;
@@ -8,7 +10,6 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.ResultSet;
-
 
 
 @SuppressWarnings("restriction")
@@ -38,12 +39,12 @@ public class DatabaseConnection {
 				error = "Unknown error. Please contact the system administrator.";
 			}
 
-			return(new Pair<Boolean, String>(false, error));
+			return(new Pair<>(false, error));
 		}
-		return(new Pair<Boolean, String>(true, ""));
+		return(new Pair<>(true, ""));
 	}
 
-	
+
 	public static Connection getConnection() {
 		return conn;
 	}
@@ -88,7 +89,7 @@ public class DatabaseConnection {
 		return res;
 	}
 
-	
+
 	/**
 	 * Creates a'system' object which contains all the information on the greenhouse.
 	 * @return system object .
@@ -125,4 +126,65 @@ public class DatabaseConnection {
 		return ges;
 	}
 
+    public void insertMeasurement(Measurement measurement) throws SQLException {
+        Statement stmt = null;
+        String query = "INSERT INTO "
+                + getTableNameFromType(measurement.getType(), measurement.isError())
+                + " VALUES " + measurement.toString();
+
+        System.out.println(query);
+        executeStatement(stmt, query);
+    }
+
+    public void insertAlert(AndroidAlert alert) throws SQLException {
+        Statement stmt = null;
+        String query = "INSERT INTO "
+                + "alertas"
+                + " VALUES " + alert.toString();
+
+        System.out.println(query);
+        executeStatement(stmt, query);
+    }
+
+    private void executeStatement(Statement stmt, String query) throws SQLException {
+        try {
+            stmt = conn.createStatement();
+            int result = stmt.executeUpdate(query);
+        } catch (SQLException e ) {
+            e.printStackTrace();
+        } finally {
+            if (stmt != null) { stmt.close(); }
+        }
+    }
+
+    private enum TableNames {
+	    LIGHT("medicoes_luminosidade"),
+        TEMP("medicoes_temperatura"),
+        LIGHT_ERROR("medicoes_luminosidade_incorretas"),
+        TEMP_ERROR("medicoes_temperatura_incorretas");
+
+	    private String tableName;
+
+        TableNames(String tableName) {
+            this.tableName = tableName;
+        }
+    }
+
+    public String getTableNameFromType(Measurement.MeasurementType type, boolean error) {
+        String tableName;
+        if(type == Measurement.MeasurementType.LIGHT) {
+            if(error) {
+                tableName = TableNames.LIGHT_ERROR.tableName;
+            } else {
+                tableName = TableNames.LIGHT.tableName;
+            }
+        } else { // Temp
+            if(error) {
+                tableName = TableNames.TEMP_ERROR.tableName;
+            } else {
+                tableName = TableNames.TEMP.tableName;
+            }
+        }
+        return tableName;
+    }
 }

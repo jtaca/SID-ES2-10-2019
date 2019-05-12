@@ -1,11 +1,12 @@
 package connections;
 
-import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken; 
-import org.eclipse.paho.client.mqttv3.MqttCallback; 
+import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
+import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
-import org.eclipse.paho.client.mqttv3.MqttException; 
+import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
+
 import medicao.GestorDeMedicoes;
 import medicao.Medicao;
 
@@ -13,7 +14,6 @@ import medicao.Medicao;
 /**
  * Connects to sensors.
  */
-
 public class SensorsConnection implements MqttCallback {
 
 	String topic= "/sid_lab_2019_2";  
@@ -27,7 +27,6 @@ public class SensorsConnection implements MqttCallback {
 	 * Creates a connection to sensors.
 	 * @param ges is an instance of the class that manages the measurements received from the sensor.
 	 */
-
 	public SensorsConnection(GestorDeMedicoes ges) {
 		this.ges=ges;
 		init();
@@ -48,16 +47,12 @@ public class SensorsConnection implements MqttCallback {
 	 * @param topic is the topic.
 	 * @param message is the received message
 	 */
-
 	@Override
 	public void messageArrived(String topic, MqttMessage message) throws Exception {
-	
+		
 		if(message.toString().contains("{") && message.toString().contains("}") &&( message.toString().contains("cell")) || message.toString().contains("tmp")){
 			Medicao medicao= new Medicao (message);
 			ges.adiciona(medicao);
-			
-		
-
 		}else {
 			System.out.println("Mensagem não reconhecida.");
 		}
@@ -71,7 +66,6 @@ public class SensorsConnection implements MqttCallback {
 	/**
 	 *  Initializes the connection.
 	 */
-
 	public void init() {
 		try {
 			client = new MqttClient(broker, clientId);

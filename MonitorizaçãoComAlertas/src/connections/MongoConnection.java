@@ -1,36 +1,58 @@
 package connections;
-import com.mongodb.*;
 
+import com.mongodb.*;
 import medicao.Medicao;
+
+import java.util.ArrayList;
 
 public class MongoConnection {
 
-	/**
-	 * Allows to read data from a mongo database.
-	 */
+    private static MongoConnection single_instance = null;
 
-	public void read(){
-		@SuppressWarnings("resource")
-		MongoClient mongoClient1 = new MongoClient( "localhost",27017);
-		@SuppressWarnings("deprecation")
-		DB db = mongoClient1.getDB("sensores_grupo10");
-		DBCollection table = db.getCollection("medicoes");
-		DBCursor cursor = table.find();
-		while(cursor.hasNext()) {
-			System.out.println(cursor.next());
-		}
-	}
+    public static MongoConnection getInstance(){
+        if(single_instance == null) {
+            single_instance = new MongoConnection();
+        }
+        return single_instance;
+    }
 
-	/**
-	 * Allows you to write data to a mongo database.
-	 * @param m is the measurement that must be recorded in the database.
-	 */
+    private MongoConnection(){}
 
-	public void write(Medicao m){
-		MongoClient mongoClient1 = new MongoClient( "localhost",27017);
-		@SuppressWarnings("deprecation")
-		DB db = mongoClient1.getDB("sensores_grupo10");
-		DBCollection table = db.getCollection("medicoes");
+    /**
+     * Allows to read data from a mongo database.
+     */
+    public synchronized ArrayList<DBObject> read() throws InterruptedException {
+        wait(15000);
+
+        ArrayList<DBObject> objects = new ArrayList<>();
+
+        MongoClient mongoClient1 = new MongoClient("localhost", 27017);
+        DB db = mongoClient1.getDB("sensores_grupo10");
+        DBCollection table = db.getCollection("medicoes");
+        DBCursor cursor = table.find();
+        while (cursor.hasNext()) {
+            objects.add(cursor.next());
+        }
+
+        return objects;
+    }
+
+    public void deleteAll() {
+        MongoClient mongoClient1 = new MongoClient("localhost", 27017);
+        DB db = mongoClient1.getDB("sensores_grupo10");
+        DBCollection table = db.getCollection("medicoes");
+        table.remove(new BasicDBObject());
+    }
+
+    /**
+     * Allows you to write data to a mongo database.
+     * @param m is the measurement that must be recorded in the database.
+     */
+    public void write(Medicao m) {
+        MongoClient mongoClient1 = new MongoClient("localhost", 27017);
+        @SuppressWarnings("deprecation")
+        DB db = mongoClient1.getDB("sensores_grupo10");
+        DBCollection table = db.getCollection("medicoes");
 
 		BasicDBObject document = new BasicDBObject();
 		document.put("timestamp",m.getTimestamp());
@@ -56,7 +78,7 @@ public class MongoConnection {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		mongoClient1.close();		
+		mongoClient1.close();
 	}
 }	
 

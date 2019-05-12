@@ -3,25 +3,25 @@ package medicao;
 import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
+
 import connections.MongoConnection;
 
 
 /**
  *  It manages the measurements received from the sensor.
- */ 
+ */
 
 public class GestorDeMedicoes {
 	private Sistema sistema;
-	private int contador=0;
+	private int contador = 0;
 	private BlockingQueue<Medicao> bq;
-	private MongoConnection mc = new MongoConnection();
+	private MongoConnection mc = MongoConnection.getInstance();
 
-	/**
-	 *  Creates the manager.
-	 *  @param sistema represents the system to be managed.
-	 */ 
-
-	public GestorDeMedicoes(Sistema sistema) {
+    /**
+     *  Creates the manager.
+     *  @param sistema represents the system to be managed.
+     */
+    public GestorDeMedicoes(Sistema sistema) {
 		super();
 		this.sistema = sistema;
 		bq = new LinkedBlockingDeque<>(3);
@@ -31,7 +31,7 @@ public class GestorDeMedicoes {
 	/**
 	 *  Adds a new measurement to the measurement list.
 	 *  @param m is the measurement to insert in the list
-	 */ 
+	 */
 
 	public void adiciona(Medicao m) {
 		try {
@@ -39,7 +39,6 @@ public class GestorDeMedicoes {
 				bq.poll();
 				processaMedicao(m);
 				bq.put(m);
-				System.out.println(m.toString());
 				mc.write(m);
 				m.setExportadoParaOMongo(true);
 				contador ++;
@@ -50,6 +49,7 @@ public class GestorDeMedicoes {
 				m.setExportadoParaOMongo(true);
 				contador ++;
 			}
+            System.out.println(m.toString());
 		} catch (InterruptedException e) {
 			System.out.println("Erro " + e.getMessage());
 		}
@@ -59,10 +59,10 @@ public class GestorDeMedicoes {
 	/**
 	 *  Analyzes the measurement to see if it is an alert or if it is an error.
 	 *  @param m is the measurement that must be analyzed.
-	 */ 
+	 */
 
 	private void processaMedicao(Medicao m) throws InterruptedException {
-		ArrayList<Medicao> aux = new ArrayList<Medicao>();
+		ArrayList<Medicao> aux = new ArrayList<>();
 		bq.drainTo(aux);
 
 		Medicao m1 = aux.get(0);
@@ -79,7 +79,6 @@ public class GestorDeMedicoes {
 	 *  Analyzes the measurement to see if it is an alert.
 	 *  @param m is the measurement that must be analyzed.
 	 */
-
 	private void checkAlerts(Medicao m) {
 		if(m.isErroLuminosidade()==0) {
 			checkLuz(m);
@@ -114,7 +113,7 @@ public class GestorDeMedicoes {
 			else if (  sistema.getLimiteSuperiorLuz() <= m.getLuminosidade()){
 				m.setAlertaLuminosidade(true);
 				m.setCausaLuminosidade("O valor da medicao da luminosidade ultrapassou o limite superior estabelecido.");
-			}	
+			}
 		}
 	}
 
@@ -155,7 +154,7 @@ public class GestorDeMedicoes {
 	/**
 	 *  Analyzes the measurement to see if it is an temperature or brightness error.
 	 *  @param m is the measurement that must be analyzed.
-	 */ 
+	 */
 
 	private void checkErrors(Medicao m, Medicao m1, Medicao m2) {
 		double margemErroLuz = (sistema.getLimiteSuperiorLuz() - sistema.getLimiteInferiorLuz()) * sistema.getPercentagemVariacaoLuz();
