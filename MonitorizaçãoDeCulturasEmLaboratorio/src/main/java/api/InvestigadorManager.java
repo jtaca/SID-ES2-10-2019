@@ -14,7 +14,7 @@ import com.mysql.cj.jdbc.CallableStatement;
 
 public class InvestigadorManager {
 
-    private List<Investigador> listOfUsers = new ArrayList<Investigador>();
+    private static List<Investigador> listOfUsers = new ArrayList<Investigador>();
 
 
     public List<Investigador> getListOfInvestigadores () {
@@ -25,7 +25,7 @@ public class InvestigadorManager {
      * Extracts all records from the investigadores table from the database.
      */
 
-    public void getDBInvestigador () {
+    public static void getDBInvestigador() {
 
         DatabaseConnection DB = DatabaseConnection.getInstance();
 
@@ -47,7 +47,7 @@ public class InvestigadorManager {
      * @param varUser represents the record of a insvestigadores extrated from the data base for a post transformation.
      */
 
-    private void addInvestigadores (ResultSet varUser) throws SQLException {
+    private static void addInvestigadores(ResultSet varUser) throws SQLException {
 
         while(varUser.next()) {
             String nomeInvestigador = varUser.getString("NomeInvestigador");
@@ -67,7 +67,9 @@ public class InvestigadorManager {
      *
      */
 
-    public void insertInvestigador(Investigador investigador) {
+    public static void insertInvestigador(Investigador investigador) {
+
+        System.out.println(investigador.toString());
 
         try {
             CallableStatement cStmt = (CallableStatement) DatabaseConnection.getInstance().getConnection().prepareCall("{call addUser(?,?,?,?,?)}");
