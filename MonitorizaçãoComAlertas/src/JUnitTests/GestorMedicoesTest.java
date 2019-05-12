@@ -31,6 +31,9 @@ class GestorMedicoesTest {
 		assertEquals(med.getTemperatura() == 26.5,true);
 		assertEquals(med.getLuminosidade() == 456.0,true);
 
+		ges.adiciona(med);
+		
+	
 		
 		
 		
