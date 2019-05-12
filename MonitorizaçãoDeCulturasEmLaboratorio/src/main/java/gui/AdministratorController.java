@@ -303,4 +303,68 @@ public class AdministratorController {
         System.out.println("refreshUsersTable");
         users_table.setItems(UserList());
     }
+
+    public void changeTemperature(MouseEvent mouseEvent) {
+        System.out.println("changeTemperature");
+        Investigador selected_variable1 = users_table.getSelectionModel().getSelectedItem();
+
+        Task<Void> task = new Task<Void>() {
+            @Override
+            public Void call() {
+                System.out.println("Opening changeTemperature modal...");
+                final Stage dialog = new Stage();
+                dialog.initModality(Modality.APPLICATION_MODAL);
+                dialog.initOwner(primaryStage);
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/changeTemperature.fxml"));
+                StackPane root;
+                try {
+                    root = loader.load();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return null;
+                }
+
+
+
+                dialog.setScene(new Scene(root));
+                dialog.show();
+
+                return null;
+            }
+        };
+
+        Platform.runLater(task);
+    }
+
+    public void changeLight(MouseEvent mouseEvent) {
+        System.out.println("changeLight");
+        Investigador selected_variable1 = users_table.getSelectionModel().getSelectedItem();
+
+        Task<Void> task = new Task<Void>() {
+            @Override
+            public Void call() {
+                System.out.println("Opening changeLight modal...");
+                final Stage dialog = new Stage();
+                dialog.initModality(Modality.APPLICATION_MODAL);
+                dialog.initOwner(primaryStage);
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/changeLight.fxml"));
+                StackPane root;
+                try {
+                    root = loader.load();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return null;
+                }
+
+
+                dialog.setScene(new Scene(root));
+                dialog.show();
+
+                return null;
+            }
+        };
+
+        Platform.runLater(task);
+
+    }
 }
