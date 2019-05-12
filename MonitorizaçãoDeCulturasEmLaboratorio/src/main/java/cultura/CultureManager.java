@@ -70,35 +70,33 @@ public class CultureManager {
      * @param culture the culture to be inserted.
      */
 
-    public void insertCulture (Culture culture) {
+    public List<Culture> insertCulture (Culture culture) {
 
         DatabaseConnection DB = DatabaseConnection.getInstance();
 
         if(DB.isConnected()){
-            culture.setInvestigatorEmail(listOfCultures.get(1).getInvestigatorEmail());
             DB.insert(TABELA_CULTURA, culture.toString());
         }
 
-        getDBCultures();
+        return getListOfCultures();
     }
 
     /**
      * Attempts to update information from a culture in the database by calling the updateCulture stored procedure through the current culture object and another culture object instantiated with the parameters to be modified, supplied as argument.
-     * @param oldCulture object corresponding to the culture and his current information.
-     * @param newCulture object corresponding to the same culture instantiated only with the information changed.
+     * @param culture object corresponding to the culture and his new information.
      */
 
-    public void updateCulture (Culture oldCulture, Culture newCulture) {
+    public void updateCulture (Culture culture) {
 
         try {
 
             CallableStatement cStmt = (CallableStatement) DatabaseConnection.getInstance().getConnection().prepareCall("{call updateCultura(?,?,?)}");
-            cStmt.setString(1, ""+oldCulture.getId());
-            cStmt.setString(2, newCulture.getCultureName());
-            cStmt.setString(3, newCulture.getCultureDescription());
+            cStmt.setString(1, ""+culture.getId());
+            cStmt.setString(2, culture.getCultureName());
+            cStmt.setString(3, culture.getCultureDescription());
 
             if(cStmt.execute()==false) {
-                System.out.println("A cultura com id: " + oldCulture.getId() + " foi atualizada com sucesso.");
+                System.out.println("A cultura com id: " + culture.getId() + " foi atualizada com sucesso.");
             }
         } catch (SQLException e) {
             System.out.println("Nao foi possível atualizar a cultura pretendida. Exception: " + e.getMessage());

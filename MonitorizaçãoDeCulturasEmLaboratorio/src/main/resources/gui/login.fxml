@@ -74,7 +74,7 @@
                         <Font size="16.0" />
                      </font>
                   </PasswordField>
-                  <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#login" style="-fx-background-color: white; -fx-border-style: solid;" text="Login">
+                  <Button defaultButton="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#login" style="-fx-background-color: white; -fx-border-style: solid;" text="Login">
                      <VBox.margin>
                         <Insets right="70.0" top="60.0" />
                      </VBox.margin>

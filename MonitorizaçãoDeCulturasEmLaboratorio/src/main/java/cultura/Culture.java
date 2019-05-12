@@ -82,6 +82,14 @@ public class Culture {
         this.investigatorEmail = investigatorEmail;
     }
 
+    public void setCultureName(String cultureName) {
+        this.cultureName = cultureName;
+    }
+
+    public void setCultureDescription(String cultureDescription) {
+        this.cultureDescription = cultureDescription;
+    }
+
     /**
      * A method that returns a part of the query that is responsable by inserted a culture into the database.
      * @return Returns the query with or without the id of the culture. If return with id a culture  is inserted into the database with the id specified by the user . If returned without id, the field in the database destined for this value is automatically attributed.
