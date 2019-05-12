@@ -25,7 +25,6 @@ import variaveis.Variable;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class AdministratorController {
 
@@ -73,7 +72,7 @@ public class AdministratorController {
         user_name_col.setCellValueFactory(new PropertyValueFactory<>("name"));
         user_email_col.setCellValueFactory(new PropertyValueFactory<>("email"));
         user_category_col.setCellValueFactory(new PropertyValueFactory<>("category"));
-        users_table.setItems(randomUserList());
+        users_table.setItems(UserList());
 
         System.out.println("Starting app...");
 
@@ -144,7 +143,7 @@ public class AdministratorController {
         variables_table.setItems(VariableList());
     }
 
-    private ObservableList<Investigador> randomUserList() {
+    private ObservableList<Investigador> UserList() {
         ObservableList<Investigador> list = FXCollections.observableArrayList();
 
         InvestigadorManager inv = new InvestigadorManager();
@@ -234,10 +233,13 @@ public class AdministratorController {
         System.out.println("deleteUser");
         Investigador selected_variable = users_table.getSelectionModel().getSelectedItem();
         System.out.println("Selected: " + selected_variable);
+
+        InvestigadorManager inv = new InvestigadorManager();
+        inv.deleteInvestigador(selected_variable);
     }
 
     public void refreshUsersTable(MouseEvent mouseEvent) {
         System.out.println("refreshUsersTable");
-        users_table.setItems(randomUserList());
+        users_table.setItems(UserList());
     }
 }

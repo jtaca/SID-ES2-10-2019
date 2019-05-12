@@ -134,6 +134,7 @@ public class InvestigadorManager {
         try {
             CallableStatement cStmt = (CallableStatement) DatabaseConnection.getInstance().getConnection().prepareCall("{call deleteUser(?)}");
             cStmt.setString(1, investigador.getEmail());
+            System.out.println(investigador.getEmail());
             if(cStmt.execute()==false) {
                 System.out.println("O utilizador com o email " + investigador.getEmail() +" foi apagado com sucesso" );
             }

@@ -37,6 +37,9 @@ public class MongoConnection {
         return objects;
     }
 
+    /**
+     * Deletes all the mongoDB values from the sensores_grupo10 collection.
+     */
     public void deleteAll() {
         MongoClient mongoClient1 = new MongoClient("localhost", 27017);
         DB db = mongoClient1.getDB("sensores_grupo10");

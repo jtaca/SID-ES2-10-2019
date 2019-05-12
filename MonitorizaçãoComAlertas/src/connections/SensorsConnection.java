@@ -59,9 +59,6 @@ public class SensorsConnection implements MqttCallback {
 
 	}
 
-	@Override
-	public void deliveryComplete(IMqttDeliveryToken token) {			
-	}
 
 	/**
 	 *  Initializes the connection.
@@ -86,5 +83,26 @@ public class SensorsConnection implements MqttCallback {
 		}
 	}
 
+	/**
+	 * Return the attribute relative to the measurement manager.
+	 * @return object 'GestorDeMedicoes'.
+	 */
+	public GestorDeMedicoes getGes() {
+		return ges;
+	}
+
+	@Override
+	public void deliveryComplete(IMqttDeliveryToken token) {
+		// TODO Auto-generated method stub
+		
+	}
+	/**
+	 * @return attibute 'client'.
+	 */
+	public MqttClient getClient() {
+		return client;
+	}
+
+	
 }
 
