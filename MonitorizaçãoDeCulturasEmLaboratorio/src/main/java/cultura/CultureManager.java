@@ -22,7 +22,8 @@ public class CultureManager {
      * @return an ArrayList of all the culturas in the database;
      */
 
-    public List<Culture> getListOfCultures () {
+    public List<Culture> getListOfCultures() {
+        getDBCultures();
         return listOfCultures;
     }
 
@@ -74,6 +75,7 @@ public class CultureManager {
         DatabaseConnection DB = DatabaseConnection.getInstance();
 
         if(DB.isConnected()){
+            culture.setInvestigatorEmail(listOfCultures.get(1).getInvestigatorEmail());
             DB.insert(TABELA_CULTURA, culture.toString());
         }
 
@@ -108,9 +110,10 @@ public class CultureManager {
     /**
      * Tries to delete a culture by calling the stored procedure apagarCultura with the given parameters.
      * @param culture is the object culture that we want to delete.
+     * @return
      */
 
-    public void deleteCulture (Culture culture) {
+    public List<Culture> deleteCulture (Culture culture) {
 
         try {
             CallableStatement cStmt = (CallableStatement) DatabaseConnection.getInstance().getConnection().prepareCall("{call apagarCultura(?)}");
@@ -122,7 +125,7 @@ public class CultureManager {
             System.out.println("Nao foi possível apagar a cultura pretendida. Exception: " + e.getMessage());
         }
 
-        getDBCultures();
+        return getListOfCultures();
 
     }
 }
