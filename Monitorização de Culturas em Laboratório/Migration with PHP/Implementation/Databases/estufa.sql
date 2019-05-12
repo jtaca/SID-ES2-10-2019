@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 09-Maio-2019 às 15:02
+-- Generation Time: 12-Maio-2019 às 17:17
 -- Versão do servidor: 10.1.38-MariaDB
 -- versão do PHP: 7.3.2
 
@@ -188,12 +188,14 @@ GRANT SELECT,INSERT, UPDATE, DELETE ON estufa.sistema TO administrador,investiga
 
 GRANT SELECT,INSERT, UPDATE, DELETE ON estufa.medicoes_temperatura TO administrador;
 GRANT SELECT,INSERT, UPDATE, DELETE ON estufa.medicoes_luminosidade TO administrador;
+GRANT SELECT ON mysql.User TO administrador;
 
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `criarPrivilegiosExecute` ()  BEGIN
 
 GRANT EXECUTE ON PROCEDURE estufa.apagarCultura TO administrador,investigador;
+GRANT EXECUTE ON PROCEDURE estufa.apagarVariaveis TO administrador,investigador;
 GRANT EXECUTE ON PROCEDURE estufa.apagarMedicao TO administrador,investigador;
 GRANT EXECUTE ON PROCEDURE estufa.addUser TO administrador;
 GRANT EXECUTE ON PROCEDURE estufa.alterarLimitesLuz TO administrador;
@@ -373,7 +375,8 @@ INSERT INTO `cultura` (`IDCultura`, `NomeCultura`, `DescricaoCultura`, `EmailInv
 (2, 'Batatas', 'Cultura Hidropónica', 'lala@gmail.com'),
 (4, 'Cenouras', 'Cultura Hidropónica', 'hmbs@gmail.com'),
 (5, 'Pimentos', 'Cultura Hidropónica', 'afga'),
-(6, 'battas', 'sd', 'joaofneto97@gmail.com');
+(6, 'battas', 'sd', 'joaofneto97@gmail.com'),
+(8, 'Cerejas', 'Cultura hidroponica', 'hmbs@gmail.com');
 
 --
 -- Acionadores `cultura`
@@ -420,6 +423,7 @@ INSERT INTO `investigador` (`Email`, `NomeInvestigador`, `CategoriaProfissional`
 ('hmbs@gmail.com', 'hmbs', 'eng'),
 ('joaofneto97@gmail.com', 'joao', 'chefe'),
 ('jonas@gmail.com', 'jonas', 'programador'),
+('jorge@gmail.com', 'Jorge', 'admin'),
 ('lala@gmail.com', 'wqser', 'qwer'),
 ('p@p.p', 'pipu', '0'),
 ('qwe', 'sens', 'asd'),
@@ -583,7 +587,91 @@ INSERT INTO `logs` (`logId`, `username`, `nomeTabela`, `comandoUsado`, `linhaAnt
 (246, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 41  NomeVariavel: nomeDaVariavel', '2019-05-09 13:51:14', 0),
 (247, 'root@localhost', 'sistema', 'UPDATE', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', '2019-05-09 13:51:14', 0),
 (248, 'root@localhost', 'sistema', 'UPDATE', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', '2019-05-09 13:51:14', 0),
-(249, 'root@localhost', 'investigador', 'DELETE', 'Email: testeinsertcultura@gmail.com  NomeInvestigador: TesteInsert  CategoriaProfissional: teste teste', 'Linha Eliminada', '2019-05-09 13:51:14', 0);
+(249, 'root@localhost', 'investigador', 'DELETE', 'Email: testeinsertcultura@gmail.com  NomeInvestigador: TesteInsert  CategoriaProfissional: teste teste', 'Linha Eliminada', '2019-05-09 13:51:14', 0),
+(250, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 42  NomeVariavel: nomeDaVariavel', '2019-05-09 16:35:58', 0),
+(251, 'root@localhost', 'sistema', 'UPDATE', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', '2019-05-09 16:35:58', 0),
+(252, 'root@localhost', 'sistema', 'UPDATE', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', '2019-05-09 16:35:58', 0),
+(253, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 43  NomeVariavel: nomeDaVariavel', '2019-05-09 17:00:04', 0),
+(254, 'root@localhost', 'sistema', 'UPDATE', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', '2019-05-09 17:00:04', 0),
+(255, 'root@localhost', 'sistema', 'UPDATE', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', '2019-05-09 17:00:04', 0),
+(256, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 44  NomeVariavel: nomeDaVariavel', '2019-05-09 17:01:42', 0),
+(257, 'root@localhost', 'sistema', 'UPDATE', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', '2019-05-09 17:01:42', 0),
+(258, 'root@localhost', 'sistema', 'UPDATE', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', '2019-05-09 17:01:42', 0),
+(259, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 45  NomeVariavel: nomeDaVariavel', '2019-05-09 17:11:03', 0),
+(260, 'root@localhost', 'sistema', 'UPDATE', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', '2019-05-09 17:11:03', 0),
+(261, 'root@localhost', 'sistema', 'UPDATE', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', '2019-05-09 17:11:03', 0),
+(262, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 46  NomeVariavel: nomeDaVariavel', '2019-05-09 17:13:54', 0),
+(263, 'root@localhost', 'sistema', 'UPDATE', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', '2019-05-09 17:13:54', 0),
+(264, 'root@localhost', 'sistema', 'UPDATE', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', '2019-05-09 17:13:54', 0),
+(265, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 47  NomeVariavel: nomeDaVariavel', '2019-05-09 17:14:21', 0),
+(266, 'root@localhost', 'sistema', 'UPDATE', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', '2019-05-09 17:14:21', 0),
+(267, 'root@localhost', 'sistema', 'UPDATE', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', '2019-05-09 17:14:21', 0),
+(268, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 48  NomeVariavel: nomeDaVariavel', '2019-05-09 17:14:38', 0),
+(269, 'root@localhost', 'sistema', 'UPDATE', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', '2019-05-09 17:14:38', 0),
+(270, 'root@localhost', 'sistema', 'UPDATE', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', '2019-05-09 17:14:38', 0),
+(271, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 49  NomeVariavel: nomeDaVariavel', '2019-05-09 17:17:26', 0),
+(272, 'root@localhost', 'sistema', 'UPDATE', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', '2019-05-09 17:17:26', 0),
+(273, 'root@localhost', 'sistema', 'UPDATE', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', '2019-05-09 17:17:26', 0),
+(274, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 50  NomeVariavel: nomeDaVariavel', '2019-05-09 17:17:58', 0),
+(275, 'root@localhost', 'sistema', 'UPDATE', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', '2019-05-09 17:17:58', 0),
+(276, 'root@localhost', 'sistema', 'UPDATE', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', '2019-05-09 17:17:58', 0),
+(277, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 51  NomeVariavel: nomeDaVariavel', '2019-05-09 17:20:32', 0),
+(278, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 52  NomeVariavel: nomeDaVariavel', '2019-05-09 17:21:45', 0),
+(279, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 53  NomeVariavel: nomeDaVariavel', '2019-05-09 17:22:10', 0),
+(280, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 54  NomeVariavel: nomeDaVariavel', '2019-05-09 17:22:41', 0),
+(281, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 55  NomeVariavel: nomeDaVariavel', '2019-05-09 17:22:59', 0),
+(282, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 56  NomeVariavel: nomeDaVariavel', '2019-05-09 17:23:26', 0),
+(283, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 57  NomeVariavel: nomeDaVariavel', '2019-05-09 17:34:06', 0),
+(284, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 58  NomeVariavel: nomeDaVariavel', '2019-05-09 17:40:08', 0),
+(285, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 59  NomeVariavel: nomeDaVariavel', '2019-05-09 17:48:54', 0),
+(286, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 60  NomeVariavel: nomeDaVariavel', '2019-05-09 17:49:56', 0),
+(287, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 61  NomeVariavel: nomeDaVariavel', '2019-05-09 17:55:14', 0),
+(288, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 62  NomeVariavel: nomeDaVariavel', '2019-05-09 22:51:44', 0),
+(289, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 63  NomeVariavel: nomeDaVariavel', '2019-05-09 23:28:10', 0),
+(290, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 64  NomeVariavel: nomeDaVariavel', '2019-05-09 23:59:28', 0),
+(291, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 65  NomeVariavel: nomeDaVariavel', '2019-05-10 00:11:50', 0),
+(292, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 66  NomeVariavel: nomeDaVariavel', '2019-05-10 00:13:39', 0),
+(293, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 67  NomeVariavel: nomeDaVariavel', '2019-05-10 00:13:57', 0),
+(294, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 68  NomeVariavel: nomeDaVariavel', '2019-05-10 00:15:24', 0),
+(295, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 69  NomeVariavel: nomeDaVariavel', '2019-05-10 00:16:05', 0),
+(296, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 70  NomeVariavel: nomeDaVariavel', '2019-05-11 17:37:20', 0),
+(297, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 71  NomeVariavel: nomeDaVariavel', '2019-05-11 17:40:16', 0),
+(298, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 72  NomeVariavel: nomeDaVariavel', '2019-05-11 17:42:24', 0),
+(299, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 73  NomeVariavel: nomeDaVariavel', '2019-05-11 17:46:45', 0),
+(300, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 74  NomeVariavel: nomeDaVariavel', '2019-05-11 17:47:37', 0),
+(301, 'root@localhost', 'cultura', 'INSERT', 'Não Aplicável', 'IdCultura: 8  NomeCultura: Cerejas  DescricaoCultura: Cultura hidroponica  EmailInvestigador: hmbs@gmail.com', '2019-05-11 17:47:37', 0),
+(302, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 10  DataHoraMedicao: 2019-05-03 23:26:07  ValorMedicao: 7.71  IdVariaveisMedidas: 1', 'NumeroMedicao: 10  DataHoraMedicao: 2019-05-11 17:49:56  ValorMedicao: 8.11  IdVariaveisMedidas: 1', '2019-05-11 17:49:56', 0),
+(303, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 75  NomeVariavel: nomeDaVariavel', '2019-05-11 17:52:56', 0),
+(304, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 76  NomeVariavel: nomeDaVariavel', '2019-05-11 17:56:20', 0),
+(305, 'root@localhost', 'sistema', 'UPDATE', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', '2019-05-11 17:56:21', 0),
+(306, 'root@localhost', 'sistema', 'UPDATE', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', '2019-05-11 17:56:21', 0),
+(307, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 3  DataHoraMedicao: 2019-05-03 23:21:57  ValorMedicao: 2.85  IdVariaveisMedidas: 1', 'NumeroMedicao: 3  DataHoraMedicao: 2019-05-11 17:56:21  ValorMedicao: 3.25  IdVariaveisMedidas: 1', '2019-05-11 17:56:21', 0),
+(308, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 77  NomeVariavel: nomeDaVariavel', '2019-05-11 17:59:30', 0),
+(309, 'root@localhost', 'sistema', 'UPDATE', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', '2019-05-11 17:59:30', 0),
+(310, 'root@localhost', 'sistema', 'UPDATE', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', '2019-05-11 17:59:30', 0),
+(311, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 3  DataHoraMedicao: 2019-05-11 17:56:21  ValorMedicao: 3.25  IdVariaveisMedidas: 1', 'NumeroMedicao: 3  DataHoraMedicao: 2019-05-11 17:56:21  ValorMedicao: 3.25  IdVariaveisMedidas: 1', '2019-05-11 17:59:30', 0),
+(312, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 78  NomeVariavel: nomeDaVariavel', '2019-05-11 18:03:31', 0),
+(313, 'root@localhost', 'sistema', 'UPDATE', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', '2019-05-11 18:03:31', 0),
+(314, 'root@localhost', 'sistema', 'UPDATE', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', '2019-05-11 18:03:31', 0),
+(315, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 3  DataHoraMedicao: 2019-05-11 17:56:21  ValorMedicao: 3.25  IdVariaveisMedidas: 1', 'NumeroMedicao: 3  DataHoraMedicao: 2019-05-11 17:56:21  ValorMedicao: 3.25  IdVariaveisMedidas: 1', '2019-05-11 18:03:31', 0),
+(316, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 79  NomeVariavel: nomeDaVariavel', '2019-05-11 18:05:37', 0),
+(317, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 80  NomeVariavel: nomeDaVariavel', '2019-05-11 18:11:42', 0),
+(318, 'root@localhost', 'sistema', 'UPDATE', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', '2019-05-11 18:11:42', 0),
+(319, 'root@localhost', 'sistema', 'UPDATE', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', '2019-05-11 18:11:42', 0),
+(320, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 3  DataHoraMedicao: 2019-05-11 17:56:21  ValorMedicao: 3.25  IdVariaveisMedidas: 1', 'NumeroMedicao: 3  DataHoraMedicao: 2019-05-11 17:56:21  ValorMedicao: 3.25  IdVariaveisMedidas: 1', '2019-05-11 18:11:42', 0),
+(321, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 81  NomeVariavel: nomeDaVariavel', '2019-05-11 18:12:45', 0),
+(322, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 82  NomeVariavel: nomeDaVariavel', '2019-05-11 18:16:49', 0),
+(323, 'root@localhost', 'investigador', 'INSERT', 'Não Aplicável', 'Email: jorge@gmail.com  NomeInvestigador: Jorge  CategoriaProfissional: admin', '2019-05-12 13:41:49', 0),
+(324, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 83  NomeVariavel: nomeDaVariavel', '2019-05-12 13:43:51', 0),
+(325, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 84  NomeVariavel: nomeDaVariavel', '2019-05-12 14:02:43', 0),
+(326, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 85  NomeVariavel: nomeDaVariavel', '2019-05-12 15:36:45', 0),
+(327, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 86  NomeVariavel: nomeDaVariavel', '2019-05-12 15:37:34', 0),
+(328, 'root@localhost', 'sistema', 'UPDATE', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', '2019-05-12 15:37:34', 0),
+(329, 'root@localhost', 'sistema', 'UPDATE', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', '2019-05-12 15:37:34', 0),
+(330, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 24  DataHoraMedicao: 2019-05-04 17:44:45  ValorMedicao: 3.85  IdVariaveisMedidas: 2', 'Linha Eliminada', '2019-05-12 15:37:34', 0),
+(331, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 25  DataHoraMedicao: 2019-05-04 17:45:21  ValorMedicao: 5.42  IdVariaveisMedidas: 2', 'Linha Eliminada', '2019-05-12 15:37:34', 0),
+(332, 'root@localhost', 'variaveis_medidas', 'DELETE', 'IDVariavel: 8  IDCultura: 2  LimiteInferior: 5.00  LimiteSuperior: 9.50  IdVariaveisMedidas: 2', 'Linha Eliminada', '2019-05-12 15:37:34', 0),
+(333, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 8  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-12 15:37:34', 0);
 
 -- --------------------------------------------------------
 
@@ -603,14 +691,14 @@ CREATE TABLE `medicoes` (
 --
 
 INSERT INTO `medicoes` (`NumeroMedicao`, `DataHoraMedicao`, `ValorMedicao`, `IdVariaveisMedidas`) VALUES
-(3, '2019-05-03 22:21:57', '2.85', 1),
+(3, '2019-05-11 16:56:21', '3.25', 1),
 (4, '2019-05-03 22:22:27', '2.50', 1),
 (5, '2019-05-03 22:23:14', '2.86', 1),
 (6, '2019-05-03 22:23:41', '3.01', 1),
 (7, '2019-05-03 22:24:19', '3.39', 1),
 (8, '2019-05-03 22:24:40', '3.40', 1),
 (9, '2019-05-03 22:25:45', '7.70', 1),
-(10, '2019-05-03 22:26:07', '7.71', 1),
+(10, '2019-05-11 16:49:56', '8.11', 1),
 (11, '2019-05-03 22:26:41', '7.95', 1),
 (12, '2019-05-03 22:27:10', '8.24', 1),
 (13, '2019-05-03 22:27:29', '8.25', 1),
@@ -623,9 +711,7 @@ INSERT INTO `medicoes` (`NumeroMedicao`, `DataHoraMedicao`, `ValorMedicao`, `IdV
 (20, '2019-05-03 22:44:29', '8.26', 1),
 (21, '2019-05-03 22:44:29', '8.24', 1),
 (22, '2019-05-04 16:42:48', '10.25', 1),
-(23, '2019-05-04 16:43:24', '1.58', 1),
-(24, '2019-05-04 16:44:45', '3.85', 2),
-(25, '2019-05-04 16:45:21', '5.42', 2);
+(23, '2019-05-04 16:43:24', '1.58', 1);
 
 --
 -- Acionadores `medicoes`
@@ -828,7 +914,6 @@ INSERT INTO `variaveis` (`IDVariavel`, `NomeVariavel`) VALUES
 (5, 'nomeDaVariavel'),
 (6, 'nomeDaVariavel'),
 (7, 'nomeDaVariavel'),
-(8, 'nomeDaVariavel'),
 (9, 'nomeDaVariavel'),
 (10, 'nomeDaVariavel'),
 (11, 'nomeDaVariavel'),
@@ -861,7 +946,52 @@ INSERT INTO `variaveis` (`IDVariavel`, `NomeVariavel`) VALUES
 (38, 'nomeDaVariavel'),
 (39, 'nomeDaVariavel'),
 (40, 'nomeDaVariavel'),
-(41, 'nomeDaVariavel');
+(41, 'nomeDaVariavel'),
+(42, 'nomeDaVariavel'),
+(43, 'nomeDaVariavel'),
+(44, 'nomeDaVariavel'),
+(45, 'nomeDaVariavel'),
+(46, 'nomeDaVariavel'),
+(47, 'nomeDaVariavel'),
+(48, 'nomeDaVariavel'),
+(49, 'nomeDaVariavel'),
+(50, 'nomeDaVariavel'),
+(51, 'nomeDaVariavel'),
+(52, 'nomeDaVariavel'),
+(53, 'nomeDaVariavel'),
+(54, 'nomeDaVariavel'),
+(55, 'nomeDaVariavel'),
+(56, 'nomeDaVariavel'),
+(57, 'nomeDaVariavel'),
+(58, 'nomeDaVariavel'),
+(59, 'nomeDaVariavel'),
+(60, 'nomeDaVariavel'),
+(61, 'nomeDaVariavel'),
+(62, 'nomeDaVariavel'),
+(63, 'nomeDaVariavel'),
+(64, 'nomeDaVariavel'),
+(65, 'nomeDaVariavel'),
+(66, 'nomeDaVariavel'),
+(67, 'nomeDaVariavel'),
+(68, 'nomeDaVariavel'),
+(69, 'nomeDaVariavel'),
+(70, 'nomeDaVariavel'),
+(71, 'nomeDaVariavel'),
+(72, 'nomeDaVariavel'),
+(73, 'nomeDaVariavel'),
+(74, 'nomeDaVariavel'),
+(75, 'nomeDaVariavel'),
+(76, 'nomeDaVariavel'),
+(77, 'nomeDaVariavel'),
+(78, 'nomeDaVariavel'),
+(79, 'nomeDaVariavel'),
+(80, 'nomeDaVariavel'),
+(81, 'nomeDaVariavel'),
+(82, 'nomeDaVariavel'),
+(83, 'nomeDaVariavel'),
+(84, 'nomeDaVariavel'),
+(85, 'nomeDaVariavel'),
+(86, 'nomeDaVariavel');
 
 --
 -- Acionadores `variaveis`
@@ -899,8 +1029,7 @@ CREATE TABLE `variaveis_medidas` (
 --
 
 INSERT INTO `variaveis_medidas` (`IDVariavel`, `IDCultura`, `LimiteInferior`, `LimiteSuperior`, `MargemSegurancaVariavel`, `IdVariaveisMedidas`) VALUES
-(3, 4, '2.85', '8.25', '0.10', 1),
-(8, 2, '5.00', '9.50', '0.20', 2);
+(3, 4, '2.85', '8.25', '0.10', 1);
 
 --
 -- Acionadores `variaveis_medidas`
@@ -1006,13 +1135,13 @@ ALTER TABLE `alertas`
 -- AUTO_INCREMENT for table `cultura`
 --
 ALTER TABLE `cultura`
-  MODIFY `IDCultura` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `IDCultura` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `logs`
 --
 ALTER TABLE `logs`
-  MODIFY `logId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=250;
+  MODIFY `logId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=334;
 
 --
 -- AUTO_INCREMENT for table `medicoes`
@@ -1048,7 +1177,7 @@ ALTER TABLE `medicoes_temperatura_incorretas`
 -- AUTO_INCREMENT for table `variaveis`
 --
 ALTER TABLE `variaveis`
-  MODIFY `IDVariavel` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `IDVariavel` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=87;
 
 --
 -- AUTO_INCREMENT for table `variaveis_medidas`
