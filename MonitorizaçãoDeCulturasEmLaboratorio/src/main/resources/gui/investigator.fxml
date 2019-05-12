@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
@@ -66,7 +67,7 @@
                            <children>
                               <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#addMeasurement" style="-fx-background-color: white; -fx-border-style: solid; -fx-border-width: 1; -fx-border-color: rgb(210, 210, 210);" text="Add">
                                  <VBox.margin>
-                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                    <Insets bottom="5.0" left="5.0" right="5.0" />
                                  </VBox.margin>
                               </Button>
                               <Button alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="36.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#editMeasurement" style="-fx-background-color: white; -fx-border-style: solid; -fx-border-width: 1; -fx-border-color: rgb(210, 210, 210);" text="Edit" textAlignment="CENTER">
@@ -90,12 +91,19 @@
                      <center>
                         <TableView fx:id="measurements_table" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="800.0">
                            <columns>
-                              <TableColumn fx:id="timestamp" prefWidth="242.3999878168106" text="Timestamp" style="-fx-background-color: white; -fx-border-style: solid; -fx-border-width: 0 1 1 0; -fx-border-color: rgb(210, 210, 210);" />
-                              <TableColumn fx:id="measurementValue" minWidth="0.0" prefWidth="293.6000671386719" text="Measurment value" style="-fx-background-color: white; -fx-border-style: solid; -fx-border-width: 0 1 1 0; -fx-border-color: rgb(210, 210, 210);" />
-                              <TableColumn fx:id="idMeasuredVariable" prefWidth="265.59991455078125" text="ID Measured Variable" style="-fx-background-color: white; -fx-border-style: solid; -fx-border-width: 0 1 1 0; -fx-border-color: rgb(210, 210, 210);" />
+                              <TableColumn fx:id="timestamp" prefWidth="242.3999878168106" style="-fx-background-color: white; -fx-border-style: solid; -fx-border-width: 0 1 1 0; -fx-border-color: rgb(210, 210, 210);" text="Timestamp" />
+                              <TableColumn fx:id="measurementValue" minWidth="0.0" prefWidth="293.6000671386719" style="-fx-background-color: white; -fx-border-style: solid; -fx-border-width: 0 1 1 0; -fx-border-color: rgb(210, 210, 210);" text="Measurment value" />
+                              <TableColumn fx:id="idMeasuredVariable" prefWidth="265.59991455078125" style="-fx-background-color: white; -fx-border-style: solid; -fx-border-width: 0 1 1 0; -fx-border-color: rgb(210, 210, 210);" text="ID Measured Variable" />
                            </columns>
                         </TableView>
                      </center>
+                     <top>
+                        <ComboBox fx:id="cultureSelector" onAction="#getMeasurementsFromCulture" prefWidth="250.0" promptText="Choose culture..." visibleRowCount="15" BorderPane.alignment="CENTER">
+                           <BorderPane.margin>
+                              <Insets bottom="7.0" left="7.0" right="7.0" top="7.0" />
+                           </BorderPane.margin>
+                        </ComboBox>
+                     </top>
                   </BorderPane>
                </children></AnchorPane>
       </content>

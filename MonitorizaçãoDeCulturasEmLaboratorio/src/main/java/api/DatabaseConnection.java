@@ -46,7 +46,7 @@ public class DatabaseConnection {
 
 	public Pair<Boolean, String> connect(String username, String password) {
 	    try {
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/estufa?&serverTimezone=UTC&user=" + username + "&password=" + password);
+            conn = DriverManager.getConnection("jdbc:mysql://localhost/estufa?&serverTimezone=UTC&user=" + username + "&password=" + password + "&noAccessToProcedureBodies=true");
         } catch (SQLException ex){
             String error;
             if(ex.getErrorCode() == 1045) {
