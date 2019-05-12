@@ -21,7 +21,7 @@ class SensorsConnectionTest {
 		assertEquals(sc.getGes().equals(ges),true);
 
 		assertEquals(sc.getClient().getClass().getCanonicalName().equals("org.eclipse.paho.client.mqttv3.MqttClient"),true);
-		
+		assertEquals(sc.getGes().equals(ges),true);
 		
 		
 		

@@ -93,11 +93,9 @@ public class SensorsConnection implements MqttCallback {
 
 	@Override
 	public void deliveryComplete(IMqttDeliveryToken token) {
-		// TODO Auto-generated method stub
-		
 	}
 	/**
-	 * @return attibute 'client'.
+	 * @return attribute 'client'.
 	 */
 	public MqttClient getClient() {
 		return client;
