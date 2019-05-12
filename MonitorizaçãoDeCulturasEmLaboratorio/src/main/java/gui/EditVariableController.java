@@ -14,8 +14,6 @@ public class EditVariableController {
 
     @FXML
     public TextField name;
-    @FXML
-    public TextArea description;
 
 
     public void setVariable(Variable variable) {
@@ -27,8 +25,7 @@ public class EditVariableController {
     }
 
     public void save(MouseEvent mouseEvent) {
-        System.out.println("Save editCulture: " + name.getText() + "; " + description.getText());
-
+        System.out.println("Save editCulture: " + name.getText() +"   "+ variable.toString() );
 
         variableManager.editVariable(variable,new Variable(name.getText()));
     }

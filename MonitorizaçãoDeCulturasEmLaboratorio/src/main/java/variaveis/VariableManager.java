@@ -80,6 +80,7 @@ public class VariableManager {
     public void editVariable(Variable oldVariable,Variable newVariable){
         DatabaseConnection db = DatabaseConnection.getInstance();
 
+
         if(db.isConnected()){
             try{
                 String sql = "UPDATE variaveis SET NomeVariavel ='"+newVariable.getName()+"'WHERE IDVariavel = "+oldVariable.getId();
