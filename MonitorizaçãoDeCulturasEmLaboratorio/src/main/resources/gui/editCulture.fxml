@@ -39,7 +39,7 @@
                         <Font size="12.0" />
                      </font>
                   </TextField>
-                  <Label text="Password">
+                  <Label text="Description">
                      <font>
                         <Font size="14.0" />
                      </font>

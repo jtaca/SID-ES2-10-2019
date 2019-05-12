@@ -119,8 +119,11 @@ public class InvestigatorController {
                 }
 
                 EditCultureController controller = loader.getController();
-                controller.setCulture(cultures_table.getSelectionModel().getSelectedItem());
+                Culture selectedCulture = cultures_table.getSelectionModel().getSelectedItem();
+                controller.setCulture(selectedCulture);
                 controller.setCultureManager(cultureManager);
+                controller.setName(selectedCulture.getCultureName());
+                controller.setDescription(selectedCulture.getCultureDescription());
 
                 dialog.setScene(new Scene(root));
                 dialog.show();
@@ -132,9 +135,12 @@ public class InvestigatorController {
     }
 
     public void deleteCulture(MouseEvent mouseEvent) {
-        List<Culture> list = cultureManager.deleteCulture(cultures_table.getSelectionModel().getSelectedItem());
-        ObservableList<Culture> cultureList = FXCollections.observableArrayList(list);
-        cultures_table.setItems(cultureList);
+        Culture selected = cultures_table.getSelectionModel().getSelectedItem();
+        if (selected != null) {
+            List<Culture> list = cultureManager.deleteCulture(selected);
+            ObservableList<Culture> cultureList = FXCollections.observableArrayList(list);
+            cultures_table.setItems(cultureList);
+        }
     }
 
     public void refreshCulturesTable(MouseEvent mouseEvent) {
@@ -143,6 +149,32 @@ public class InvestigatorController {
     }
 
     public void addMeasurement(MouseEvent mouseEvent) {
+        Task<Void> task = new Task<Void>() {
+            @Override
+            public Void call() {
+                System.out.println("Opening addMeasurement modal...");
+                final Stage dialog = new Stage();
+                dialog.initModality(Modality.APPLICATION_MODAL);
+                dialog.initOwner(primaryStage);
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/addMeasurement.fxml"));
+                StackPane root;
+                try {
+                    root = loader.load();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return null;
+                }
+
+                AddMeasurementController controller = loader.getController();
+                controller.setMeasurementManager(measurementManager);
+
+                dialog.setScene(new Scene(root));
+                dialog.show();
+
+                return null;
+            }
+        };
+        Platform.runLater(task);
     }
 
     public void editMeasurement(MouseEvent mouseEvent) {
@@ -152,11 +184,13 @@ public class InvestigatorController {
     }
 
     public void refreshMeasurementsTable(MouseEvent mouseEvent) {
+        List<Measurement> list = measurementManager.selectMedicoes(cultureSelector.getSelectionModel().getSelectedItem());
+        ObservableList<Measurement> obsList = FXCollections.observableArrayList(list);
+        measurements_table.setItems(obsList);
     }
 
     public void getMeasurementsFromCulture(ActionEvent actionEvent) {
         List<Measurement> list = measurementManager.selectMedicoes(cultureSelector.getSelectionModel().getSelectedItem());
-        System.out.println("list "+list);
         ObservableList<Measurement> obsList = FXCollections.observableArrayList(list);
         measurements_table.setItems(obsList);
     }

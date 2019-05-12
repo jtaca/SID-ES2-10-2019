@@ -82,6 +82,8 @@ public class MeasurementManager {
 
     public void insertMedicoes (Measurement medicao) {
 
+
+
         DatabaseConnection DB = DatabaseConnection.getInstance();
 
         if(DB.isConnected()) {

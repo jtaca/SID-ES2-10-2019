@@ -17,6 +17,13 @@ public class EditCultureController {
     @FXML
     public TextArea description;
 
+    public void setName(String name) {
+        this.name.setText(name);
+    }
+
+    public void setDescription(String description) {
+        this.description.setText(description);
+    }
 
     public void setCulture(Culture culture) {
         this.culture = culture;

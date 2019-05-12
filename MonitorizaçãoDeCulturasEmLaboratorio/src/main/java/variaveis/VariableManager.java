@@ -56,6 +56,7 @@ public class VariableManager {
      * @return an ArrayList of all the variables in the database.
      */
     public ArrayList<Variable> getVariables() {
+        getDBVariables();
         return variables;
     }
 
