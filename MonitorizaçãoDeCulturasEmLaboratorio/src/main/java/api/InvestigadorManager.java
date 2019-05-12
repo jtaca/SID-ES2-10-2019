@@ -97,6 +97,7 @@ public class InvestigadorManager {
     public static void updateInvestigador(Investigador oldInvestigador, Investigador newInvestigador) {
 
         DatabaseConnection DB = DatabaseConnection.getInstance();
+        System.out.println(oldInvestigador.toString()+"  +   "+newInvestigador.toString());
 
         try {
 

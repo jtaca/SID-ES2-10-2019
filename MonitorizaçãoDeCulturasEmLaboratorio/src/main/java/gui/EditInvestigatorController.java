@@ -50,7 +50,6 @@ public class EditInvestigatorController {
                 email.getText()+"\n"+
                 category.getText()
         );
-
         InvestigadorManager.updateInvestigador(inv,new Investigador(password.getText(),name.getText(),email.getText(),category.getText()));
 
 
