@@ -34,12 +34,14 @@ public class LoginController {
         DatabaseConnection db = DatabaseConnection.getInstance();
         Pair<Boolean, String> result = db.connect(username.getText(), password.getText());
 
-        /*if (!result.getKey())
-            System.out.println("Erro");
+        if (!result.getKey())
+            System.out.println("Erro no login");
         else if (result.getKey() && result.getValue().equals("investigador"))
-            System.out.println("Sucesso");*/
-
-        startAdminPanel();
+            System.out.println("Sucesso");
+        else if (result.getKey() && result.getValue().equals("administrador"))
+            startAdminPanel();
+        else
+            System.out.println("not supposed to happen");
     }
 
 

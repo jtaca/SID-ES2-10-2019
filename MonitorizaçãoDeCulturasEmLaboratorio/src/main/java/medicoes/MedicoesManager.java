@@ -92,6 +92,30 @@ public class MedicoesManager {
     }
 
     /**
+     * Attempts to update the value of a measure in the database by invoking the stored procedure alterarValorMedido through the current measurement object and another measurement object instantiated with the value parameter to be modified, supplied as argument.
+     * @param oldMedicao the oldMedicao object corresponding to the measurement and its current information.
+     * @param newMedicao the newMedicao object corresponding to the same measurement instantiated only with of new value to changed.
+     */
+
+    public void updateMedicoes (Medicoes oldMedicao, Medicoes newMedicao) {
+
+        try {
+
+            CallableStatement cStmt = (CallableStatement) DatabaseConnection.getInstance().getConnection().prepareCall("{call alterarValorMedido(?,?)}");
+            cStmt.setString(1, ""+oldMedicao.getNumeroMedicao());
+            cStmt.setString(2, ""+newMedicao.getValorMedicao());
+
+            if(cStmt.execute()==false) {
+                System.out.println("A medição com id: " + oldMedicao.getNumeroMedicao() + " foi atualizada com sucesso.");
+            }
+        } catch (SQLException e) {
+            System.out.println("Nao foi possível atualizar a medição pretendida. Exception: " + e.getMessage());
+        }
+
+        getDBMedicoes();
+    }
+
+    /**
      * Delete a measure into the database.
      * @param medicao the measure to be deleted.
      */
