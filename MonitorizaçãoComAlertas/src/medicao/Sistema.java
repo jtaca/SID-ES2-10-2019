@@ -9,8 +9,9 @@ public class Sistema {
 	private double percentagemVariacaoLuz;
 	private double margemSegurancaLuz;
 	private double margemSegurancaTemperatura;
+	private double tempoEntreAlertasConsecutivos;
 
-	/**
+    /**
 	 *  Creates the system that represents the greenhouse.
 	 *  @param limiteInferiorTemperatura is the lower limit of temperature of the stove.
 	 *  @param limiteSuperiorTemperatura is the upper limit of temperature of the stove.
@@ -24,7 +25,7 @@ public class Sistema {
 
 	public Sistema(double limiteInferiorTemperatura, double limiteSuperiorTemperatura, double limiteInferiorLuz,
 			double limiteSuperiorLuz, double percentagemVariacaoTemperatura, double percentagemVariacaoLuz,
-			double margemSegurancaLuz, double margemSegurancaTemperatura) {
+			double margemSegurancaLuz, double margemSegurancaTemperatura, double tempoEntreAlertasConsecutivos) {
 		super();
 		this.limiteInferiorTemperatura = limiteInferiorTemperatura;
 		this.limiteSuperiorTemperatura = limiteSuperiorTemperatura;
@@ -34,6 +35,7 @@ public class Sistema {
 		this.percentagemVariacaoLuz = percentagemVariacaoLuz;
 		this.margemSegurancaLuz = margemSegurancaLuz;
 		this.margemSegurancaTemperatura = margemSegurancaTemperatura;
+		this.tempoEntreAlertasConsecutivos = tempoEntreAlertasConsecutivos;
 	}
 
 	/**
@@ -100,6 +102,11 @@ public class Sistema {
 		return margemSegurancaTemperatura;
 	}
 
-
+    /**
+     *  @return the minimum time between system alerts.
+     */
+    public double getTempoEntreAlertasConsecutivos() {
+        return tempoEntreAlertasConsecutivos;
+    }
 
 }

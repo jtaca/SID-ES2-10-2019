@@ -49,14 +49,18 @@ public class InvestigatorController {
     }
 
     private void openModal(String fxmlName) {
+
+    }
+
+    public void addCulture(MouseEvent mouseEvent) {
         Task<Void> task = new Task<Void>() {
             @Override
             public Void call() {
-                System.out.println("Opening " + fxmlName + " modal...");
+                System.out.println("Opening addCulture modal...");
                 final Stage dialog = new Stage();
                 dialog.initModality(Modality.APPLICATION_MODAL);
                 dialog.initOwner(primaryStage);
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/" + fxmlName + ".fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/addCulture.fxml"));
                 StackPane root;
                 try {
                     root = loader.load();
@@ -64,6 +68,39 @@ public class InvestigatorController {
                     e.printStackTrace();
                     return null;
                 }
+
+                AddCultureController controller = loader.getController();
+                controller.setCultureManager(cultureManager);
+
+                dialog.setScene(new Scene(root));
+                dialog.show();
+
+                return null;
+            }
+        };
+        Platform.runLater(task);
+    }
+    
+    public void editCulture(MouseEvent mouseEvent) {
+        Task<Void> task = new Task<Void>() {
+            @Override
+            public Void call() {
+                System.out.println("Opening editCulture modal...");
+                final Stage dialog = new Stage();
+                dialog.initModality(Modality.APPLICATION_MODAL);
+                dialog.initOwner(primaryStage);
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/editCulture.fxml"));
+                StackPane root;
+                try {
+                    root = loader.load();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return null;
+                }
+
+                EditCultureController controller = loader.getController();
+                controller.setCulture(cultures_table.getSelectionModel().getSelectedItem());
+                controller.setCultureManager(cultureManager);
 
                 dialog.setScene(new Scene(root));
                 dialog.show();
@@ -74,14 +111,6 @@ public class InvestigatorController {
         Platform.runLater(task);
     }
 
-    public void addCulture(MouseEvent mouseEvent) {
-        openModal("addCulture");
-    }
-    
-    public void editCulture(MouseEvent mouseEvent) {
-        openModal("editCulture");
-    }
-
     public void deleteCulture(MouseEvent mouseEvent) {
         List<Culture> list = cultureManager.deleteCulture(cultures_table.getSelectionModel().getSelectedItem());
         ObservableList<Culture> cultureList = FXCollections.observableArrayList(list);
@@ -89,6 +118,8 @@ public class InvestigatorController {
     }
 
     public void refreshCulturesTable(MouseEvent mouseEvent) {
+        ObservableList<Culture> cultureList = FXCollections.observableArrayList(cultureManager.getListOfCultures());
+        cultures_table.setItems(cultureList);
     }
 
     public void addMeasurement(MouseEvent mouseEvent) {

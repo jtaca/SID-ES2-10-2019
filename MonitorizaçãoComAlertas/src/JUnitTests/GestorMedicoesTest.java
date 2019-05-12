@@ -13,7 +13,7 @@ class GestorMedicoesTest {
 
 	@Test
 	void test() {
-		Sistema sis = new Sistema (0,20,0,300,0.5,0.5,0.5,0.5);
+		Sistema sis = new Sistema (0,20,0,300,0.5,0.5,0.5,0.5, 15);
 		
 		GestorDeMedicoes ges = new GestorDeMedicoes (sis);
 		

@@ -9,6 +9,8 @@ public class DatabaseConnection {
     private static DatabaseConnection single_instance = null;
 	private static Connection conn = null;
 
+	private static String userEmail = null;
+
     /**
      * Returns or creates an instance of database connection.
      * Does not establish the connection. To do that see the {@see #connect(String, String)} method.
@@ -23,6 +25,10 @@ public class DatabaseConnection {
 
     public boolean isConnected() {
 	    return conn != null;
+    }
+
+    public static String getUserEmail() {
+        return userEmail;
     }
 
     /**
@@ -54,6 +60,8 @@ public class DatabaseConnection {
             return(new Pair<Boolean, String>(false, error));
         }
 	    System.out.println(new Pair<Boolean, String>(true, getRoleLogin()).toString());
+        userEmail = getDBUserEmail();
+        System.out.println(userEmail);
 
 	    return(new Pair<Boolean, String>(true, getRoleLogin()));
     }
@@ -77,6 +85,27 @@ public class DatabaseConnection {
             }
         }
         return roleLogin;
+    }
+
+
+    private String getDBUserEmail(){
+
+        DatabaseConnection DB = getInstance();
+        String email = "";
+
+        if(DB.isConnected()) {
+            ResultSet variableResultSet = DB.select("SELECT email from mysql.user where CONCAT(User, \"@%\")=CURRENT_USER");
+            try {
+
+                variableResultSet.next();
+                email = variableResultSet.getString("email");
+
+
+            } catch (SQLException sqlException) {
+                sqlException.printStackTrace();
+            }
+        }
+        return email;
     }
 
 
