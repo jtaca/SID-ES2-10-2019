@@ -158,7 +158,6 @@ public class AdministratorController {
         for (Investigador ivar: invs) {
             list.add(ivar);
         }
-        System.out.println("I was here too! ^_^");
 
 /*        for (int i=0; i<25; i++) {
             Random r = new Random();
@@ -240,24 +239,6 @@ public class AdministratorController {
 
         Platform.runLater(task);
         System.out.println("Selected: " + selected_variable1 +"  +  "+ this.selected_variable);
-/*        this.getSelected_variable();
-
-        if (this.getSelected_variable().getPassword().equals("")){
-            this.getSelected_variable().setPassword();
-        }
-        if (this.getSelected_variable().getName().equals("")){
-            name1 = admin.getSelected_variable().getName();
-        }
-        if (this.getSelected_variable().getEmail().equals("")){
-            email1 = admin.getSelected_variable().getEmail();
-        }
-        if (this.getSelected_variable().getCategory().equals("")){
-            category1 = admin.getSelected_variable().getCategory();
-        }
-        System.out.println(inv2.toString());
-        System.out.println("try");
-        InvestigadorManager inv = new InvestigadorManager();
-        inv.updateInvestigador(selected_variable,inv2);*/
     }
 
     public void deleteUser(MouseEvent mouseEvent) {

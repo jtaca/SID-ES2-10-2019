@@ -54,8 +54,9 @@ public class InvestigadorManager {
             String default_role = "investigador";
             String email = varUser.getString("Email");
             String categoriaProfissional = varUser.getString("CategoriaProfissional");
+            Investigador u = new Investigador("password",nomeInvestigador,email,categoriaProfissional);
 
-            Investigador u = new Investigador(nomeInvestigador, email, categoriaProfissional, default_role);
+            //Investigador u = new Investigador(nomeInvestigador, email, categoriaProfissional, default_role);
             listOfUsers.add(u);
         }
 
