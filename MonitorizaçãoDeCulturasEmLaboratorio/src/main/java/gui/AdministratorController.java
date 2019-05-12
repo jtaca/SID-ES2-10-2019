@@ -150,8 +150,49 @@ public class AdministratorController {
 
     public void editVariable(MouseEvent mouseEvent) {
         System.out.println("editVariable");
-        Variable selected_variable = variables_table.getSelectionModel().getSelectedItem();
-        System.out.println("Selected: " + selected_variable);
+
+        try {
+            Variable selected_variable = variables_table.getSelectionModel().getSelectedItem();
+            System.out.println("Selected: " + selected_variable);
+
+            Task<Void> task = new Task<Void>() {
+                @Override
+                public Void call() {
+                    System.out.println("Opening addVariavel modal...");
+                    final Stage dialog = new Stage();
+                    dialog.initModality(Modality.APPLICATION_MODAL);
+                    dialog.initOwner(primaryStage);
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/editVariavel.fxml"));
+                    StackPane root;
+                    try {
+                        root = loader.load();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        return null;
+                    }
+
+                    EditVariableController controller = loader.getController();
+                    controller.setVariable(selected_variable);
+
+
+                    dialog.setScene(new Scene(root));
+                    dialog.show();
+
+                    return null;
+                }
+            };
+            Platform.runLater(task);
+
+        }catch (Exception e){
+            System.out.println("Select edit variable (variable not selected) : "+ e.toString());
+        }
+
+
+/*        VariableManager var = new VariableManager();
+                var.insertVariable(selected_variable);*/
+
+
+
     }
 
     public void deleteVariable(MouseEvent mouseEvent) {
