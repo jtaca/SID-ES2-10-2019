@@ -204,7 +204,6 @@ public class AdministratorController {
     public void editUser(MouseEvent mouseEvent) {
         System.out.println("editUser");
         Investigador selected_variable1 = users_table.getSelectionModel().getSelectedItem();
-        System.out.println("Selected: " + selected_variable1 +"  +  "+ this.selected_variable);
 
         Task<Void> task = new Task<Void>() {
             @Override
@@ -228,6 +227,7 @@ public class AdministratorController {
                 controller.setEmail(selected_variable1.getEmail());
                 controller.setName(selected_variable1.getName());
                 controller.setPassword(selected_variable1.getPassword());
+                controller.setInv(selected_variable1);
 
 
                 dialog.setScene(new Scene(root));
@@ -238,7 +238,6 @@ public class AdministratorController {
         };
 
         Platform.runLater(task);
-        System.out.println("Selected: " + selected_variable1 +"  +  "+ this.selected_variable);
     }
 
     public void deleteUser(MouseEvent mouseEvent) {
