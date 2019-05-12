@@ -51,10 +51,12 @@ public class SensorsConnection implements MqttCallback {
 
 	@Override
 	public void messageArrived(String topic, MqttMessage message) throws Exception {
-		
+	
 		if(message.toString().contains("{") && message.toString().contains("}") &&( message.toString().contains("cell")) || message.toString().contains("tmp")){
 			Medicao medicao= new Medicao (message);
 			ges.adiciona(medicao);
+			
+		
 
 		}else {
 			System.out.println("Mensagem não reconhecida.");

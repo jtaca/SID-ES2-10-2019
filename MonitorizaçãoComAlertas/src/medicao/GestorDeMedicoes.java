@@ -27,6 +27,7 @@ public class GestorDeMedicoes {
 		bq = new LinkedBlockingDeque<>(3);
 	}
 
+	
 	/**
 	 *  Adds a new measurement to the measurement list.
 	 *  @param m is the measurement to insert in the list
@@ -144,6 +145,12 @@ public class GestorDeMedicoes {
 		}
 	}
 
+	/**
+	 *  @return the attribute 'sistema'.
+	 */ 
+	public Sistema getSistema() {
+		return sistema;
+	}
 
 	/**
 	 *  Analyzes the measurement to see if it is an temperature or brightness error.
