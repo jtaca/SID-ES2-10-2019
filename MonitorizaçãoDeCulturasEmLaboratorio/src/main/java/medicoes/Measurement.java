@@ -35,7 +35,6 @@ public class Measurement {
      */
 
     public Measurement(double valorMedicao, Integer idVariaveisMedidas){
-        this.dataHoraMedicao = dataHoraMedicao;
         this.valorMedicao = valorMedicao;
         this.idVariaveisMedidas = idVariaveisMedidas;
     }
