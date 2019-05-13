@@ -19,7 +19,7 @@
             <children>
                 <VBox alignment="CENTER_LEFT" prefHeight="389.0" prefWidth="314.0">
                     <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Change Light Limits">
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Change Temperature Limits">
                             <font>
                                 <Font name="System Bold" size="24.0" />
                             </font>

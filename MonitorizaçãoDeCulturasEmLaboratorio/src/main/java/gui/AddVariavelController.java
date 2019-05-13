@@ -22,9 +22,11 @@ public class AddVariavelController {
     }
 
     public void register(MouseEvent mouseEvent) {
-        System.out.println("Save Variable: " + name.getText() );
+        Variable v = new Variable(name.getText());
+        System.out.println("Save Variable reg: " + v.toString() );
 
-        variableManager.insertVariable(new Variable(name.getText()));
+        variableManager.getDBVariables();
+        variableManager.insertVariable(v);
     }
 
 

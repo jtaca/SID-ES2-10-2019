@@ -65,6 +65,7 @@ public class AdministratorController {
 
     private Investigador selected_variable;
     private DatabaseConnection db1;
+    VariableManager var ;
 
     @FXML
     public void initialize() {
@@ -97,7 +98,7 @@ public class AdministratorController {
     private ObservableList<Variable> VariableList() {
         ObservableList<Variable> list = FXCollections.observableArrayList();
 
-        VariableManager var = new VariableManager();
+        var = new VariableManager();
         var.getDBVariables();
         ArrayList<Variable> vars = var.getVariables();
         System.out.println(vars.toString());
@@ -139,6 +140,9 @@ public class AdministratorController {
                     return null;
                 }
 
+                AddVariavelController controller = loader.getController();
+                controller.setVariableManager(var);
+
                 dialog.setScene(new Scene(root));
                 dialog.show();
 
@@ -172,6 +176,7 @@ public class AdministratorController {
                     }
 
                     EditVariableController controller = loader.getController();
+                    controller.setVariableManager(var);
                     controller.setVariable(selected_variable);
 
 
@@ -199,6 +204,7 @@ public class AdministratorController {
         System.out.println("deleteVariable");
         Variable selected_variable = variables_table.getSelectionModel().getSelectedItem();
         System.out.println("Selected: " + selected_variable);
+        var.deleteVariable(selected_variable);
     }
 
     public void refreshVariablesTable(MouseEvent mouseEvent) {
@@ -292,11 +298,11 @@ public class AdministratorController {
 
     public void deleteUser(MouseEvent mouseEvent) {
         System.out.println("deleteUser");
-        Investigador selected_variable = users_table.getSelectionModel().getSelectedItem();
+        Investigador selected_variable1 = users_table.getSelectionModel().getSelectedItem();
         System.out.println("Selected: " + selected_variable);
 
         InvestigadorManager inv = new InvestigadorManager();
-        inv.deleteInvestigador(selected_variable);
+        inv.deleteInvestigador(selected_variable1);
     }
 
     public void refreshUsersTable(MouseEvent mouseEvent) {
