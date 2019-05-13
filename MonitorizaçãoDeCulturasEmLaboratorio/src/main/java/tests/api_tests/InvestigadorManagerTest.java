@@ -6,19 +6,31 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import api.DatabaseConnection;
+import api.Investigador;
+import api.InvestigadorManager;
+
 class InvestigadorManagerTest {
+	private InvestigadorManager inv;
+	private DatabaseConnection dbconn;
+	private Investigador test;
 
 	@BeforeEach
 	void setUp() throws Exception {
+		 inv = new InvestigadorManager();
+		 dbconn.connect("aa", "aa");
+		 inv.insertInvestigador(test);
+		 
 	}
 
 	@AfterEach
 	void tearDown() throws Exception {
+		inv.deleteInvestigador(test);
 	}
 
 	@Test
 	void testInvestigadorManager() {
-		fail("Not yet implemented");
+		 inv.getDBInvestigador();
 	}
 
 	@Test
@@ -33,7 +45,8 @@ class InvestigadorManagerTest {
 
 	@Test
 	void testInsertInvestigador() {
-		fail("Not yet implemented");
+		test = new Investigador("pass","nome","email","role");
+		inv.insertInvestigador(test);
 	}
 
 	@Test

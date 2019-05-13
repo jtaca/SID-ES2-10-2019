@@ -29,7 +29,12 @@ public class DatabaseConnection {
      */
 
     public boolean isConnected() {
-	    return conn != null;
+    	try {
+    	    return conn != null;
+		} catch (Exception e) {
+			System.out.println("isConnected: " + e.toString());
+		}
+    	return false;
     }
     
     
@@ -57,25 +62,32 @@ public class DatabaseConnection {
      */
 
 	public Pair<Boolean, String> connect(String username, String password) {
-	    try {
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/estufa?&serverTimezone=UTC&user=" + username + "&password=" + password + "&noAccessToProcedureBodies=true");
-        } catch (SQLException ex){
-            String error;
-            if(ex.getErrorCode() == 1045) {
-                error = "Incorrect username or password.";
-            } else if (ex.getErrorCode() == 0 ) {
-                error = "Couldn't connect to the database. Are you sure it is running?";
-            } else {
-                error = "Unknown error. Please contact the system administrator.";
-            }
+		try {
+			try {
+	            conn = DriverManager.getConnection("jdbc:mysql://localhost/estufa?&serverTimezone=UTC&user=" + username + "&password=" + password + "&noAccessToProcedureBodies=true");
+	        } catch (SQLException ex){
+	        	
+	            String error;
+	            if(ex.getErrorCode() == 1045) {
+	                error = "Incorrect username or password.";
+	            } else if (ex.getErrorCode() == 0 ) {
+	                error = "Couldn't connect to the database. Are you sure it is running?";
+	            } else {
+	                error = "Unknown error. Please contact the system administrator.";
+	            }
 
-            return(new Pair<Boolean, String>(false, error));
-        }
-	    System.out.println(new Pair<Boolean, String>(true, getRoleLogin()).toString());
-        userEmail = getDBUserEmail();
-        System.out.println(userEmail);
+	            return(new Pair<Boolean, String>(false, error));
+	        }
+		    System.out.println(new Pair<Boolean, String>(true, getRoleLogin()).toString());
+	        userEmail = getDBUserEmail();
+	        System.out.println(userEmail);
 
-	    return(new Pair<Boolean, String>(true, getRoleLogin()));
+		    return(new Pair<Boolean, String>(true, getRoleLogin()));
+		} catch (Exception e) {
+			System.out.println("connect: "+e.toString());
+		}
+	    
+	    return null;
     }
 	
     /**
