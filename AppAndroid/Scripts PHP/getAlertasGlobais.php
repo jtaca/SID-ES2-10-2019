@@ -3,7 +3,7 @@
 	$database="estufa";
     $conn = mysqli_connect($url,$_POST['username'],$_POST['password'],$database);
 	$data=$_POST['date'];
-	$sql = "select data,nomeVariavel,limiteInferiorVar,limiteSuperiorVar,valor,descricaoAlertas from alertas where nomeCultura='todas' and data='$data'";
+	$sql = "select data,nomeVariavel,limiteInferiorVar,limiteSuperiorVar,valor,descricaoAlertas from alertas where nomeCultura='todas' and DATE(data)= '$data'";
 	$result = mysqli_query($conn, $sql);
 	$response["AlertasGlobais"] = array();
 	if ($result){
