@@ -51,12 +51,15 @@ class InvestigadorManagerTest {
 
 	@Test
 	void testUpdateInvestigador() {
-		fail("Not yet implemented");
+		inv.updateInvestigador(test, new Investigador("pass","nome1","email","role"));
 	}
 
 	@Test
 	void testDeleteInvestigador() {
-		fail("Not yet implemented");
+		inv.insertInvestigador(test);
+		inv.deleteInvestigador(test);
+		inv.deleteInvestigador(test);
+
 	}
 
 }
