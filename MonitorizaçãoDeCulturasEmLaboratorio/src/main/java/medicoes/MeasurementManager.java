@@ -5,6 +5,7 @@ import cultura.Culture;
 
 import com.mysql.cj.jdbc.CallableStatement;
 
+import java.util.AbstractList;
 import java.util.List;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -25,7 +26,6 @@ public class MeasurementManager {
      */
 
     public List<Measurement> getListOfMedicoes() {
-        getDBMedicoes();
         return listOfMedicoes;
     }
 
@@ -33,20 +33,44 @@ public class MeasurementManager {
      * Extracts all records from the medicoes table measurements from the database.
      */
 
+    private String addVariableName(int idVariavelMedidas) throws SQLException  {
+
+        DatabaseConnection DB = DatabaseConnection.getInstance();
+
+        String nome = "";
+
+        if(DB.isConnected()) {
+            ResultSet ResultSet = DB.select("SELECT NomeVariavel FROM variaveis WHERE variaveis.IDVariavel IN (SELECT IDVariavel FROM variaveis_medidas WHERE variaveis_medidas.IdVariaveisMedidas=" + idVariavelMedidas + ")");
+            try {
+
+                ResultSet.next();
+                nome = ResultSet.getString("NomeVariavel");
+
+            } catch (SQLException sqlException) {
+                sqlException.printStackTrace();
+            }
+        }
+
+        return nome;
+    }
+
+
     public void getDBMedicoes() {
 
         DatabaseConnection DB = DatabaseConnection.getInstance();
 
         if(DB.isConnected()) {
             listOfMedicoes.clear();
-            ResultSet medicoesResultSet = DB.select("SELECT * FROM estufa.medicoes");
+            ResultSet medicoesResultSet = DB.select("SELECT * FROM medicoes WHERE medicoes.idVariaveisMedidas IN (SELECT idVariaveisMedidas FROM variaveis_medidas WHERE variaveis_medidas.IDCultura IN (SELECT IDCultura FROM cultura WHERE cultura.EmailInvestigador IN (SELECT email FROM mysql.user WHERE CONCAT(mysql.user.USER, \"@%\")=CURRENT_USER)))");
             try {
 
                 addMedicoes(extractMedicoes(medicoesResultSet));
+
             } catch (SQLException sqlException) {
                 sqlException.printStackTrace();
             }
         }
+
     }
 
     private List<Measurement> extractMedicoes (ResultSet varMedicao) throws SQLException {
@@ -58,7 +82,7 @@ public class MeasurementManager {
             int idVariaveisMedidas = varMedicao.getInt("idVariaveisMedidas");
 
             AuxlistOfMedicoes.add(new Measurement(numeroMedicao, dataHoraMedicao,
-                    valorMedicao, idVariaveisMedidas));
+                    valorMedicao, idVariaveisMedidas, addVariableName(idVariaveisMedidas)));
 
         }
         return AuxlistOfMedicoes;
@@ -66,7 +90,7 @@ public class MeasurementManager {
 
     /**
      * Transforms all the records obtained in the data base`s medicoes table in objects medicoes. It inserts those objects in a medicoes list.
-     * @param varMedicao represents the record of a medicao extrated from the data base for a post transformation.
+     * @param extracted represents the record of a medicao extrated from the data base for a post transformation.
      */
 
     private void addMedicoes (List<Measurement> extracted) {
@@ -81,8 +105,6 @@ public class MeasurementManager {
      */
 
     public void insertMedicoes (Measurement medicao) {
-
-
 
         DatabaseConnection DB = DatabaseConnection.getInstance();
 
@@ -108,10 +130,10 @@ public class MeasurementManager {
             cStmt.setString(2, ""+newMedicao.getValorMedicao());
 
             if(cStmt.execute()==false) {
-                System.out.println("A mediÃ§Ã£o com id: " + oldMedicao.getNumeroMedicao() + " foi atualizada com sucesso.");
+                System.out.println("A medição com id: " + oldMedicao.getNumeroMedicao() + " foi atualizada com sucesso.");
             }
         } catch (SQLException e) {
-            System.out.println("Nao foi possÃ­vel atualizar a mediÃ§Ã£o pretendida. Exception: " + e.getMessage());
+            System.out.println("Nao foi possível atualizar a medição pretendida. Exception: " + e.getMessage());
         }
 
         getDBMedicoes();
@@ -123,7 +145,7 @@ public class MeasurementManager {
      */
 
 
-    public void deleteMedicoes(Measurement medicao) {
+    public void deleteMedicoes (Measurement medicao) {
 
         try {
             CallableStatement cStmt = (CallableStatement) DatabaseConnection.getInstance().
@@ -148,16 +170,18 @@ public class MeasurementManager {
 
         try {
             CallableStatement cStmt = (CallableStatement) DatabaseConnection.getInstance().getConnection().prepareCall
-                    ("{call selectMedicoes(?)}");
-            cStmt.setString(1, "variaveis_medidas.IDCultura = " + cultura.getId() +" and medicoes.IdVariaveisMedidas = variaveis_medidas.IdVariaveisMedidas");
-            cStmt.execute();
+                    ("{call selectMedicoes()}");
+            boolean hadResults = cStmt.execute();
+            System.out.println("Measurement tem entradas? "+ hadResults);
+
+            if(DB.isConnected()) {
+                ResultSet medicoesResultSet = DB.select("Select * FROM medicoes, variaveis_medidas WHERE IDCultura = "
+                        + cultura.getId() +" and medicoes.IdVariaveisMedidas = variaveis_medidas.IdVariaveisMedidas");
+
+            }
             ResultSet rs = cStmt.getResultSet();
 
-            System.out.println(rs);
-
             List<Measurement> AuxList =  extractMedicoes(rs);
-
-            System.out.println(AuxList);
 
             if(cStmt.execute()) {
                 System.out.println("SelectMedicoes foi executado com sucesso!");
