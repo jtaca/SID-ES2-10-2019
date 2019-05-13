@@ -22,10 +22,22 @@ public class DatabaseConnection {
         }
         return single_instance;
     }
+	
+    /**
+     * Gets  boolean with the state of the connection to the database 
+     * @return boolean, that contains the connection state
+     */
 
     public boolean isConnected() {
 	    return conn != null;
     }
+    
+    
+    /**
+     * Gets the User email attribute associated 
+     * @return String, that contains the user's email
+     */
+
 
     public static String getUserEmail() {
         return userEmail;
@@ -65,6 +77,11 @@ public class DatabaseConnection {
 
 	    return(new Pair<Boolean, String>(true, getRoleLogin()));
     }
+	
+    /**
+     * Attempts to get the role of the user
+     * @return String that contains the User's role
+     */
 
 
     private String getRoleLogin(){
@@ -86,6 +103,12 @@ public class DatabaseConnection {
         }
         return roleLogin;
     }
+    
+    
+    /**
+     * Attempts to get the email of the user
+     * @return String that contains the User's email
+     */
 
 
     private String getDBUserEmail(){
@@ -107,6 +130,13 @@ public class DatabaseConnection {
         }
         return email;
     }
+    
+    
+    /**
+     * Attempts to make a select action on the db.
+     * @param String query
+     * @return ResultSet, that contains the result of a select
+     */
 
 
 	public ResultSet select(String query) {
@@ -130,6 +160,14 @@ public class DatabaseConnection {
 
 		return rs;
 	}
+	
+    
+    /**
+     * Attempts to do an insert action in the database.
+     * @param String table
+     * @param String values
+     */
+
 
     public void insert(String table, String values) {
         if(isConnected()) {

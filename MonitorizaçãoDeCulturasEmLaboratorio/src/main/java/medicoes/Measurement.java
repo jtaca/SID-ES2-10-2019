@@ -10,6 +10,7 @@ public class Measurement {
     private String dataHoraMedicao;
     private double valorMedicao;
     private Integer idVariaveisMedidas;
+    private String nomeVariavel;
 
     /**
      * Class constructer used mainly to deleted measurements in database.
@@ -19,11 +20,12 @@ public class Measurement {
      * @param idVariaveisMedidas the identifier of the variable-culture pair for which the measurement was made.
      */
 
-    public Measurement(Integer numeroMedicao, String dataHoraMedicao, double valorMedicao, Integer idVariaveisMedidas){
+    public Measurement(Integer numeroMedicao, String dataHoraMedicao, double valorMedicao, Integer idVariaveisMedidas, String nomeVariavel){
         this.numeroMedicao = numeroMedicao;
         this.dataHoraMedicao = dataHoraMedicao;
         this.valorMedicao = valorMedicao;
         this.idVariaveisMedidas = idVariaveisMedidas;
+        this.nomeVariavel = nomeVariavel;
     }
 
     /**
@@ -42,6 +44,14 @@ public class Measurement {
      * Returns the identifier number of the measurement.
      * @return the identifier number.
      */
+
+    public String getNomeVariavel() {
+        return nomeVariavel;
+    }
+
+    public void setNomeVariavel(String newNomeVariavel) {
+        nomeVariavel = newNomeVariavel;
+    }
 
     public Integer getNumeroMedicao() {
         return numeroMedicao;
@@ -87,4 +97,5 @@ public class Measurement {
             return "(" + numeroMedicao + ", NULL, '" + valorMedicao + "', '" + idVariaveisMedidas + "')";
         }
     }
+
 }
