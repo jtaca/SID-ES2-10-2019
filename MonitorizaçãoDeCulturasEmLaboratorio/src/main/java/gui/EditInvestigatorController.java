@@ -20,7 +20,11 @@ public class EditInvestigatorController {
     @FXML
     public TextField category;
     private Investigador inv;
+    private InvestigadorManager investigadorManager;
 
+    public void setInvestigadorManager(InvestigadorManager investigadorManager) {
+        this.investigadorManager = investigadorManager;
+    }
 
     public void setName(String name) {
         this.name.setText(name);
@@ -50,7 +54,7 @@ public class EditInvestigatorController {
                 email.getText()+"\n"+
                 category.getText()
         );
-        InvestigadorManager.updateInvestigador(inv,new Investigador(password.getText(),name.getText(),email.getText(),category.getText()));
+        investigadorManager.updateInvestigador(inv,new Investigador(password.getText(),name.getText(),email.getText(),category.getText()));
 
 
     }

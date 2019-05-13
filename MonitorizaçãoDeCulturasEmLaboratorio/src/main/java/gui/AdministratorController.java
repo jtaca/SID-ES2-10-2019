@@ -65,7 +65,8 @@ public class AdministratorController {
 
     private Investigador selected_variable;
     private DatabaseConnection db1;
-    VariableManager var ;
+    private VariableManager var ;
+    private InvestigadorManager inv;
 
     @FXML
     public void initialize() {
@@ -215,7 +216,7 @@ public class AdministratorController {
     private ObservableList<Investigador> UserList() {
         ObservableList<Investigador> list = FXCollections.observableArrayList();
 
-        InvestigadorManager inv = new InvestigadorManager();
+        inv = new InvestigadorManager();
         inv.getDBInvestigador();
 
         List<Investigador> invs = inv.getListOfInvestigadores();
@@ -284,6 +285,7 @@ public class AdministratorController {
                 controller.setName(selected_variable1.getName());
                 controller.setPassword(selected_variable1.getPassword());
                 controller.setInv(selected_variable1);
+                controller.setInvestigadorManager(inv);
 
 
                 dialog.setScene(new Scene(root));
