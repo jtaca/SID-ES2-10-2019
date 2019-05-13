@@ -5,35 +5,21 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import variaveis.Variable;
 
 class VariableTest {
 
-	@BeforeEach
-	void setUp() throws Exception {
-	}
-
-	@AfterEach
-	void tearDown() throws Exception {
-	}
-
 	@Test
-	void testVariableIntString() {
-		fail("Not yet implemented");
+	void testeCulture() {
+	
+		Variable v1 = new Variable(2, "Chumbo");
+		Variable v2 = new Variable("Chumbo");
+	
+		assertTrue(v1.getId().equals(2));
+		assertTrue(v1.getName().equals("Chumbo"));
+	
+		assertTrue(v2.toString().equals("(NULL, \"" + "Chumbo" +"\")"));
+		assertTrue(v1.toString().equals("(2,\"" + "Chumbo" +"\")"));
+	
 	}
-
-	@Test
-	void testVariableString() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testGetName() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testToString() {
-		fail("Not yet implemented");
-	}
-
 }

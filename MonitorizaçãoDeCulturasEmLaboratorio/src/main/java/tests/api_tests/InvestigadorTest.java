@@ -4,46 +4,36 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
+import api.Investigador;
+
 class InvestigadorTest {
 
 	@Test
-	void testInvestigadorStringStringStringStringString() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testInvestigadorStringStringStringString() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testGetPassword() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testGetName() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testGetEmail() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testGetCategory() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testGetUser_type() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testToString() {
-		fail("Not yet implemented");
+	void testInvestigador() {
+		
+		Investigador i = new Investigador("123", "testeInvestigador", "teste@gmail.com", "categoria");
+		
+		assertTrue(i.getCategory().equals("categoria"));
+		assertTrue(i.getEmail().equals("teste@gmail.com"));
+		assertTrue(i.getName().equals("testeInvestigador"));
+		assertTrue(i.getPassword().equals("123"));
+		
+		i.setCategory("eng");
+		i.setEmail("testeTeste@gmail.com");
+		i.setName("investigador");
+		i.setPassword("1234");
+		
+		assertTrue(i.getCategory().equals("eng"));
+		assertTrue(i.getEmail().equals("testeTeste@gmail.com"));
+		assertTrue(i.getName().equals("investigador"));
+		assertTrue(i.getPassword().equals("1234"));
+		
+		assertTrue(i.toString().equals("Investigador{" +
+                "password='" + "1234" + '\'' +
+                ", name='" + "investigador" + '\'' +
+                ", email='" + "testeTeste@gmail.com" + '\'' +
+                ", category='" + "eng" + '\'' +
+                '}'));
 	}
 
 }

@@ -6,39 +6,25 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import medicoes.Measurement;
+import medicoes.MeasurementManager;
+
 class MedicoesManagerTest {
 
-	@BeforeEach
-	void setUp() throws Exception {
-	}
-
-	@AfterEach
-	void tearDown() throws Exception {
-	}
-
 	@Test
-	void testGetListOfMedicoes() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testGetDBMedicoes() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testInsertMedicoes() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testDeleteMedicoes() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testSelectMedicoes() {
-		fail("Not yet implemented");
+	void testeMeasurementManager() {
+		
+		MeasurementManager m = new MeasurementManager();
+		
+		Measurement medicao = new Measurement(null, "2019", 3.56, 1, "Chumbo");
+		Measurement newMedicao = new Measurement(30, "2019", 4.56, 1, "Chumbo");
+		
+		m.insertMedicoes(medicao);
+		m.updateMedicoes(medicao, newMedicao);
+		m.deleteMedicoes(medicao);
+		
+		
+		
 	}
 
 }
