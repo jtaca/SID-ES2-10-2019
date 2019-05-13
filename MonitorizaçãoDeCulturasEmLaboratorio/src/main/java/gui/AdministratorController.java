@@ -330,6 +330,11 @@ public class AdministratorController {
                     return null;
                 }
 
+                ChangeTemperature controller = loader.getController();
+                controller.setVariableManager(var);
+
+
+
 
 
                 dialog.setScene(new Scene(root));
@@ -361,6 +366,9 @@ public class AdministratorController {
                     e.printStackTrace();
                     return null;
                 }
+
+                ChangeLight controller = loader.getController();
+                controller.setVariableManager(var);
 
 
                 dialog.setScene(new Scene(root));
