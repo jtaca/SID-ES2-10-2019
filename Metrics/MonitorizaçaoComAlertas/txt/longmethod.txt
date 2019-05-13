@@ -1,0 +1,22 @@
+medicao.GestorDeMedicoes	public void checkLuz(medicao.Medicao) 	m	B2	0/13
+medicao.GestorDeMedicoes	public void checkTemperatura(medicao.Medicao) 	m	B2	0/12
+unitTests.ExportTest	void getLightMeasurementTest() 	exportThread	B1	0/8
+unitTests.ExportTest	void getTemperatureMeasurementTest() 	exportThread	B1	0/8
+Main	public static void main(java.lang.String[]) 	sc	B1	0/5
+unitTests.ExportTest	void getLightMeasurementTest() 	obj	B1	0/5
+unitTests.ExportTest	void getTemperatureMeasurementTest() 	obj	B1	0/5
+export.ExportThread	private void interpretJSON(com.mongodb.DBObject) 	obj	B1	0/4
+export.ExportThread	private void readFromMongo() 	arrayList	B1	0/3
+connections.MongoConnection	public ArrayList<com.mongodb.DBObject> read() throws java.lang.InterruptedException	cursor	B2	0/2
+connections.SensorsConnection	public void messageArrived(java.lang.String, org.eclipse.paho.client.mqttv3.MqttMessage) throws java.lang.Exception	ges	B1	1/3
+connections.SensorsConnection	public void messageArrived(java.lang.String, org.eclipse.paho.client.mqttv3.MqttMessage) throws java.lang.Exception	ges	B2	0/2
+connections.SensorsConnection	public void init() 	client	B1	1/6
+export.ExportThread	private void getLightMeasurement(org.json.simple.JSONObject, java.lang.String) 	lightMeasurement	B1	4/7
+export.ExportThread	private void getLightMeasurement(org.json.simple.JSONObject, java.lang.String) 	lightMeasurement	B2	2/4
+export.ExportThread	private void getLightMeasurement(org.json.simple.JSONObject, java.lang.String) 	lightMeasurement	B1	4/7
+export.ExportThread	private void getLightMeasurement(org.json.simple.JSONObject, java.lang.String) 	lightMeasurement	B2	2/4
+export.ExportThread	private void getTemperatureMeasurement(org.json.simple.JSONObject, java.lang.String) 	temperatureMeasurement	B1	4/7
+export.ExportThread	private void getTemperatureMeasurement(org.json.simple.JSONObject, java.lang.String) 	temperatureMeasurement	B2	2/4
+export.ExportThread	private void getTemperatureMeasurement(org.json.simple.JSONObject, java.lang.String) 	temperatureMeasurement	B1	4/7
+export.ExportThread	private void getTemperatureMeasurement(org.json.simple.JSONObject, java.lang.String) 	temperatureMeasurement	B2	2/4
+medicao.GestorDeMedicoes	private void processaMedicao(medicao.Medicao) throws java.lang.InterruptedException	m	B1	3/5

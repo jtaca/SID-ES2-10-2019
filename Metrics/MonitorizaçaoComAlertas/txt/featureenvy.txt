@@ -1,0 +1,8 @@
+Refactoring Type	Source Entity	Target Class	Source/Target accessed members	Rate it!
+Move Method	connections.MongoConnection::write(medicao.Medicao):void	medicao.Medicao	0/9	
+Move Method	medicao.GestorDeMedicoes::checkErrors(medicao.Medicao, medicao.Medicao, medicao.Medicao):void	medicao.Sistema	1/6	
+Move Method	medicao.GestorDeMedicoes::checkLuz(medicao.Medicao):void	medicao.Sistema	1/3	
+Move Method	medicao.GestorDeMedicoes::checkLuz(medicao.Medicao):void	medicao.Medicao	1/3	
+Move Method	medicao.GestorDeMedicoes::checkTemperatura(medicao.Medicao):void	medicao.Sistema	1/3	
+Move Method	medicao.GestorDeMedicoes::checkTemperatura(medicao.Medicao):void	medicao.Medicao	1/3	
+Move Method	connections.DatabaseConnection::insertMeasurement(export.Measurement):void	export.Measurement	2/3	

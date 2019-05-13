@@ -1,0 +1,1 @@
+connections.DatabaseConnection::public java.lang.String getTableNameFromType(export.Measurement.MeasurementType, boolean) 
