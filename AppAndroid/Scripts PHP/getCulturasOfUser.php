@@ -1,10 +1,7 @@
 	<?php
 	$url="127.0.0.1";
 	$database="estufa";
-	$username = "rita";
-	$password="123";
-	$conn = mysqli_connect($url,$username,$password,$database);
-	//$conn = mysqli_connect($url,$_POST['username'],$_POST['password'],$database);
+	$conn = mysqli_connect($url,$_POST['username'],$_POST['password'],$database);
 
 	$sql = " SELECT IDCultura FROM cultura WHERE EmailInvestigador in (SELECT email FROM mysql.user WHERE User = '$username') ";
 	$result = mysqli_query($conn, $sql);
