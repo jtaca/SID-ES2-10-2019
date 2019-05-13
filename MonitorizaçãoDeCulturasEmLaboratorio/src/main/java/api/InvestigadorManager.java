@@ -101,7 +101,8 @@ public class InvestigadorManager {
 
         try {
 
-            CallableStatement cStmt = (CallableStatement) DatabaseConnection.getInstance().getConnection().prepareCall("{call updateInvestigador(?,?,?,?,?)}");
+            CallableStatement cStmt = (CallableStatement) DatabaseConnection.getInstance().getConnection().
+                    prepareCall("{call updateInvestigador(?,?,?,?,?)}");
             cStmt.setString(1, oldInvestigador.getEmail());
             cStmt.setString(2, newInvestigador.getName());
             cStmt.setString(3, newInvestigador.getCategory());
@@ -123,7 +124,6 @@ public class InvestigadorManager {
         }
 
         getDBInvestigador();
-
     }
 
     /**
@@ -133,7 +133,8 @@ public class InvestigadorManager {
 
     public void deleteInvestigador(Investigador investigador) {
         try {
-            CallableStatement cStmt = (CallableStatement) DatabaseConnection.getInstance().getConnection().prepareCall("{call deleteUser(?)}");
+            CallableStatement cStmt = (CallableStatement) DatabaseConnection.getInstance().getConnection().
+                    prepareCall("{call deleteUser(?)}");
             cStmt.setString(1, investigador.getEmail());
             System.out.println(investigador.getEmail());
             if(cStmt.execute()==false) {
