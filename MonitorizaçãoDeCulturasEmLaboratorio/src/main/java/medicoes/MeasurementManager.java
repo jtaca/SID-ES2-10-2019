@@ -30,7 +30,10 @@ public class MeasurementManager {
     }
 
     /**
-     * Extracts all records from the medicoes table measurements from the database.
+     * Method that obtains for each measurement extracted from the database the respective name of the variable that gave rise to it. For this it uses the variable culture pair id provided by each measurement.
+     * @param idVariavelMedidas the id of the variable culture pair.
+     * @return the name of the variable that gave rise to the measurement.
+     * @throws SQLException
      */
 
     private String addVariableName(int idVariavelMedidas) throws SQLException  {
@@ -54,7 +57,10 @@ public class MeasurementManager {
         return nome;
     }
 
-
+    /**
+     * Extracts all records from the medicoes table measurements from the database.
+     */
+    
     public void getDBMedicoes() {
 
         DatabaseConnection DB = DatabaseConnection.getInstance();
@@ -72,6 +78,13 @@ public class MeasurementManager {
         }
 
     }
+    
+    /**
+     * An auxiliary method that transforms the measurements obtained from the database into measurement objects and also adds the variable name that gave rise to the measurement using the addVariableName method.
+     * @param varMedicao represents the record of a medicao extrated from the data base for a post transformation.
+     * @return
+     * @throws SQLException
+     */
 
     private List<Measurement> extractMedicoes (ResultSet varMedicao) throws SQLException {
         List<Measurement> AuxlistOfMedicoes = new ArrayList<Measurement>();
@@ -89,8 +102,8 @@ public class MeasurementManager {
     }
 
     /**
-     * Transforms all the records obtained in the data base`s medicoes table in objects medicoes. It inserts those objects in a medicoes list.
-     * @param extracted represents the record of a medicao extrated from the data base for a post transformation.
+     * Transposes only the measurements from an auxiliary list to the main list listOfMedicos.
+     * @param extracted the auxiliary list.
      */
 
     private void addMedicoes (List<Measurement> extracted) {
@@ -163,6 +176,8 @@ public class MeasurementManager {
         getDBMedicoes();
 
     }
+    
+    
 
     public List<Measurement>  selectMedicoes(Culture cultura) {
 

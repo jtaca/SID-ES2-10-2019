@@ -23,6 +23,11 @@ public class VariableManager {
         getDBVariables();
 
     }
+    
+    /**
+     * 
+     * Extracts all records from the variables table from the database.
+     */
 
     public void getDBVariables() {
 
@@ -78,6 +83,12 @@ public class VariableManager {
         getDBVariables();
     }
 
+    /**
+     * Attempts to update the value of a variable in the database by invoking the stored procedure updateVariable through the current variable object and another variable object instantiated with the value parameter to be modified, supplied as argument.
+     * @param oldVariable the old variable object corresponding to the variable and its current information.
+     * @param newVariable the new variable object corresponding to the same variable instantiated only with of new value to changed.
+     */
+    
     public void editVariable(Variable oldVariable,Variable newVariable){
         DatabaseConnection db = DatabaseConnection.getInstance();
 

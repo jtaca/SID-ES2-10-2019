@@ -62,22 +62,46 @@ public class Investigador {
         return category;
     }
 
+    /**
+     * Modify investigator password.
+     * @param password the new password.
+     */
+    
     public void setPassword(String password) {
         this.password = password;
     }
 
+    /**
+     * Modify investigator name.
+     * @param name the new name.
+     */
+    
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Modify investigator email.
+     * @param email the new email.
+     */
     public void setEmail(String email) {
         this.email = email;
     }
+    
+    /**
+     * Modify investigator professional category.
+     * @param category the new category.
+     */
 
     public void setCategory(String category) {
         this.category = category;
     }
-
+    
+   
+    /**
+     * A method that returns a part of the query that is responsible by inserted a culture into the database.
+     */
+    
     @Override
     public String toString() {
         return "Investigador{" +

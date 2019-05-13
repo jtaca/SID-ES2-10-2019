@@ -21,7 +21,7 @@ public class Variable {
     }
 
     /**
-     * Class constructer used mainly to resgister of the variables in database.
+     * Class constructer used mainly to register of the variables in database.
      * @param name the new name of culture.
      */
 
@@ -48,7 +48,7 @@ public class Variable {
     }
 
     /**
-     * A method that returns a part of the query that is responsable by inserted a variable into the database.
+     * A method that returns a part of the query that is responsible by inserted a variable into the database.
      * @return Returns the query with or without the id of the variable. If return with id a variable is inserted into the database with the id specified by the user . If returned without id, the field in the database destined for this value is automatically attributed.
      */
 

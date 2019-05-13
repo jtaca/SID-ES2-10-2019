@@ -22,7 +22,7 @@ public class InvestigadorManager {
     }
 
     /**
-     * Extracts all records from the investigadores table from the database.
+     * Extracts all records from the investigators table from the database.
      */
 
     public static void getDBInvestigador() {
@@ -43,8 +43,8 @@ public class InvestigadorManager {
     }
 
     /**
-     * Transforms all the records obtained in the data base`s investigadores table in objects investigador. It inserts those objects in a investigadores list.
-     * @param varUser represents the record of a insvestigadores extrated from the data base for a post transformation.
+     * Transforms all the records obtained in the data base`s investigators table in objects investigator. It inserts those objects in a investigators list.
+     * @param varUser represents the record of a investigators extracted from the data base for a post transformation.
      */
 
     private static void addInvestigadores(ResultSet varUser) throws SQLException {
@@ -55,8 +55,6 @@ public class InvestigadorManager {
             String email = varUser.getString("Email");
             String categoriaProfissional = varUser.getString("CategoriaProfissional");
             Investigador u = new Investigador("password",nomeInvestigador,email,categoriaProfissional);
-
-            //Investigador u = new Investigador(nomeInvestigador, email, categoriaProfissional, default_role);
             listOfUsers.add(u);
         }
 
@@ -64,7 +62,7 @@ public class InvestigadorManager {
 
     /**
      * Attempts to create an investigator in the database by calling the stored procedure addUser through the provided investigator object as argument.
-     * @param investigador is the object investigador to be inserted.
+     * @param investigador is the object investigator to be inserted.
      *
      */
 
@@ -91,8 +89,8 @@ public class InvestigadorManager {
 
     /**
      * Attempts to update an investigator's information in the database by calling the stored procedure updateInvestigador through the current investigator object and another investigator object instantiated with the parameters to be modified, provided as argument.
-     * @param oldInvestigador object investigador corresponding to the investigator and the his current information.
-     * @param newInvestigador investigador object corresponding to the same investigator instantiated only with the information to be changed.
+     * @param oldInvestigador object investigator corresponding to the investigator and the his current information.
+     * @param newInvestigador investigator object corresponding to the same investigator instantiated only with the information to be changed.
      */
 
     public static void updateInvestigador(Investigador oldInvestigador, Investigador newInvestigador) {
@@ -128,7 +126,7 @@ public class InvestigadorManager {
 
     /**
      * Tries to delete a user by calling the stored procedure deleteUser with the given parameters.
-     * @param investigador is the object investigador that we want to delete.
+     * @param investigador is the object investigator that we want to delete.
      */
 
     public void deleteInvestigador(Investigador investigador) {

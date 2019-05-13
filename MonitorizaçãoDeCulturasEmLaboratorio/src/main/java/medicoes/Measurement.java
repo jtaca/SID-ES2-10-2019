@@ -84,7 +84,7 @@ public class Measurement {
     }
 
     /**
-     * A method that returns a part of the query that is responsable by inserted a measurements into the database.
+     * A method that returns a part of the query that is responsible by inserted a measurements into the database.
      * @return Returns the query with or without the id of the measurement. If return with id a measurement is inserted into the database with the id specified by the user . If returned without id, the field in the database destined for this value is automatically attributed.
      */
 

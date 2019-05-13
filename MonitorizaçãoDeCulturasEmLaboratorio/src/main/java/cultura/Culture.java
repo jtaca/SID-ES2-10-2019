@@ -28,7 +28,7 @@ public class Culture {
     }
 
     /**
-     * Class constructer used mainly to resgister or update informations of the culture in database.
+     * Class constructer used mainly to register or update informations of the culture in database.
      * @param cultureName the new name of culture.
      * @param cultureDescription the new description of culture.
      * @param investigatorEmail the new email address of the investigator responsible for the culture.
@@ -77,21 +77,36 @@ public class Culture {
     public String getInvestigatorEmail(){
         return investigatorEmail;
     }
+    
+    /**
+     * Modify investigator email.
+     * @param investigatorEmail the new email.
+     */
 
     public void setInvestigatorEmail(String investigatorEmail) {
         this.investigatorEmail = investigatorEmail;
     }
+    
+    /**
+     * Modify culture name.
+     * @param cultureName the new name.
+     */
 
     public void setCultureName(String cultureName) {
         this.cultureName = cultureName;
     }
+    
+    /**
+     * Modify culture description.
+     * @param cultureDescription the new description.
+     */
 
     public void setCultureDescription(String cultureDescription) {
         this.cultureDescription = cultureDescription;
     }
 
     /**
-     * A method that returns a part of the query that is responsable by inserted a culture into the database.
+     * A method that returns a part of the query that is responsible by inserted a culture into the database.
      * @return Returns the query with or without the id of the culture. If return with id a culture  is inserted into the database with the id specified by the user . If returned without id, the field in the database destined for this value is automatically attributed.
      */
 

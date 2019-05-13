@@ -19,7 +19,7 @@ public class CultureManager {
     private List<Culture> listOfCultures = new ArrayList<Culture>();
 
     /**
-     * @return an ArrayList of all the culturas in the database;
+     * @return an ArrayList of all the cultures in the database;
      */
 
     public List<Culture> getListOfCultures() {
@@ -28,7 +28,7 @@ public class CultureManager {
     }
 
     /**
-     * Extracts all records from the culturas table from the database.
+     * Extracts all records from the cultures table from the database.
      */
 
     public void getDBCultures () {
@@ -48,8 +48,8 @@ public class CultureManager {
     }
 
     /**
-     * Transforms all the records obtained in the data base`s culturas table in objects culture. It inserts those objects in a culture list.
-     * @param varCulture represents the record of a culture extrated from the data base for a post transformation.
+     * Transforms all the records obtained in the data base`s cultures table in objects culture. It inserts those objects in a culture list.
+     * @param varCulture represents the record of a culture extracted from the data base for a post transformation.
      */
 
     private void addCultures (ResultSet varCulture) throws SQLException {
