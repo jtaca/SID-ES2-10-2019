@@ -1,5 +1,3 @@
-package JUnitTests;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.sql.SQLException;

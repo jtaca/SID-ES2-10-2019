@@ -20,8 +20,10 @@ public class MongoConnection {
 
     /**
      * Allows to read data from a mongo database.
+     * @return arraylist of read DBObjects
+     * @throws InterruptedException if interrupted while waiting to read again
      */
-    public synchronized ArrayList<DBObject> read() throws InterruptedException {
+    public ArrayList<DBObject> read() throws InterruptedException {
         wait(15000);
 
         ArrayList<DBObject> objects = new ArrayList<>();

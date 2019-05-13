@@ -61,14 +61,14 @@ public class DatabaseConnection {
 		return single_instance;
 	}
 
-	/**
-	 * Does a select to a table given by the parameter table.
-	 * @param con is the connection to the database.
-	 * @param table is the name of the table.
-	 * @param column is the column of the table that we want to select
-	 * @return a double value relative to the select.
-	 */
-
+    /**
+     * Does a select to a table given by the parameter table.
+     * @param con is the connection to the database.
+     * @param table is the name of the table.
+     * @param column is the column of the table that we want to select.
+     * @return a double value relative to the select.
+     * @throws SQLException when failing to create or execute the select statement.
+     */
 	public double viewTable(Connection con,String table, String column)
 			throws SQLException {
 		double res = 0;

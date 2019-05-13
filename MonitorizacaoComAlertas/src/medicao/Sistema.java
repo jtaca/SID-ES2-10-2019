@@ -21,6 +21,7 @@ public class Sistema {
 	 *  @param percentagemVariacaoLuz is the maximum percentage of variation relative to the upper and lower limits of brightness between a measurement and the two previous ones so that it is considered a measurement error if it is exceeded.
 	 *  @param margemSegurancaLuz is the maximum percentage of variation that a brightness measurement may be below the upper limit and above the lower limit so as not to be considered a measurement error.
 	 *  @param margemSegurancaTemperatura is the maximum percentage of variation that a temperature measurement may be below the upper limit and above the lower limit so as not to be considered a measurement error.
+     *  @param tempoEntreAlertasConsecutivos is the minimum time between alerts.
 	 */
 
 	public Sistema(double limiteInferiorTemperatura, double limiteSuperiorTemperatura, double limiteInferiorLuz,

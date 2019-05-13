@@ -1,5 +1,3 @@
-package JUnitTests;
-
 import export.ExportThread;
 import medicao.Sistema;
 import org.json.simple.JSONObject;
