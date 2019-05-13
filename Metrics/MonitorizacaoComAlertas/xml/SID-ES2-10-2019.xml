@@ -1,0 +1,659 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Metrics scope="MonitorizacaoComAlertas" type="Project" date="2019-05-13" xmlns="http://metrics.sourceforge.net/2003/Metrics-First-Flat">
+   <Cycle name="medicao et al" nodes="3" diameter="2">
+      <Package>medicao</Package>
+      <Package>connections</Package>
+      <Package>export</Package>
+   </Cycle>
+   <Metric id = "VG" description ="McCabe Cyclomatic Complexity" max ="10" hint ="use Extract-method to split the method up">
+      <Values per = "method" avg = "2,011" stddev = "2,236" max = "17" maxinrange="false">
+         <Value name="test" source ="DatabaseConnectionTest.java" package ="unitTests" value ="17" inrange="false"/>
+         <Value name="write" source ="MongoConnection.java" package ="connections" value ="10"/>
+         <Value name="checkErrors" source ="GestorDeMedicoes.java" package ="medicao" value ="6"/>
+         <Value name="checkLuz" source ="GestorDeMedicoes.java" package ="medicao" value ="6"/>
+         <Value name="checkTemperatura" source ="GestorDeMedicoes.java" package ="medicao" value ="6"/>
+         <Value name="messageArrived" source ="SensorsConnection.java" package ="connections" value ="5"/>
+         <Value name="getLightMeasurement" source ="ExportThread.java" package ="export" value ="5"/>
+         <Value name="getTemperatureMeasurement" source ="ExportThread.java" package ="export" value ="5"/>
+         <Value name="connect" source ="DatabaseConnection.java" package ="connections" value ="4"/>
+         <Value name="getTableNameFromType" source ="DatabaseConnection.java" package ="connections" value ="4"/>
+         <Value name="viewTable" source ="DatabaseConnection.java" package ="connections" value ="4"/>
+         <Value name="run" source ="ExportThread.java" package ="export" value ="4"/>
+         <Value name="executeStatement" source ="DatabaseConnection.java" package ="connections" value ="3"/>
+         <Value name="checkAlerts" source ="ExportThread.java" package ="export" value ="3"/>
+         <Value name="interpretJSON" source ="ExportThread.java" package ="export" value ="3"/>
+         <Value name="readFromMongo" source ="ExportThread.java" package ="export" value ="3"/>
+         <Value name="adiciona" source ="GestorDeMedicoes.java" package ="medicao" value ="3"/>
+         <Value name="checkAlerts" source ="GestorDeMedicoes.java" package ="medicao" value ="3"/>
+         <Value name="parseMessage" source ="Medicao.java" package ="medicao" value ="3"/>
+         <Value name="getInstance" source ="DatabaseConnection.java" package ="connections" value ="2"/>
+         <Value name="initializeSystem" source ="DatabaseConnection.java" package ="connections" value ="2"/>
+         <Value name="getInstance" source ="MongoConnection.java" package ="connections" value ="2"/>
+         <Value name="read" source ="MongoConnection.java" package ="connections" value ="2"/>
+         <Value name="init" source ="SensorsConnection.java" package ="connections" value ="2"/>
+         <Value name="isAlertaLuminosidade" source ="Medicao.java" package ="medicao" value ="2"/>
+         <Value name="isAlertaTemperatura" source ="Medicao.java" package ="medicao" value ="2"/>
+         <Value name="isErroLuminosidade" source ="Medicao.java" package ="medicao" value ="2"/>
+         <Value name="isErroTemperatura" source ="Medicao.java" package ="medicao" value ="2"/>
+         <Value name="getLightMeasurementTest" source ="ExportTest.java" package ="unitTests" value ="2"/>
+         <Value name="getTemperatureMeasurementTest" source ="ExportTest.java" package ="unitTests" value ="2"/>
+         <Value name="test" source ="GestorMedicoesTest.java" package ="unitTests" value ="2"/>
+         <Value name="DatabaseConnection.TableNames#TableNames" source ="DatabaseConnection.java" package ="connections" value ="1"/>
+         <Value name="getConnection" source ="DatabaseConnection.java" package ="connections" value ="1"/>
+         <Value name="getGestor" source ="DatabaseConnection.java" package ="connections" value ="1"/>
+         <Value name="insertAlert" source ="DatabaseConnection.java" package ="connections" value ="1"/>
+         <Value name="insertMeasurement" source ="DatabaseConnection.java" package ="connections" value ="1"/>
+         <Value name="MongoConnection" source ="MongoConnection.java" package ="connections" value ="1"/>
+         <Value name="deleteAll" source ="MongoConnection.java" package ="connections" value ="1"/>
+         <Value name="SensorsConnection" source ="SensorsConnection.java" package ="connections" value ="1"/>
+         <Value name="connectionLost" source ="SensorsConnection.java" package ="connections" value ="1"/>
+         <Value name="deliveryComplete" source ="SensorsConnection.java" package ="connections" value ="1"/>
+         <Value name="getClient" source ="SensorsConnection.java" package ="connections" value ="1"/>
+         <Value name="getGes" source ="SensorsConnection.java" package ="connections" value ="1"/>
+         <Value name="AndroidAlert" source ="AndroidAlert.java" package ="export" value ="1"/>
+         <Value name="toString" source ="AndroidAlert.java" package ="export" value ="1"/>
+         <Value name="calculateDeltas" source ="ExportThread.java" package ="export" value ="1"/>
+         <Value name="getLightMeasurement" source ="ExportThread.java" package ="export" value ="1"/>
+         <Value name="getMeasurements" source ="ExportThread.java" package ="export" value ="1"/>
+         <Value name="getTemperatureMeasurement" source ="ExportThread.java" package ="export" value ="1"/>
+         <Value name="setSistema" source ="ExportThread.java" package ="export" value ="1"/>
+         <Value name="start" source ="ExportThread.java" package ="export" value ="1"/>
+         <Value name="Measurement" source ="Measurement.java" package ="export" value ="1"/>
+         <Value name="getReason" source ="Measurement.java" package ="export" value ="1"/>
+         <Value name="getType" source ="Measurement.java" package ="export" value ="1"/>
+         <Value name="isError" source ="Measurement.java" package ="export" value ="1"/>
+         <Value name="toString" source ="Measurement.java" package ="export" value ="1"/>
+         <Value name="GestorDeMedicoes" source ="GestorDeMedicoes.java" package ="medicao" value ="1"/>
+         <Value name="getBq" source ="GestorDeMedicoes.java" package ="medicao" value ="1"/>
+         <Value name="getSistema" source ="GestorDeMedicoes.java" package ="medicao" value ="1"/>
+         <Value name="processaMedicao" source ="GestorDeMedicoes.java" package ="medicao" value ="1"/>
+         <Value name="Medicao" source ="Medicao.java" package ="medicao" value ="1"/>
+         <Value name="getCausaLuminosidade" source ="Medicao.java" package ="medicao" value ="1"/>
+         <Value name="getCausaTemperatura" source ="Medicao.java" package ="medicao" value ="1"/>
+         <Value name="getLuminosidade" source ="Medicao.java" package ="medicao" value ="1"/>
+         <Value name="getTemperatura" source ="Medicao.java" package ="medicao" value ="1"/>
+         <Value name="getTimestamp" source ="Medicao.java" package ="medicao" value ="1"/>
+         <Value name="isExportadoParaOMongo" source ="Medicao.java" package ="medicao" value ="1"/>
+         <Value name="parseDate" source ="Medicao.java" package ="medicao" value ="1"/>
+         <Value name="setAlertaLuminosidade" source ="Medicao.java" package ="medicao" value ="1"/>
+         <Value name="setAlertaTemperatura" source ="Medicao.java" package ="medicao" value ="1"/>
+         <Value name="setCausaLuminosidade" source ="Medicao.java" package ="medicao" value ="1"/>
+         <Value name="setCausaTemperatura" source ="Medicao.java" package ="medicao" value ="1"/>
+         <Value name="setErroLuminosidade" source ="Medicao.java" package ="medicao" value ="1"/>
+         <Value name="setErroTemperatura" source ="Medicao.java" package ="medicao" value ="1"/>
+         <Value name="setExportadoParaOMongo" source ="Medicao.java" package ="medicao" value ="1"/>
+         <Value name="toString" source ="Medicao.java" package ="medicao" value ="1"/>
+         <Value name="Sistema" source ="Sistema.java" package ="medicao" value ="1"/>
+         <Value name="getLimiteInferiorLuz" source ="Sistema.java" package ="medicao" value ="1"/>
+         <Value name="getLimiteInferiorTemperatura" source ="Sistema.java" package ="medicao" value ="1"/>
+         <Value name="getLimiteSuperiorLuz" source ="Sistema.java" package ="medicao" value ="1"/>
+         <Value name="getLimiteSuperiorTemperatura" source ="Sistema.java" package ="medicao" value ="1"/>
+         <Value name="getMargemSegurancaLuz" source ="Sistema.java" package ="medicao" value ="1"/>
+         <Value name="getMargemSegurancaTemperatura" source ="Sistema.java" package ="medicao" value ="1"/>
+         <Value name="getPercentagemVariacaoLuz" source ="Sistema.java" package ="medicao" value ="1"/>
+         <Value name="getPercentagemVariacaoTemperatura" source ="Sistema.java" package ="medicao" value ="1"/>
+         <Value name="getTempoEntreAlertasConsecutivos" source ="Sistema.java" package ="medicao" value ="1"/>
+         <Value name="test" source ="SensorsConnectionTest.java" package ="unitTests" value ="1"/>
+         <Value name="test" source ="SistemaTest.java" package ="unitTests" value ="1"/>
+         <Value name="main" source ="Main.java" package ="(default package)" value ="1"/>
+      </Values>
+   </Metric>
+   <Metric id = "PAR" description ="Number of Parameters" max ="5" hint ="Move invoked method or pass an object">
+      <Values per = "method" avg = "0,73" stddev = "1,356" max = "9" maxinrange="false">
+         <Value name="Sistema" source ="Sistema.java" package ="medicao" value ="9" inrange="false"/>
+         <Value name="AndroidAlert" source ="AndroidAlert.java" package ="export" value ="6" inrange="false"/>
+         <Value name="Measurement" source ="Measurement.java" package ="export" value ="5"/>
+         <Value name="viewTable" source ="DatabaseConnection.java" package ="connections" value ="3"/>
+         <Value name="checkErrors" source ="GestorDeMedicoes.java" package ="medicao" value ="3"/>
+         <Value name="connect" source ="DatabaseConnection.java" package ="connections" value ="2"/>
+         <Value name="executeStatement" source ="DatabaseConnection.java" package ="connections" value ="2"/>
+         <Value name="getTableNameFromType" source ="DatabaseConnection.java" package ="connections" value ="2"/>
+         <Value name="messageArrived" source ="SensorsConnection.java" package ="connections" value ="2"/>
+         <Value name="getLightMeasurement" source ="ExportThread.java" package ="export" value ="2"/>
+         <Value name="getTemperatureMeasurement" source ="ExportThread.java" package ="export" value ="2"/>
+         <Value name="DatabaseConnection.TableNames#TableNames" source ="DatabaseConnection.java" package ="connections" value ="1"/>
+         <Value name="insertAlert" source ="DatabaseConnection.java" package ="connections" value ="1"/>
+         <Value name="insertMeasurement" source ="DatabaseConnection.java" package ="connections" value ="1"/>
+         <Value name="write" source ="MongoConnection.java" package ="connections" value ="1"/>
+         <Value name="SensorsConnection" source ="SensorsConnection.java" package ="connections" value ="1"/>
+         <Value name="connectionLost" source ="SensorsConnection.java" package ="connections" value ="1"/>
+         <Value name="deliveryComplete" source ="SensorsConnection.java" package ="connections" value ="1"/>
+         <Value name="getLightMeasurement" source ="ExportThread.java" package ="export" value ="1"/>
+         <Value name="getTemperatureMeasurement" source ="ExportThread.java" package ="export" value ="1"/>
+         <Value name="interpretJSON" source ="ExportThread.java" package ="export" value ="1"/>
+         <Value name="setSistema" source ="ExportThread.java" package ="export" value ="1"/>
+         <Value name="GestorDeMedicoes" source ="GestorDeMedicoes.java" package ="medicao" value ="1"/>
+         <Value name="adiciona" source ="GestorDeMedicoes.java" package ="medicao" value ="1"/>
+         <Value name="checkAlerts" source ="GestorDeMedicoes.java" package ="medicao" value ="1"/>
+         <Value name="checkLuz" source ="GestorDeMedicoes.java" package ="medicao" value ="1"/>
+         <Value name="checkTemperatura" source ="GestorDeMedicoes.java" package ="medicao" value ="1"/>
+         <Value name="processaMedicao" source ="GestorDeMedicoes.java" package ="medicao" value ="1"/>
+         <Value name="Medicao" source ="Medicao.java" package ="medicao" value ="1"/>
+         <Value name="parseMessage" source ="Medicao.java" package ="medicao" value ="1"/>
+         <Value name="setAlertaLuminosidade" source ="Medicao.java" package ="medicao" value ="1"/>
+         <Value name="setAlertaTemperatura" source ="Medicao.java" package ="medicao" value ="1"/>
+         <Value name="setCausaLuminosidade" source ="Medicao.java" package ="medicao" value ="1"/>
+         <Value name="setCausaTemperatura" source ="Medicao.java" package ="medicao" value ="1"/>
+         <Value name="setErroLuminosidade" source ="Medicao.java" package ="medicao" value ="1"/>
+         <Value name="setErroTemperatura" source ="Medicao.java" package ="medicao" value ="1"/>
+         <Value name="setExportadoParaOMongo" source ="Medicao.java" package ="medicao" value ="1"/>
+         <Value name="main" source ="Main.java" package ="(default package)" value ="1"/>
+         <Value name="getConnection" source ="DatabaseConnection.java" package ="connections" value ="0"/>
+         <Value name="getGestor" source ="DatabaseConnection.java" package ="connections" value ="0"/>
+         <Value name="getInstance" source ="DatabaseConnection.java" package ="connections" value ="0"/>
+         <Value name="initializeSystem" source ="DatabaseConnection.java" package ="connections" value ="0"/>
+         <Value name="MongoConnection" source ="MongoConnection.java" package ="connections" value ="0"/>
+         <Value name="deleteAll" source ="MongoConnection.java" package ="connections" value ="0"/>
+         <Value name="getInstance" source ="MongoConnection.java" package ="connections" value ="0"/>
+         <Value name="read" source ="MongoConnection.java" package ="connections" value ="0"/>
+         <Value name="getClient" source ="SensorsConnection.java" package ="connections" value ="0"/>
+         <Value name="getGes" source ="SensorsConnection.java" package ="connections" value ="0"/>
+         <Value name="init" source ="SensorsConnection.java" package ="connections" value ="0"/>
+         <Value name="toString" source ="AndroidAlert.java" package ="export" value ="0"/>
+         <Value name="calculateDeltas" source ="ExportThread.java" package ="export" value ="0"/>
+         <Value name="checkAlerts" source ="ExportThread.java" package ="export" value ="0"/>
+         <Value name="getMeasurements" source ="ExportThread.java" package ="export" value ="0"/>
+         <Value name="readFromMongo" source ="ExportThread.java" package ="export" value ="0"/>
+         <Value name="run" source ="ExportThread.java" package ="export" value ="0"/>
+         <Value name="start" source ="ExportThread.java" package ="export" value ="0"/>
+         <Value name="getReason" source ="Measurement.java" package ="export" value ="0"/>
+         <Value name="getType" source ="Measurement.java" package ="export" value ="0"/>
+         <Value name="isError" source ="Measurement.java" package ="export" value ="0"/>
+         <Value name="toString" source ="Measurement.java" package ="export" value ="0"/>
+         <Value name="getBq" source ="GestorDeMedicoes.java" package ="medicao" value ="0"/>
+         <Value name="getSistema" source ="GestorDeMedicoes.java" package ="medicao" value ="0"/>
+         <Value name="getCausaLuminosidade" source ="Medicao.java" package ="medicao" value ="0"/>
+         <Value name="getCausaTemperatura" source ="Medicao.java" package ="medicao" value ="0"/>
+         <Value name="getLuminosidade" source ="Medicao.java" package ="medicao" value ="0"/>
+         <Value name="getTemperatura" source ="Medicao.java" package ="medicao" value ="0"/>
+         <Value name="getTimestamp" source ="Medicao.java" package ="medicao" value ="0"/>
+         <Value name="isAlertaLuminosidade" source ="Medicao.java" package ="medicao" value ="0"/>
+         <Value name="isAlertaTemperatura" source ="Medicao.java" package ="medicao" value ="0"/>
+         <Value name="isErroLuminosidade" source ="Medicao.java" package ="medicao" value ="0"/>
+         <Value name="isErroTemperatura" source ="Medicao.java" package ="medicao" value ="0"/>
+         <Value name="isExportadoParaOMongo" source ="Medicao.java" package ="medicao" value ="0"/>
+         <Value name="parseDate" source ="Medicao.java" package ="medicao" value ="0"/>
+         <Value name="toString" source ="Medicao.java" package ="medicao" value ="0"/>
+         <Value name="getLimiteInferiorLuz" source ="Sistema.java" package ="medicao" value ="0"/>
+         <Value name="getLimiteInferiorTemperatura" source ="Sistema.java" package ="medicao" value ="0"/>
+         <Value name="getLimiteSuperiorLuz" source ="Sistema.java" package ="medicao" value ="0"/>
+         <Value name="getLimiteSuperiorTemperatura" source ="Sistema.java" package ="medicao" value ="0"/>
+         <Value name="getMargemSegurancaLuz" source ="Sistema.java" package ="medicao" value ="0"/>
+         <Value name="getMargemSegurancaTemperatura" source ="Sistema.java" package ="medicao" value ="0"/>
+         <Value name="getPercentagemVariacaoLuz" source ="Sistema.java" package ="medicao" value ="0"/>
+         <Value name="getPercentagemVariacaoTemperatura" source ="Sistema.java" package ="medicao" value ="0"/>
+         <Value name="getTempoEntreAlertasConsecutivos" source ="Sistema.java" package ="medicao" value ="0"/>
+         <Value name="test" source ="DatabaseConnectionTest.java" package ="unitTests" value ="0"/>
+         <Value name="getLightMeasurementTest" source ="ExportTest.java" package ="unitTests" value ="0"/>
+         <Value name="getTemperatureMeasurementTest" source ="ExportTest.java" package ="unitTests" value ="0"/>
+         <Value name="test" source ="GestorMedicoesTest.java" package ="unitTests" value ="0"/>
+         <Value name="test" source ="SensorsConnectionTest.java" package ="unitTests" value ="0"/>
+         <Value name="test" source ="SistemaTest.java" package ="unitTests" value ="0"/>
+      </Values>
+   </Metric>
+   <Metric id = "NBD" description ="Nested Block Depth" max ="5" hint ="use Extract-method to split the method up">
+      <Values per = "method" avg = "1,461" stddev = "0,72" max = "4">
+         <Value name="run" source ="ExportThread.java" package ="export" value ="4"/>
+         <Value name="connect" source ="DatabaseConnection.java" package ="connections" value ="3"/>
+         <Value name="executeStatement" source ="DatabaseConnection.java" package ="connections" value ="3"/>
+         <Value name="getTableNameFromType" source ="DatabaseConnection.java" package ="connections" value ="3"/>
+         <Value name="viewTable" source ="DatabaseConnection.java" package ="connections" value ="3"/>
+         <Value name="getLightMeasurement" source ="ExportThread.java" package ="export" value ="3"/>
+         <Value name="getTemperatureMeasurement" source ="ExportThread.java" package ="export" value ="3"/>
+         <Value name="adiciona" source ="GestorDeMedicoes.java" package ="medicao" value ="3"/>
+         <Value name="checkLuz" source ="GestorDeMedicoes.java" package ="medicao" value ="3"/>
+         <Value name="checkTemperatura" source ="GestorDeMedicoes.java" package ="medicao" value ="3"/>
+         <Value name="getInstance" source ="DatabaseConnection.java" package ="connections" value ="2"/>
+         <Value name="initializeSystem" source ="DatabaseConnection.java" package ="connections" value ="2"/>
+         <Value name="getInstance" source ="MongoConnection.java" package ="connections" value ="2"/>
+         <Value name="read" source ="MongoConnection.java" package ="connections" value ="2"/>
+         <Value name="write" source ="MongoConnection.java" package ="connections" value ="2"/>
+         <Value name="init" source ="SensorsConnection.java" package ="connections" value ="2"/>
+         <Value name="messageArrived" source ="SensorsConnection.java" package ="connections" value ="2"/>
+         <Value name="checkAlerts" source ="ExportThread.java" package ="export" value ="2"/>
+         <Value name="interpretJSON" source ="ExportThread.java" package ="export" value ="2"/>
+         <Value name="readFromMongo" source ="ExportThread.java" package ="export" value ="2"/>
+         <Value name="checkAlerts" source ="GestorDeMedicoes.java" package ="medicao" value ="2"/>
+         <Value name="isAlertaLuminosidade" source ="Medicao.java" package ="medicao" value ="2"/>
+         <Value name="isAlertaTemperatura" source ="Medicao.java" package ="medicao" value ="2"/>
+         <Value name="isErroLuminosidade" source ="Medicao.java" package ="medicao" value ="2"/>
+         <Value name="isErroTemperatura" source ="Medicao.java" package ="medicao" value ="2"/>
+         <Value name="parseMessage" source ="Medicao.java" package ="medicao" value ="2"/>
+         <Value name="test" source ="DatabaseConnectionTest.java" package ="unitTests" value ="2"/>
+         <Value name="getLightMeasurementTest" source ="ExportTest.java" package ="unitTests" value ="2"/>
+         <Value name="getTemperatureMeasurementTest" source ="ExportTest.java" package ="unitTests" value ="2"/>
+         <Value name="test" source ="GestorMedicoesTest.java" package ="unitTests" value ="2"/>
+         <Value name="DatabaseConnection.TableNames#TableNames" source ="DatabaseConnection.java" package ="connections" value ="1"/>
+         <Value name="getConnection" source ="DatabaseConnection.java" package ="connections" value ="1"/>
+         <Value name="getGestor" source ="DatabaseConnection.java" package ="connections" value ="1"/>
+         <Value name="insertAlert" source ="DatabaseConnection.java" package ="connections" value ="1"/>
+         <Value name="insertMeasurement" source ="DatabaseConnection.java" package ="connections" value ="1"/>
+         <Value name="MongoConnection" source ="MongoConnection.java" package ="connections" value ="1"/>
+         <Value name="deleteAll" source ="MongoConnection.java" package ="connections" value ="1"/>
+         <Value name="SensorsConnection" source ="SensorsConnection.java" package ="connections" value ="1"/>
+         <Value name="connectionLost" source ="SensorsConnection.java" package ="connections" value ="1"/>
+         <Value name="deliveryComplete" source ="SensorsConnection.java" package ="connections" value ="1"/>
+         <Value name="getClient" source ="SensorsConnection.java" package ="connections" value ="1"/>
+         <Value name="getGes" source ="SensorsConnection.java" package ="connections" value ="1"/>
+         <Value name="AndroidAlert" source ="AndroidAlert.java" package ="export" value ="1"/>
+         <Value name="toString" source ="AndroidAlert.java" package ="export" value ="1"/>
+         <Value name="calculateDeltas" source ="ExportThread.java" package ="export" value ="1"/>
+         <Value name="getLightMeasurement" source ="ExportThread.java" package ="export" value ="1"/>
+         <Value name="getMeasurements" source ="ExportThread.java" package ="export" value ="1"/>
+         <Value name="getTemperatureMeasurement" source ="ExportThread.java" package ="export" value ="1"/>
+         <Value name="setSistema" source ="ExportThread.java" package ="export" value ="1"/>
+         <Value name="start" source ="ExportThread.java" package ="export" value ="1"/>
+         <Value name="Measurement" source ="Measurement.java" package ="export" value ="1"/>
+         <Value name="getReason" source ="Measurement.java" package ="export" value ="1"/>
+         <Value name="getType" source ="Measurement.java" package ="export" value ="1"/>
+         <Value name="isError" source ="Measurement.java" package ="export" value ="1"/>
+         <Value name="toString" source ="Measurement.java" package ="export" value ="1"/>
+         <Value name="GestorDeMedicoes" source ="GestorDeMedicoes.java" package ="medicao" value ="1"/>
+         <Value name="checkErrors" source ="GestorDeMedicoes.java" package ="medicao" value ="1"/>
+         <Value name="getBq" source ="GestorDeMedicoes.java" package ="medicao" value ="1"/>
+         <Value name="getSistema" source ="GestorDeMedicoes.java" package ="medicao" value ="1"/>
+         <Value name="processaMedicao" source ="GestorDeMedicoes.java" package ="medicao" value ="1"/>
+         <Value name="Medicao" source ="Medicao.java" package ="medicao" value ="1"/>
+         <Value name="getCausaLuminosidade" source ="Medicao.java" package ="medicao" value ="1"/>
+         <Value name="getCausaTemperatura" source ="Medicao.java" package ="medicao" value ="1"/>
+         <Value name="getLuminosidade" source ="Medicao.java" package ="medicao" value ="1"/>
+         <Value name="getTemperatura" source ="Medicao.java" package ="medicao" value ="1"/>
+         <Value name="getTimestamp" source ="Medicao.java" package ="medicao" value ="1"/>
+         <Value name="isExportadoParaOMongo" source ="Medicao.java" package ="medicao" value ="1"/>
+         <Value name="parseDate" source ="Medicao.java" package ="medicao" value ="1"/>
+         <Value name="setAlertaLuminosidade" source ="Medicao.java" package ="medicao" value ="1"/>
+         <Value name="setAlertaTemperatura" source ="Medicao.java" package ="medicao" value ="1"/>
+         <Value name="setCausaLuminosidade" source ="Medicao.java" package ="medicao" value ="1"/>
+         <Value name="setCausaTemperatura" source ="Medicao.java" package ="medicao" value ="1"/>
+         <Value name="setErroLuminosidade" source ="Medicao.java" package ="medicao" value ="1"/>
+         <Value name="setErroTemperatura" source ="Medicao.java" package ="medicao" value ="1"/>
+         <Value name="setExportadoParaOMongo" source ="Medicao.java" package ="medicao" value ="1"/>
+         <Value name="toString" source ="Medicao.java" package ="medicao" value ="1"/>
+         <Value name="Sistema" source ="Sistema.java" package ="medicao" value ="1"/>
+         <Value name="getLimiteInferiorLuz" source ="Sistema.java" package ="medicao" value ="1"/>
+         <Value name="getLimiteInferiorTemperatura" source ="Sistema.java" package ="medicao" value ="1"/>
+         <Value name="getLimiteSuperiorLuz" source ="Sistema.java" package ="medicao" value ="1"/>
+         <Value name="getLimiteSuperiorTemperatura" source ="Sistema.java" package ="medicao" value ="1"/>
+         <Value name="getMargemSegurancaLuz" source ="Sistema.java" package ="medicao" value ="1"/>
+         <Value name="getMargemSegurancaTemperatura" source ="Sistema.java" package ="medicao" value ="1"/>
+         <Value name="getPercentagemVariacaoLuz" source ="Sistema.java" package ="medicao" value ="1"/>
+         <Value name="getPercentagemVariacaoTemperatura" source ="Sistema.java" package ="medicao" value ="1"/>
+         <Value name="getTempoEntreAlertasConsecutivos" source ="Sistema.java" package ="medicao" value ="1"/>
+         <Value name="test" source ="SensorsConnectionTest.java" package ="unitTests" value ="1"/>
+         <Value name="test" source ="SistemaTest.java" package ="unitTests" value ="1"/>
+         <Value name="main" source ="Main.java" package ="(default package)" value ="1"/>
+      </Values>
+   </Metric>
+   <Metric id = "CA" description ="Afferent Coupling">
+      <Values per = "packageFragment" avg = "3,4" stddev = "3,382" max = "9">
+         <Value name="medicao" package ="medicao" value ="9"/>
+         <Value name="connections" package ="connections" value ="5"/>
+         <Value name="export" package ="export" value ="3"/>
+         <Value name="(default package)" package ="(default package)" value ="0"/>
+         <Value name="unitTests" package ="unitTests" value ="0"/>
+      </Values>
+   </Metric>
+   <Metric id = "CE" description ="Efferent Coupling">
+      <Values per = "packageFragment" avg = "2,4" stddev = "1,497" max = "5">
+         <Value name="unitTests" package ="unitTests" value ="5"/>
+         <Value name="connections" package ="connections" value ="3"/>
+         <Value name="medicao" package ="medicao" value ="2"/>
+         <Value name="(default package)" package ="(default package)" value ="1"/>
+         <Value name="export" package ="export" value ="1"/>
+      </Values>
+   </Metric>
+   <Metric id = "RMI" description ="Instability">
+      <Values per = "packageFragment" avg = "0,561" stddev = "0,363" max = "1">
+         <Value name="(default package)" package ="(default package)" value ="1"/>
+         <Value name="unitTests" package ="unitTests" value ="1"/>
+         <Value name="connections" package ="connections" value ="0,375"/>
+         <Value name="export" package ="export" value ="0,25"/>
+         <Value name="medicao" package ="medicao" value ="0,182"/>
+      </Values>
+   </Metric>
+   <Metric id = "RMA" description ="Abstractness">
+      <Values per = "packageFragment" avg = "0" stddev = "0" max = "0">
+         <Value name="(default package)" package ="(default package)" value ="0"/>
+         <Value name="connections" package ="connections" value ="0"/>
+         <Value name="export" package ="export" value ="0"/>
+         <Value name="medicao" package ="medicao" value ="0"/>
+         <Value name="unitTests" package ="unitTests" value ="0"/>
+      </Values>
+   </Metric>
+   <Metric id = "RMD" description ="Normalized Distance">
+      <Values per = "packageFragment" avg = "0,439" stddev = "0,363" max = "0,818">
+         <Value name="medicao" package ="medicao" value ="0,818"/>
+         <Value name="export" package ="export" value ="0,75"/>
+         <Value name="connections" package ="connections" value ="0,625"/>
+         <Value name="(default package)" package ="(default package)" value ="0"/>
+         <Value name="unitTests" package ="unitTests" value ="0"/>
+      </Values>
+   </Metric>
+   <Metric id = "DIT" description ="Depth of Inheritance Tree">
+      <Values per = "type" avg = "1,176" stddev = "0,381" max = "2">
+         <Value name="DatabaseConnection.TableNames" source ="DatabaseConnection.java" package ="connections" value ="2"/>
+         <Value name="ExportThread" source ="ExportThread.java" package ="export" value ="2"/>
+         <Value name="Measurement.MeasurementType" source ="Measurement.java" package ="export" value ="2"/>
+         <Value name="DatabaseConnection" source ="DatabaseConnection.java" package ="connections" value ="1"/>
+         <Value name="MongoConnection" source ="MongoConnection.java" package ="connections" value ="1"/>
+         <Value name="SensorsConnection" source ="SensorsConnection.java" package ="connections" value ="1"/>
+         <Value name="AndroidAlert" source ="AndroidAlert.java" package ="export" value ="1"/>
+         <Value name="Measurement" source ="Measurement.java" package ="export" value ="1"/>
+         <Value name="GestorDeMedicoes" source ="GestorDeMedicoes.java" package ="medicao" value ="1"/>
+         <Value name="Medicao" source ="Medicao.java" package ="medicao" value ="1"/>
+         <Value name="Sistema" source ="Sistema.java" package ="medicao" value ="1"/>
+         <Value name="DatabaseConnectionTest" source ="DatabaseConnectionTest.java" package ="unitTests" value ="1"/>
+         <Value name="ExportTest" source ="ExportTest.java" package ="unitTests" value ="1"/>
+         <Value name="GestorMedicoesTest" source ="GestorMedicoesTest.java" package ="unitTests" value ="1"/>
+         <Value name="SensorsConnectionTest" source ="SensorsConnectionTest.java" package ="unitTests" value ="1"/>
+         <Value name="SistemaTest" source ="SistemaTest.java" package ="unitTests" value ="1"/>
+         <Value name="Main" source ="Main.java" package ="(default package)" value ="1"/>
+      </Values>
+   </Metric>
+   <Metric id = "WMC" description ="Weighted methods per Class" max ="50">
+      <Values per = "type" total = "179" avg = "10,529" stddev = "10,404" max = "29">
+         <Value name="ExportThread" source ="ExportThread.java" package ="export" value ="29"/>
+         <Value name="GestorDeMedicoes" source ="GestorDeMedicoes.java" package ="medicao" value ="28"/>
+         <Value name="Medicao" source ="Medicao.java" package ="medicao" value ="27"/>
+         <Value name="DatabaseConnection" source ="DatabaseConnection.java" package ="connections" value ="23"/>
+         <Value name="DatabaseConnectionTest" source ="DatabaseConnectionTest.java" package ="unitTests" value ="17"/>
+         <Value name="MongoConnection" source ="MongoConnection.java" package ="connections" value ="16"/>
+         <Value name="SensorsConnection" source ="SensorsConnection.java" package ="connections" value ="12"/>
+         <Value name="Sistema" source ="Sistema.java" package ="medicao" value ="10"/>
+         <Value name="Measurement" source ="Measurement.java" package ="export" value ="5"/>
+         <Value name="ExportTest" source ="ExportTest.java" package ="unitTests" value ="4"/>
+         <Value name="AndroidAlert" source ="AndroidAlert.java" package ="export" value ="2"/>
+         <Value name="GestorMedicoesTest" source ="GestorMedicoesTest.java" package ="unitTests" value ="2"/>
+         <Value name="DatabaseConnection.TableNames" source ="DatabaseConnection.java" package ="connections" value ="1"/>
+         <Value name="SensorsConnectionTest" source ="SensorsConnectionTest.java" package ="unitTests" value ="1"/>
+         <Value name="SistemaTest" source ="SistemaTest.java" package ="unitTests" value ="1"/>
+         <Value name="Main" source ="Main.java" package ="(default package)" value ="1"/>
+         <Value name="Measurement.MeasurementType" source ="Measurement.java" package ="export" value ="0"/>
+      </Values>
+   </Metric>
+   <Metric id = "NSC" description ="Number of Children">
+      <Values per = "type" total = "0" avg = "0" stddev = "0" max = "0">
+         <Value name="DatabaseConnection" source ="DatabaseConnection.java" package ="connections" value ="0"/>
+         <Value name="DatabaseConnection.TableNames" source ="DatabaseConnection.java" package ="connections" value ="0"/>
+         <Value name="MongoConnection" source ="MongoConnection.java" package ="connections" value ="0"/>
+         <Value name="SensorsConnection" source ="SensorsConnection.java" package ="connections" value ="0"/>
+         <Value name="AndroidAlert" source ="AndroidAlert.java" package ="export" value ="0"/>
+         <Value name="ExportThread" source ="ExportThread.java" package ="export" value ="0"/>
+         <Value name="Measurement" source ="Measurement.java" package ="export" value ="0"/>
+         <Value name="Measurement.MeasurementType" source ="Measurement.java" package ="export" value ="0"/>
+         <Value name="GestorDeMedicoes" source ="GestorDeMedicoes.java" package ="medicao" value ="0"/>
+         <Value name="Medicao" source ="Medicao.java" package ="medicao" value ="0"/>
+         <Value name="Sistema" source ="Sistema.java" package ="medicao" value ="0"/>
+         <Value name="DatabaseConnectionTest" source ="DatabaseConnectionTest.java" package ="unitTests" value ="0"/>
+         <Value name="ExportTest" source ="ExportTest.java" package ="unitTests" value ="0"/>
+         <Value name="GestorMedicoesTest" source ="GestorMedicoesTest.java" package ="unitTests" value ="0"/>
+         <Value name="SensorsConnectionTest" source ="SensorsConnectionTest.java" package ="unitTests" value ="0"/>
+         <Value name="SistemaTest" source ="SistemaTest.java" package ="unitTests" value ="0"/>
+         <Value name="Main" source ="Main.java" package ="(default package)" value ="0"/>
+      </Values>
+   </Metric>
+   <Metric id = "NORM" description ="Number of Overridden Methods">
+      <Values per = "type" total = "4" avg = "0,235" stddev = "0,424" max = "1">
+         <Value name="AndroidAlert" source ="AndroidAlert.java" package ="export" value ="1"/>
+         <Value name="ExportThread" source ="ExportThread.java" package ="export" value ="1"/>
+         <Value name="Measurement" source ="Measurement.java" package ="export" value ="1"/>
+         <Value name="Medicao" source ="Medicao.java" package ="medicao" value ="1"/>
+         <Value name="DatabaseConnection" source ="DatabaseConnection.java" package ="connections" value ="0"/>
+         <Value name="DatabaseConnection.TableNames" source ="DatabaseConnection.java" package ="connections" value ="0"/>
+         <Value name="MongoConnection" source ="MongoConnection.java" package ="connections" value ="0"/>
+         <Value name="SensorsConnection" source ="SensorsConnection.java" package ="connections" value ="0"/>
+         <Value name="Measurement.MeasurementType" source ="Measurement.java" package ="export" value ="0"/>
+         <Value name="GestorDeMedicoes" source ="GestorDeMedicoes.java" package ="medicao" value ="0"/>
+         <Value name="Sistema" source ="Sistema.java" package ="medicao" value ="0"/>
+         <Value name="DatabaseConnectionTest" source ="DatabaseConnectionTest.java" package ="unitTests" value ="0"/>
+         <Value name="ExportTest" source ="ExportTest.java" package ="unitTests" value ="0"/>
+         <Value name="GestorMedicoesTest" source ="GestorMedicoesTest.java" package ="unitTests" value ="0"/>
+         <Value name="SensorsConnectionTest" source ="SensorsConnectionTest.java" package ="unitTests" value ="0"/>
+         <Value name="SistemaTest" source ="SistemaTest.java" package ="unitTests" value ="0"/>
+         <Value name="Main" source ="Main.java" package ="(default package)" value ="0"/>
+      </Values>
+   </Metric>
+   <Metric id = "LCOM" description ="Lack of Cohesion of Methods">
+      <Values per = "type" avg = "0,299" stddev = "0,381" max = "0,889">
+         <Value name="Sistema" source ="Sistema.java" package ="medicao" value ="0,889"/>
+         <Value name="Medicao" source ="Medicao.java" package ="medicao" value ="0,874"/>
+         <Value name="SensorsConnection" source ="SensorsConnection.java" package ="connections" value ="0,8"/>
+         <Value name="ExportThread" source ="ExportThread.java" package ="export" value ="0,778"/>
+         <Value name="Measurement" source ="Measurement.java" package ="export" value ="0,75"/>
+         <Value name="GestorDeMedicoes" source ="GestorDeMedicoes.java" package ="medicao" value ="0,75"/>
+         <Value name="AndroidAlert" source ="AndroidAlert.java" package ="export" value ="0,25"/>
+         <Value name="DatabaseConnection" source ="DatabaseConnection.java" package ="connections" value ="0"/>
+         <Value name="DatabaseConnection.TableNames" source ="DatabaseConnection.java" package ="connections" value ="0"/>
+         <Value name="MongoConnection" source ="MongoConnection.java" package ="connections" value ="0"/>
+         <Value name="Measurement.MeasurementType" source ="Measurement.java" package ="export" value ="0"/>
+         <Value name="DatabaseConnectionTest" source ="DatabaseConnectionTest.java" package ="unitTests" value ="0"/>
+         <Value name="ExportTest" source ="ExportTest.java" package ="unitTests" value ="0"/>
+         <Value name="GestorMedicoesTest" source ="GestorMedicoesTest.java" package ="unitTests" value ="0"/>
+         <Value name="SensorsConnectionTest" source ="SensorsConnectionTest.java" package ="unitTests" value ="0"/>
+         <Value name="SistemaTest" source ="SistemaTest.java" package ="unitTests" value ="0"/>
+         <Value name="Main" source ="Main.java" package ="(default package)" value ="0"/>
+      </Values>
+   </Metric>
+   <Metric id = "NOF" description ="Number of Attributes">
+      <Values per = "type" total = "57" avg = "3,353" stddev = "3,677" max = "10">
+         <Value name="Medicao" source ="Medicao.java" package ="medicao" value ="10"/>
+         <Value name="ExportThread" source ="ExportThread.java" package ="export" value ="9"/>
+         <Value name="Sistema" source ="Sistema.java" package ="medicao" value ="9"/>
+         <Value name="AndroidAlert" source ="AndroidAlert.java" package ="export" value ="8"/>
+         <Value name="DatabaseConnection.TableNames" source ="DatabaseConnection.java" package ="connections" value ="5"/>
+         <Value name="SensorsConnection" source ="SensorsConnection.java" package ="connections" value ="5"/>
+         <Value name="Measurement" source ="Measurement.java" package ="export" value ="5"/>
+         <Value name="GestorDeMedicoes" source ="GestorDeMedicoes.java" package ="medicao" value ="4"/>
+         <Value name="Measurement.MeasurementType" source ="Measurement.java" package ="export" value ="2"/>
+         <Value name="DatabaseConnection" source ="DatabaseConnection.java" package ="connections" value ="0"/>
+         <Value name="MongoConnection" source ="MongoConnection.java" package ="connections" value ="0"/>
+         <Value name="DatabaseConnectionTest" source ="DatabaseConnectionTest.java" package ="unitTests" value ="0"/>
+         <Value name="ExportTest" source ="ExportTest.java" package ="unitTests" value ="0"/>
+         <Value name="GestorMedicoesTest" source ="GestorMedicoesTest.java" package ="unitTests" value ="0"/>
+         <Value name="SensorsConnectionTest" source ="SensorsConnectionTest.java" package ="unitTests" value ="0"/>
+         <Value name="SistemaTest" source ="SistemaTest.java" package ="unitTests" value ="0"/>
+         <Value name="Main" source ="Main.java" package ="(default package)" value ="0"/>
+      </Values>
+   </Metric>
+   <Metric id = "NSF" description ="Number of Static Attributes">
+      <Values per = "type" total = "4" avg = "0,235" stddev = "0,73" max = "3">
+         <Value name="DatabaseConnection" source ="DatabaseConnection.java" package ="connections" value ="3"/>
+         <Value name="MongoConnection" source ="MongoConnection.java" package ="connections" value ="1"/>
+         <Value name="DatabaseConnection.TableNames" source ="DatabaseConnection.java" package ="connections" value ="0"/>
+         <Value name="SensorsConnection" source ="SensorsConnection.java" package ="connections" value ="0"/>
+         <Value name="AndroidAlert" source ="AndroidAlert.java" package ="export" value ="0"/>
+         <Value name="ExportThread" source ="ExportThread.java" package ="export" value ="0"/>
+         <Value name="Measurement" source ="Measurement.java" package ="export" value ="0"/>
+         <Value name="Measurement.MeasurementType" source ="Measurement.java" package ="export" value ="0"/>
+         <Value name="GestorDeMedicoes" source ="GestorDeMedicoes.java" package ="medicao" value ="0"/>
+         <Value name="Medicao" source ="Medicao.java" package ="medicao" value ="0"/>
+         <Value name="Sistema" source ="Sistema.java" package ="medicao" value ="0"/>
+         <Value name="DatabaseConnectionTest" source ="DatabaseConnectionTest.java" package ="unitTests" value ="0"/>
+         <Value name="ExportTest" source ="ExportTest.java" package ="unitTests" value ="0"/>
+         <Value name="GestorMedicoesTest" source ="GestorMedicoesTest.java" package ="unitTests" value ="0"/>
+         <Value name="SensorsConnectionTest" source ="SensorsConnectionTest.java" package ="unitTests" value ="0"/>
+         <Value name="SistemaTest" source ="SistemaTest.java" package ="unitTests" value ="0"/>
+         <Value name="Main" source ="Main.java" package ="(default package)" value ="0"/>
+      </Values>
+   </Metric>
+   <Metric id = "NOM" description ="Number of Methods" max ="15">
+      <Values per = "type" total = "85" avg = "5" stddev = "5,466" max = "21" maxinrange="false">
+         <Value name="Medicao" source ="Medicao.java" package ="medicao" value ="21" inrange="false"/>
+         <Value name="ExportThread" source ="ExportThread.java" package ="export" value ="12"/>
+         <Value name="Sistema" source ="Sistema.java" package ="medicao" value ="10"/>
+         <Value name="GestorDeMedicoes" source ="GestorDeMedicoes.java" package ="medicao" value ="9"/>
+         <Value name="DatabaseConnection" source ="DatabaseConnection.java" package ="connections" value ="8"/>
+         <Value name="SensorsConnection" source ="SensorsConnection.java" package ="connections" value ="7"/>
+         <Value name="Measurement" source ="Measurement.java" package ="export" value ="5"/>
+         <Value name="MongoConnection" source ="MongoConnection.java" package ="connections" value ="4"/>
+         <Value name="AndroidAlert" source ="AndroidAlert.java" package ="export" value ="2"/>
+         <Value name="ExportTest" source ="ExportTest.java" package ="unitTests" value ="2"/>
+         <Value name="DatabaseConnection.TableNames" source ="DatabaseConnection.java" package ="connections" value ="1"/>
+         <Value name="DatabaseConnectionTest" source ="DatabaseConnectionTest.java" package ="unitTests" value ="1"/>
+         <Value name="GestorMedicoesTest" source ="GestorMedicoesTest.java" package ="unitTests" value ="1"/>
+         <Value name="SensorsConnectionTest" source ="SensorsConnectionTest.java" package ="unitTests" value ="1"/>
+         <Value name="SistemaTest" source ="SistemaTest.java" package ="unitTests" value ="1"/>
+         <Value name="Measurement.MeasurementType" source ="Measurement.java" package ="export" value ="0"/>
+         <Value name="Main" source ="Main.java" package ="(default package)" value ="0"/>
+      </Values>
+   </Metric>
+   <Metric id = "NSM" description ="Number of Static Methods" max ="15">
+      <Values per = "type" total = "4" avg = "0,235" stddev = "0,546" max = "2">
+         <Value name="DatabaseConnection" source ="DatabaseConnection.java" package ="connections" value ="2"/>
+         <Value name="MongoConnection" source ="MongoConnection.java" package ="connections" value ="1"/>
+         <Value name="Main" source ="Main.java" package ="(default package)" value ="1"/>
+         <Value name="DatabaseConnection.TableNames" source ="DatabaseConnection.java" package ="connections" value ="0"/>
+         <Value name="SensorsConnection" source ="SensorsConnection.java" package ="connections" value ="0"/>
+         <Value name="AndroidAlert" source ="AndroidAlert.java" package ="export" value ="0"/>
+         <Value name="ExportThread" source ="ExportThread.java" package ="export" value ="0"/>
+         <Value name="Measurement" source ="Measurement.java" package ="export" value ="0"/>
+         <Value name="Measurement.MeasurementType" source ="Measurement.java" package ="export" value ="0"/>
+         <Value name="GestorDeMedicoes" source ="GestorDeMedicoes.java" package ="medicao" value ="0"/>
+         <Value name="Medicao" source ="Medicao.java" package ="medicao" value ="0"/>
+         <Value name="Sistema" source ="Sistema.java" package ="medicao" value ="0"/>
+         <Value name="DatabaseConnectionTest" source ="DatabaseConnectionTest.java" package ="unitTests" value ="0"/>
+         <Value name="ExportTest" source ="ExportTest.java" package ="unitTests" value ="0"/>
+         <Value name="GestorMedicoesTest" source ="GestorMedicoesTest.java" package ="unitTests" value ="0"/>
+         <Value name="SensorsConnectionTest" source ="SensorsConnectionTest.java" package ="unitTests" value ="0"/>
+         <Value name="SistemaTest" source ="SistemaTest.java" package ="unitTests" value ="0"/>
+      </Values>
+   </Metric>
+   <Metric id = "SIX" description ="Specialization Index">
+      <Values per = "type" avg = "0,054" stddev = "0,126" max = "0,5">
+         <Value name="AndroidAlert" source ="AndroidAlert.java" package ="export" value ="0,5"/>
+         <Value name="Measurement" source ="Measurement.java" package ="export" value ="0,2"/>
+         <Value name="ExportThread" source ="ExportThread.java" package ="export" value ="0,167"/>
+         <Value name="Medicao" source ="Medicao.java" package ="medicao" value ="0,048"/>
+         <Value name="DatabaseConnection" source ="DatabaseConnection.java" package ="connections" value ="0"/>
+         <Value name="DatabaseConnection.TableNames" source ="DatabaseConnection.java" package ="connections" value ="0"/>
+         <Value name="MongoConnection" source ="MongoConnection.java" package ="connections" value ="0"/>
+         <Value name="SensorsConnection" source ="SensorsConnection.java" package ="connections" value ="0"/>
+         <Value name="Measurement.MeasurementType" source ="Measurement.java" package ="export" value ="0"/>
+         <Value name="GestorDeMedicoes" source ="GestorDeMedicoes.java" package ="medicao" value ="0"/>
+         <Value name="Sistema" source ="Sistema.java" package ="medicao" value ="0"/>
+         <Value name="DatabaseConnectionTest" source ="DatabaseConnectionTest.java" package ="unitTests" value ="0"/>
+         <Value name="ExportTest" source ="ExportTest.java" package ="unitTests" value ="0"/>
+         <Value name="GestorMedicoesTest" source ="GestorMedicoesTest.java" package ="unitTests" value ="0"/>
+         <Value name="SensorsConnectionTest" source ="SensorsConnectionTest.java" package ="unitTests" value ="0"/>
+         <Value name="SistemaTest" source ="SistemaTest.java" package ="unitTests" value ="0"/>
+         <Value name="Main" source ="Main.java" package ="(default package)" value ="0"/>
+      </Values>
+   </Metric>
+   <Metric id = "NOC" description ="Number of Classes">
+      <Values per = "packageFragment" total = "17" avg = "3,4" stddev = "1,356" max = "5">
+         <Value name="unitTests" package ="unitTests" value ="5"/>
+         <Value name="connections" package ="connections" value ="4"/>
+         <Value name="export" package ="export" value ="4"/>
+         <Value name="medicao" package ="medicao" value ="3"/>
+         <Value name="(default package)" package ="(default package)" value ="1"/>
+      </Values>
+   </Metric>
+   <Metric id = "NOI" description ="Number of Interfaces">
+      <Values per = "packageFragment" total = "0" avg = "0" stddev = "0" max = "0">
+         <Value name="(default package)" package ="(default package)" value ="0"/>
+         <Value name="connections" package ="connections" value ="0"/>
+         <Value name="export" package ="export" value ="0"/>
+         <Value name="medicao" package ="medicao" value ="0"/>
+         <Value name="unitTests" package ="unitTests" value ="0"/>
+      </Values>
+   </Metric>
+   <Metric id = "NOP" description ="Number of Packages">
+      <Value value="5"/>
+   </Metric>
+   <Metric id = "TLOC" description ="Total Lines of Code" max ="50">
+      <Value value="1008"/>
+   </Metric>
+   <Metric id = "MLOC" description ="Method Lines of Code" max ="50">
+      <Values per = "method" total = "638" avg = "7,169" stddev = "11,811" max = "95" maxinrange="false">
+         <Value name="test" source ="DatabaseConnectionTest.java" package ="unitTests" value ="95" inrange="false"/>
+         <Value name="test" source ="GestorMedicoesTest.java" package ="unitTests" value ="42"/>
+         <Value name="write" source ="MongoConnection.java" package ="connections" value ="28"/>
+         <Value name="checkAlerts" source ="ExportThread.java" package ="export" value ="22"/>
+         <Value name="adiciona" source ="GestorDeMedicoes.java" package ="medicao" value ="19"/>
+         <Value name="checkLuz" source ="GestorDeMedicoes.java" package ="medicao" value ="19"/>
+         <Value name="checkTemperatura" source ="GestorDeMedicoes.java" package ="medicao" value ="19"/>
+         <Value name="initializeSystem" source ="DatabaseConnection.java" package ="connections" value ="17"/>
+         <Value name="init" source ="SensorsConnection.java" package ="connections" value ="17"/>
+         <Value name="getTableNameFromType" source ="DatabaseConnection.java" package ="connections" value ="15"/>
+         <Value name="viewTable" source ="DatabaseConnection.java" package ="connections" value ="15"/>
+         <Value name="getLightMeasurement" source ="ExportThread.java" package ="export" value ="15"/>
+         <Value name="getTemperatureMeasurement" source ="ExportThread.java" package ="export" value ="15"/>
+         <Value name="parseMessage" source ="Medicao.java" package ="medicao" value ="15"/>
+         <Value name="connect" source ="DatabaseConnection.java" package ="connections" value ="14"/>
+         <Value name="run" source ="ExportThread.java" package ="export" value ="13"/>
+         <Value name="interpretJSON" source ="ExportThread.java" package ="export" value ="12"/>
+         <Value name="readFromMongo" source ="ExportThread.java" package ="export" value ="12"/>
+         <Value name="getLightMeasurementTest" source ="ExportTest.java" package ="unitTests" value ="12"/>
+         <Value name="getTemperatureMeasurementTest" source ="ExportTest.java" package ="unitTests" value ="12"/>
+         <Value name="toString" source ="AndroidAlert.java" package ="export" value ="11"/>
+         <Value name="read" source ="MongoConnection.java" package ="connections" value ="10"/>
+         <Value name="Sistema" source ="Sistema.java" package ="medicao" value ="10"/>
+         <Value name="test" source ="SistemaTest.java" package ="unitTests" value ="10"/>
+         <Value name="Medicao" source ="Medicao.java" package ="medicao" value ="9"/>
+         <Value name="executeStatement" source ="DatabaseConnection.java" package ="connections" value ="8"/>
+         <Value name="processaMedicao" source ="GestorDeMedicoes.java" package ="medicao" value ="8"/>
+         <Value name="main" source ="Main.java" package ="(default package)" value ="7"/>
+         <Value name="insertAlert" source ="DatabaseConnection.java" package ="connections" value ="6"/>
+         <Value name="insertMeasurement" source ="DatabaseConnection.java" package ="connections" value ="6"/>
+         <Value name="messageArrived" source ="SensorsConnection.java" package ="connections" value ="6"/>
+         <Value name="AndroidAlert" source ="AndroidAlert.java" package ="export" value ="6"/>
+         <Value name="checkAlerts" source ="GestorDeMedicoes.java" package ="medicao" value ="6"/>
+         <Value name="checkErrors" source ="GestorDeMedicoes.java" package ="medicao" value ="6"/>
+         <Value name="test" source ="SensorsConnectionTest.java" package ="unitTests" value ="6"/>
+         <Value name="Measurement" source ="Measurement.java" package ="export" value ="5"/>
+         <Value name="isAlertaLuminosidade" source ="Medicao.java" package ="medicao" value ="5"/>
+         <Value name="isAlertaTemperatura" source ="Medicao.java" package ="medicao" value ="5"/>
+         <Value name="isErroLuminosidade" source ="Medicao.java" package ="medicao" value ="5"/>
+         <Value name="isErroTemperatura" source ="Medicao.java" package ="medicao" value ="5"/>
+         <Value name="getInstance" source ="DatabaseConnection.java" package ="connections" value ="4"/>
+         <Value name="deleteAll" source ="MongoConnection.java" package ="connections" value ="4"/>
+         <Value name="getInstance" source ="MongoConnection.java" package ="connections" value ="4"/>
+         <Value name="toString" source ="Measurement.java" package ="export" value ="4"/>
+         <Value name="start" source ="ExportThread.java" package ="export" value ="3"/>
+         <Value name="GestorDeMedicoes" source ="GestorDeMedicoes.java" package ="medicao" value ="3"/>
+         <Value name="parseDate" source ="Medicao.java" package ="medicao" value ="3"/>
+         <Value name="toString" source ="Medicao.java" package ="medicao" value ="3"/>
+         <Value name="SensorsConnection" source ="SensorsConnection.java" package ="connections" value ="2"/>
+         <Value name="connectionLost" source ="SensorsConnection.java" package ="connections" value ="2"/>
+         <Value name="calculateDeltas" source ="ExportThread.java" package ="export" value ="2"/>
+         <Value name="DatabaseConnection.TableNames#TableNames" source ="DatabaseConnection.java" package ="connections" value ="1"/>
+         <Value name="getConnection" source ="DatabaseConnection.java" package ="connections" value ="1"/>
+         <Value name="getGestor" source ="DatabaseConnection.java" package ="connections" value ="1"/>
+         <Value name="getClient" source ="SensorsConnection.java" package ="connections" value ="1"/>
+         <Value name="getGes" source ="SensorsConnection.java" package ="connections" value ="1"/>
+         <Value name="getLightMeasurement" source ="ExportThread.java" package ="export" value ="1"/>
+         <Value name="getMeasurements" source ="ExportThread.java" package ="export" value ="1"/>
+         <Value name="getTemperatureMeasurement" source ="ExportThread.java" package ="export" value ="1"/>
+         <Value name="setSistema" source ="ExportThread.java" package ="export" value ="1"/>
+         <Value name="getReason" source ="Measurement.java" package ="export" value ="1"/>
+         <Value name="getType" source ="Measurement.java" package ="export" value ="1"/>
+         <Value name="isError" source ="Measurement.java" package ="export" value ="1"/>
+         <Value name="getBq" source ="GestorDeMedicoes.java" package ="medicao" value ="1"/>
+         <Value name="getSistema" source ="GestorDeMedicoes.java" package ="medicao" value ="1"/>
+         <Value name="getCausaLuminosidade" source ="Medicao.java" package ="medicao" value ="1"/>
+         <Value name="getCausaTemperatura" source ="Medicao.java" package ="medicao" value ="1"/>
+         <Value name="getLuminosidade" source ="Medicao.java" package ="medicao" value ="1"/>
+         <Value name="getTemperatura" source ="Medicao.java" package ="medicao" value ="1"/>
+         <Value name="getTimestamp" source ="Medicao.java" package ="medicao" value ="1"/>
+         <Value name="isExportadoParaOMongo" source ="Medicao.java" package ="medicao" value ="1"/>
+         <Value name="setAlertaLuminosidade" source ="Medicao.java" package ="medicao" value ="1"/>
+         <Value name="setAlertaTemperatura" source ="Medicao.java" package ="medicao" value ="1"/>
+         <Value name="setCausaLuminosidade" source ="Medicao.java" package ="medicao" value ="1"/>
+         <Value name="setCausaTemperatura" source ="Medicao.java" package ="medicao" value ="1"/>
+         <Value name="setErroLuminosidade" source ="Medicao.java" package ="medicao" value ="1"/>
+         <Value name="setErroTemperatura" source ="Medicao.java" package ="medicao" value ="1"/>
+         <Value name="setExportadoParaOMongo" source ="Medicao.java" package ="medicao" value ="1"/>
+         <Value name="getLimiteInferiorLuz" source ="Sistema.java" package ="medicao" value ="1"/>
+         <Value name="getLimiteInferiorTemperatura" source ="Sistema.java" package ="medicao" value ="1"/>
+         <Value name="getLimiteSuperiorLuz" source ="Sistema.java" package ="medicao" value ="1"/>
+         <Value name="getLimiteSuperiorTemperatura" source ="Sistema.java" package ="medicao" value ="1"/>
+         <Value name="getMargemSegurancaLuz" source ="Sistema.java" package ="medicao" value ="1"/>
+         <Value name="getMargemSegurancaTemperatura" source ="Sistema.java" package ="medicao" value ="1"/>
+         <Value name="getPercentagemVariacaoLuz" source ="Sistema.java" package ="medicao" value ="1"/>
+         <Value name="getPercentagemVariacaoTemperatura" source ="Sistema.java" package ="medicao" value ="1"/>
+         <Value name="getTempoEntreAlertasConsecutivos" source ="Sistema.java" package ="medicao" value ="1"/>
+         <Value name="MongoConnection" source ="MongoConnection.java" package ="connections" value ="0"/>
+         <Value name="deliveryComplete" source ="SensorsConnection.java" package ="connections" value ="0"/>
+      </Values>
+   </Metric>
+   </Metrics>
