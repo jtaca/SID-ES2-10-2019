@@ -8,8 +8,8 @@ import org.json.JSONObject;
 
 public class Medicao {
 	private String timestamp;
-	private double temperatura;
-	private double luminosidade;
+	private Double temperatura;
+	private Double luminosidade;
 	private boolean alertaLuminosidade;
 	private boolean alertaTemperatura;
 	private boolean erroTemperatura;
@@ -84,16 +84,18 @@ public class Medicao {
 
 		if( aux.contains("cell")) {
 			String luz = obj.getString("cell");
-			this.luminosidade = Integer.parseInt(luz);
-		} else {
-			this.luminosidade = -999;
-		}
+			this.luminosidade =  Double.parseDouble(luz);
+		} 
+			//else {
+//			this.luminosidade = null;
+//		}
 		if( aux.contains("tmp")) {
 			String temperatura = obj.getString("tmp");
 			this.temperatura = Double.parseDouble(temperatura);
-		}else {
-			this.temperatura = -10000;
 		}
+//		else {
+//			this.temperatura = null;
+//		}
 
 		this.timestamp = parseDate();
 
@@ -137,14 +139,14 @@ public class Medicao {
 	/**
 	 * @return the temperature value.
 	 */
-	public double getTemperatura() {
+	public Double getTemperatura() {
 		return temperatura;
 	}
 
 	/**
 	 * @return the brightness value.
 	 */
-	public double getLuminosidade() {
+	public Double getLuminosidade() {
 		return luminosidade;
 	}
 

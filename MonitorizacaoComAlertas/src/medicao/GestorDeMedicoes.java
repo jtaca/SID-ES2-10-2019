@@ -104,7 +104,7 @@ public class GestorDeMedicoes {
 	 */
 
 	public void checkLuz(Medicao m) {
-		if(m.getLuminosidade()!=-999) {
+		if(m.getLuminosidade()!=null) {
 			double margemAlertaLuz = (sistema.getLimiteSuperiorLuz() - sistema.getLimiteInferiorLuz()) * sistema.getMargemSegurancaLuz();
 			
 			if (  sistema.getLimiteSuperiorLuz() <= m.getLuminosidade()){
@@ -135,7 +135,7 @@ public class GestorDeMedicoes {
 
 	public void checkTemperatura(Medicao m) {
 		double margemAlertaTemp = (sistema.getLimiteSuperiorTemperatura() - sistema.getLimiteInferiorTemperatura()) * sistema.getMargemSegurancaTemperatura();
-		if(m.getTemperatura()!=10000 ) {
+		if(m.getTemperatura()!=null) {
 			if (m.getTemperatura()>= sistema.getLimiteSuperiorTemperatura() ) {
 				m.setAlertaTemperatura(true);
 				m.setCausaTemperatura("O valor da medicao da temperatura  ultrapassou o limite superior estabelecido.");
@@ -171,12 +171,16 @@ public class GestorDeMedicoes {
 	private void checkErrors(Medicao m, Medicao m1, Medicao m2) {
 		double margemErroLuz = (sistema.getLimiteSuperiorLuz() - sistema.getLimiteInferiorLuz()) * sistema.getPercentagemVariacaoLuz();
 		double margemErroTemp = (sistema.getLimiteSuperiorTemperatura() - sistema.getLimiteInferiorTemperatura()) * sistema.getPercentagemVariacaoTemperatura();
-
-		if ( (Math.abs(m.getLuminosidade() - m1.getLuminosidade()) > margemErroLuz) && (Math.abs(m.getLuminosidade() - m2.getLuminosidade()) > margemErroLuz || m.getLuminosidade() < 0) )
-			m.setErroLuminosidade(true);
-
-		if ( (Math.abs(m.getTemperatura() - m1.getTemperatura()) > margemErroTemp) && (Math.abs(m.getTemperatura() - m2.getTemperatura()) > margemErroTemp) )
-			m.setAlertaTemperatura(true);	
+		if(m.getLuminosidade()!=null && m2.getCausaLuminosidade()!=null && m1.getCausaLuminosidade()!=null) {
+			if ( (Math.abs(m.getLuminosidade() - m1.getLuminosidade()) > margemErroLuz) && (Math.abs(m.getLuminosidade() - m2.getLuminosidade()) > margemErroLuz || m.getLuminosidade() < 0) ) {
+				m.setErroLuminosidade(true);
+			}
+		}
+		if(m.getCausaTemperatura()!= null && m1.getCausaTemperatura()!= null && m2.getCausaTemperatura()!= null) {
+			if ( (Math.abs(m.getTemperatura() - m1.getTemperatura()) > margemErroTemp) && (Math.abs(m.getTemperatura() - m2.getTemperatura()) > margemErroTemp) ) {
+				m.setAlertaTemperatura(true);	
+			}
+		}
 	}
 
 
