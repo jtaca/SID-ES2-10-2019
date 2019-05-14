@@ -27,9 +27,9 @@ public class ExportThread extends Thread {
 
     @Override
     public synchronized void start() {
-        super.start();
         this.sistema = DatabaseConnection.getInstance().initializeSystem();
         lastTimestamp = System.currentTimeMillis();
+        super.start();
     }
 
     @Override
