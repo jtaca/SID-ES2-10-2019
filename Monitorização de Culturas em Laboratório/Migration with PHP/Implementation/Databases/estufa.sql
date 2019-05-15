@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.4
+-- version 4.8.5
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 13-Maio-2019 às 00:48
--- Versão do servidor: 10.1.37-MariaDB
--- versão do PHP: 7.3.1
+-- Generation Time: 15-Maio-2019 às 03:00
+-- Versão do servidor: 10.1.38-MariaDB
+-- versão do PHP: 7.3.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -173,6 +173,7 @@ GRANT SELECT ON estufa.medicoes_luminosidade TO investigador;
 GRANT SELECT ON estufa.medicoes_temperatura TO investigador;
 GRANT SELECT ON estufa.alertas TO investigador;
 GRANT SELECT ON mysql.User TO investigador;
+GRANT SELECT ON estufa.variaveis_medidas TO investigador;
 
 GRANT INSERT ON estufa.medicoes_temperatura TO sensorTemperatura;
 GRANT INSERT ON estufa.medicoes_luminosidade TO sensorLuminosidade;
@@ -194,9 +195,8 @@ END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `criarPrivilegiosExecute` ()  BEGIN
 
-GRANT EXECUTE ON PROCEDURE estufa.selectMedicoes TO investigador;
-GRANT EXECUTE ON PROCEDURE estufa.updateCultura TO investigador;
 GRANT EXECUTE ON PROCEDURE estufa.apagarCultura TO administrador,investigador;
+GRANT EXECUTE ON PROCEDURE estufa.selectUserCulturas TO investigador;
 GRANT EXECUTE ON PROCEDURE estufa.apagarVariaveis TO administrador,investigador;
 GRANT EXECUTE ON PROCEDURE estufa.apagarMedicao TO administrador,investigador;
 GRANT EXECUTE ON PROCEDURE estufa.addUser TO administrador;
@@ -257,10 +257,23 @@ BEGIN
     PREPARE statement FROM @sql;
     EXECUTE statement;
 
-	SET @sql := CONCAT('SELECT medicoes.NumeroMedicao, medicoes.DataHoraMedicao, medicoes.ValorMedicao, medicoes.IdVariaveisMedidas FROM estufa.medicoes, estufa.variaveis_medidas WHERE ', var_condicao);
+	SET @sql := CONCAT('SELECT * FROM estufa.medicoes WHERE ', var_condicao);
     PREPARE statement FROM @sql;
     EXECUTE statement; 
 
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `selectUserCulturas` ()  NO SQL
+BEGIN
+
+	SET @sql1 := CONCAT('CREATE TEMPORARY TABLE test AS SELECT email FROM mysql.user WHERE CONCAT(mysql.user.USER, "@%")=CURRENT_USER');
+    PREPARE statement FROM @sql1;
+    EXECUTE statement;
+        
+    SET @sql2 := CONCAT('SELECT * FROM cultura WHERE cultura.EmailInvestigador IN (SELECT * FROM test)');
+    PREPARE statement FROM @sql2;
+    EXECUTE statement;
+         
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `updateCultura` (IN `culturaID` INT(11), IN `Nome` VARCHAR(100), IN `Descricao` TEXT)  NO SQL
@@ -358,7 +371,9 @@ INSERT INTO `alertas` (`idAlerta`, `nomeVariavel`, `nomeCultura`, `emailInvestig
 (28, 'nomeDaVariavel', 'Tomate', 'root@localhost', '2019-05-04 17:45:21', '5.00', '9.50', '5.42', 'O valor da medição está próximo do limite inferior.'),
 (29, 'Chumbo', 'Cenouras', 'root@localhost', '2019-05-06 12:14:46', '2.85', '8.25', '1.52', 'O valor da medição ultrapassou o limite inferior.'),
 (30, 'Chumbo', 'Cenouras', 'root@localhost', '2019-05-06 12:16:44', '2.85', '8.25', '13.52', 'O valor da medição ultrapassou o limite superior.'),
-(31, 'Mercurio', 'Ossos', 'root@localhost', '2019-05-12 23:22:56', '1.00', '10.00', '4.00', 'O valor da medição está próximo do limite inferior.');
+(31, 'Chumbo', 'Alfaces', 'root@localhost', '2019-05-12 22:55:48', '3.00', '4.00', '3.00', 'O valor da medição atingiu o limite inferior.'),
+(32, 'Chumbo', 'Alfaces', 'root@localhost', '2019-05-12 22:56:01', '3.00', '4.00', '2.00', 'O valor da medição ultrapassou o limite inferior.'),
+(33, 'Chumbo', 'Alfaces', 'root@localhost', '2019-05-12 22:56:01', '3.00', '4.00', '8.00', 'O valor da medição ultrapassou o limite superior.');
 
 -- --------------------------------------------------------
 
@@ -380,12 +395,8 @@ CREATE TABLE `cultura` (
 INSERT INTO `cultura` (`IDCultura`, `NomeCultura`, `DescricaoCultura`, `EmailInvestigador`) VALUES
 (2, 'Batatas', 'Cultura Hidropónica', 'lala@gmail.com'),
 (4, 'Cenouras', 'Cultura Hidropónica', 'hmbs@gmail.com'),
-(5, 'Pimentos', 'Cultura Hidropónica', 'afga'),
 (6, 'battas', 'sd', 'joaofneto97@gmail.com'),
-(8, 'Cerejas', 'Cultura hidroponica', 'hmbs@gmail.com'),
-(9, 'Ossos', 'Nao sei porque', 'inv@a.p'),
-(10, 'esta', 'aquela', 'inv@a.p'),
-(11, 'hum', 'hummmmmm', 'inv@a.p');
+(7, 'Alfaces', 'Cultura HIdropónica', 'testeinvestigador@gmail.com');
 
 --
 -- Acionadores `cultura`
@@ -423,8 +434,7 @@ INSERT INTO `investigador` (`Email`, `NomeInvestigador`, `CategoriaProfissional`
 ('a', 'a', 'a'),
 ('a.@b.c', 'Alberto', 'wer'),
 ('a@b.c', 'qwer', 'nao sei'),
-('a@e.i', 'you', 'koite'),
-('ab@ab.pt', 'ab', 'nao sei'),
+('aaa', 'aaa', 'investigador'),
 ('abc', 'El Chap', 'abc'),
 ('aDFSDFV', 'sfdafd', 'sadsd'),
 ('afga', 'asddsa', 'wcafdv'),
@@ -432,7 +442,6 @@ INSERT INTO `investigador` (`Email`, `NomeInvestigador`, `CategoriaProfissional`
 ('c', 'c', 'c'),
 ('eumail', 'eu', 'sadad'),
 ('hmbs@gmail.com', 'hmbs', 'eng'),
-('inv@a.p', 'inv', 'goia'),
 ('joaofneto97@gmail.com', 'joao', 'chefe'),
 ('jonas@gmail.com', 'jonas', 'programador'),
 ('jorge@gmail.com', 'Jorge', 'admin'),
@@ -687,57 +696,434 @@ INSERT INTO `logs` (`logId`, `username`, `nomeTabela`, `comandoUsado`, `linhaAnt
 (333, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 8  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-12 15:37:34', 0),
 (334, 'root@localhost', 'variaveis', 'UPDATE', 'IDVariavel: 13  NomeVariavel: nomeDaVariavel', 'IDVariavel: 13  NomeVariavel: Mercurio', '2019-05-12 16:33:14', 0),
 (335, 'root@localhost', 'investigador', 'INSERT', 'Não Aplicável', 'Email: testeAdministrador@gmail.com  NomeInvestigador: testeAdministrador  CategoriaProfissional: admin', '2019-05-12 16:56:25', 0),
-(336, 'root@localhost', 'investigador', 'INSERT', 'Não Aplicável', 'Email: a@e.i  NomeInvestigador: you  CategoriaProfissional: koite', '2019-05-12 17:08:40', 0),
-(337, 'root@localhost', 'investigador', 'INSERT', 'Não Aplicável', 'Email: inv@a.p  NomeInvestigador: inv  CategoriaProfissional: goia', '2019-05-12 17:09:53', 0),
-(338, 'root@localhost', 'cultura', 'INSERT', 'Não Aplicável', 'IdCultura: 9  NomeCultura: Ossos  DescricaoCultura: Nao sei porque  EmailInvestigador: inv@a.p', '2019-05-12 19:37:25', 0),
-(339, 'root@localhost', 'cultura', 'INSERT', 'Não Aplicável', 'IdCultura: 10  NomeCultura: esta  DescricaoCultura: aquela  EmailInvestigador: inv@a.p', '2019-05-12 19:53:48', 0),
-(340, 'root@localhost', 'cultura', 'INSERT', 'Não Aplicável', 'IdCultura: 11  NomeCultura: hum  DescricaoCultura: hummmmmm  EmailInvestigador: inv@a.p', '2019-05-12 20:05:47', 0),
-(341, 'root@localhost', 'investigador', 'INSERT', 'Não Aplicável', 'Email: ab@ab.pt  NomeInvestigador: ab  CategoriaProfissional: nao sei', '2019-05-12 20:53:33', 0),
-(342, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', '1=1', '2019-05-12 22:27:55', 0),
-(343, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', 'variaveis_medidas.IDCultura = 1 and medicoes.IdVariaveisMedidas = variaveis_medidas.IdVariaveisMedidas', '2019-05-12 22:29:37', 0),
-(344, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', '1=1', '2019-05-12 22:30:17', 0),
-(345, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', '1=1', '2019-05-12 22:32:08', 0),
-(346, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', 'variaveis_medidas.IDCultura = 1 and medicoes.IdVariaveisMedidas = variaveis_medidas.IdVariaveisMedidas', '2019-05-12 22:32:15', 0),
-(347, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', 'variaveis_medidas.IDCultura = 4 and medicoes.IdVariaveisMedidas = variaveis_medidas.IdVariaveisMedidas', '2019-05-12 22:32:41', 0),
-(348, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', 'variaveis_medidas.IDCultura = 4 and medicoes.IdVariaveisMedidas = variaveis_medidas.IdVariaveisMedidas', '2019-05-12 22:59:59', 0),
-(349, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', 'variaveis_medidas.IDCultura = 4 and medicoes.IdVariaveisMedidas = variaveis_medidas.IdVariaveisMedidas', '2019-05-12 22:59:59', 0),
-(350, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', 'variaveis_medidas.IDCultura = 4 and medicoes.IdVariaveisMedidas = variaveis_medidas.IdVariaveisMedidas', '2019-05-12 23:00:15', 0),
-(351, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', 'variaveis_medidas.IDCultura = 4 and medicoes.IdVariaveisMedidas = variaveis_medidas.IdVariaveisMedidas', '2019-05-12 23:00:15', 0),
-(352, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', 'variaveis_medidas.IDCultura = 4 and medicoes.IdVariaveisMedidas = variaveis_medidas.IdVariaveisMedidas', '2019-05-12 23:01:04', 0),
-(353, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', 'variaveis_medidas.IDCultura = 4 and medicoes.IdVariaveisMedidas = variaveis_medidas.IdVariaveisMedidas', '2019-05-12 23:01:04', 0),
-(354, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', 'variaveis_medidas.IDCultura = 4 and medicoes.IdVariaveisMedidas = variaveis_medidas.IdVariaveisMedidas', '2019-05-12 23:03:27', 0),
-(355, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', 'variaveis_medidas.IDCultura = 4 and medicoes.IdVariaveisMedidas = variaveis_medidas.IdVariaveisMedidas', '2019-05-12 23:03:27', 0),
-(356, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', 'variaveis_medidas.IDCultura = 4 and medicoes.IdVariaveisMedidas = variaveis_medidas.IdVariaveisMedidas', '2019-05-12 23:04:54', 0),
-(357, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', 'variaveis_medidas.IDCultura = 4 and medicoes.IdVariaveisMedidas = variaveis_medidas.IdVariaveisMedidas', '2019-05-12 23:04:54', 0),
-(358, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', 'variaveis_medidas.IDCultura = 2 and medicoes.IdVariaveisMedidas = variaveis_medidas.IdVariaveisMedidas', '2019-05-12 23:05:01', 0),
-(359, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', 'variaveis_medidas.IDCultura = 2 and medicoes.IdVariaveisMedidas = variaveis_medidas.IdVariaveisMedidas', '2019-05-12 23:05:01', 0),
-(360, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', 'variaveis_medidas.IDCultura = 5 and medicoes.IdVariaveisMedidas = variaveis_medidas.IdVariaveisMedidas', '2019-05-12 23:05:02', 0),
-(361, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', 'variaveis_medidas.IDCultura = 5 and medicoes.IdVariaveisMedidas = variaveis_medidas.IdVariaveisMedidas', '2019-05-12 23:05:02', 0),
-(362, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', 'variaveis_medidas.IDCultura = 4 and medicoes.IdVariaveisMedidas = variaveis_medidas.IdVariaveisMedidas', '2019-05-12 23:05:04', 0),
-(363, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', 'variaveis_medidas.IDCultura = 4 and medicoes.IdVariaveisMedidas = variaveis_medidas.IdVariaveisMedidas', '2019-05-12 23:05:04', 0),
-(364, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', 'variaveis_medidas.IDCultura = 9 and medicoes.IdVariaveisMedidas = variaveis_medidas.IdVariaveisMedidas', '2019-05-12 23:21:44', 0),
-(365, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', 'variaveis_medidas.IDCultura = 9 and medicoes.IdVariaveisMedidas = variaveis_medidas.IdVariaveisMedidas', '2019-05-12 23:21:44', 0),
-(366, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', 'variaveis_medidas.IDCultura = 10 and medicoes.IdVariaveisMedidas = variaveis_medidas.IdVariaveisMedidas', '2019-05-12 23:21:45', 0),
-(367, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', 'variaveis_medidas.IDCultura = 10 and medicoes.IdVariaveisMedidas = variaveis_medidas.IdVariaveisMedidas', '2019-05-12 23:21:45', 0),
-(368, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', 'variaveis_medidas.IDCultura = 11 and medicoes.IdVariaveisMedidas = variaveis_medidas.IdVariaveisMedidas', '2019-05-12 23:21:48', 0),
-(369, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', 'variaveis_medidas.IDCultura = 11 and medicoes.IdVariaveisMedidas = variaveis_medidas.IdVariaveisMedidas', '2019-05-12 23:21:48', 0),
-(370, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', 'variaveis_medidas.IDCultura = 10 and medicoes.IdVariaveisMedidas = variaveis_medidas.IdVariaveisMedidas', '2019-05-12 23:21:49', 0),
-(371, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', 'variaveis_medidas.IDCultura = 10 and medicoes.IdVariaveisMedidas = variaveis_medidas.IdVariaveisMedidas', '2019-05-12 23:21:49', 0),
-(372, 'root@localhost', 'variaveis_medidas', 'INSERT', 'Não Aplicável', 'IDVariavel: 13  IDCultura: 9  LimiteInferior: 1.00  LimiteSuperior: 10.00  IdVariaveisMedidas: 3', '2019-05-12 23:22:29', 0),
-(373, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 26  DataHoraMedicao: 2019-05-12 23:22:56  ValorMedicao: 4.00  IdVariaveisMedidas: 3', '2019-05-12 23:22:56', 0),
-(374, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', 'variaveis_medidas.IDCultura = 9 and medicoes.IdVariaveisMedidas = variaveis_medidas.IdVariaveisMedidas', '2019-05-12 23:23:01', 0),
-(375, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', 'variaveis_medidas.IDCultura = 9 and medicoes.IdVariaveisMedidas = variaveis_medidas.IdVariaveisMedidas', '2019-05-12 23:23:01', 0);
+(336, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 87  NomeVariavel: nomeDaVariavel', '2019-05-12 19:20:57', 0),
+(337, 'root@localhost', 'cultura', 'DELETE', 'IdCultura: 8  NomeCultura: Cerejas  DescricaoCultura: Cultura hidroponica  EmailInvestigador: hmbs@gmail.com', 'Linha Eliminada', '2019-05-12 19:23:34', 0),
+(338, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 88  NomeVariavel: nomeDaVariavel', '2019-05-12 19:24:34', 0),
+(339, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 89  NomeVariavel: nomeDaVariavel', '2019-05-12 19:26:03', 0),
+(340, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 90  NomeVariavel: nomeDaVariavel', '2019-05-12 19:28:22', 0),
+(341, 'root@localhost', 'sistema', 'UPDATE', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', '2019-05-12 19:28:22', 0),
+(342, 'root@localhost', 'sistema', 'UPDATE', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', '2019-05-12 19:28:22', 0),
+(343, 'root@localhost', 'cultura', 'DELETE', 'IdCultura: 5  NomeCultura: Pimentos  DescricaoCultura: Cultura Hidropónica  EmailInvestigador: afga', 'Linha Eliminada', '2019-05-12 19:28:22', 0),
+(344, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 91  NomeVariavel: nomeDaVariavel', '2019-05-12 19:32:05', 0),
+(345, 'root@localhost', 'investigador', 'INSERT', 'Não Aplicável', 'Email: aaa  NomeInvestigador: aaa  CategoriaProfissional: investigador', '2019-05-12 22:13:05', 0),
+(346, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 92  NomeVariavel: nomeDaVariavel', '2019-05-12 22:13:05', 0),
+(347, 'root@localhost', 'sistema', 'UPDATE', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', '2019-05-12 22:13:05', 0),
+(348, 'root@localhost', 'sistema', 'UPDATE', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', '2019-05-12 22:13:05', 0),
+(349, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 93  NomeVariavel: nomeDaVariavel', '2019-05-12 22:15:57', 0),
+(350, 'root@localhost', 'sistema', 'UPDATE', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', '2019-05-12 22:15:57', 0),
+(351, 'root@localhost', 'sistema', 'UPDATE', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', '2019-05-12 22:15:57', 0),
+(352, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 94  NomeVariavel: nomeDaVariavel', '2019-05-12 22:21:08', 0),
+(353, 'root@localhost', 'sistema', 'UPDATE', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', '2019-05-12 22:21:09', 0),
+(354, 'root@localhost', 'sistema', 'UPDATE', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', '2019-05-12 22:21:09', 0),
+(355, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 95  NomeVariavel: nomeDaVariavel', '2019-05-12 22:24:04', 0),
+(356, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 96  NomeVariavel: nomeDaVariavel', '2019-05-12 22:25:13', 0),
+(357, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 97  NomeVariavel: nomeDaVariavel', '2019-05-12 22:26:23', 0),
+(358, 'root@localhost', 'cultura', 'INSERT', 'Não Aplicável', 'IdCultura: 7  NomeCultura: Alfaces  DescricaoCultura: Cultura HIdropónica  EmailInvestigador: testeinvestigador@gmail.com', '2019-05-12 22:31:28', 0),
+(359, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 98  NomeVariavel: nomeDaVariavel', '2019-05-12 22:33:14', 0),
+(360, 'root@localhost', 'variaveis_medidas', 'INSERT', 'Não Aplicável', 'IDVariavel: 3  IDCultura: 7  LimiteInferior: 3.00  LimiteSuperior: 4.00  IdVariaveisMedidas: 2', '2019-05-12 22:55:18', 0),
+(361, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 24  DataHoraMedicao: 2019-05-12 22:55:48  ValorMedicao: 3.00  IdVariaveisMedidas: 2', '2019-05-12 22:55:48', 0),
+(362, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 25  DataHoraMedicao: 2019-05-12 22:56:01  ValorMedicao: 2.00  IdVariaveisMedidas: 2', '2019-05-12 22:56:01', 0),
+(363, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 26  DataHoraMedicao: 2019-05-12 22:56:01  ValorMedicao: 8.00  IdVariaveisMedidas: 2', '2019-05-12 22:56:01', 0),
+(364, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 99  NomeVariavel: nomeDaVariavel', '2019-05-12 23:19:37', 0),
+(365, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 100  NomeVariavel: nomeDaVariavel', '2019-05-13 11:32:15', 0),
+(366, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 101  NomeVariavel: nomeDaVariavel', '2019-05-13 11:38:18', 0),
+(367, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 102  NomeVariavel: nomeDaVariavel', '2019-05-13 11:40:12', 0),
+(368, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 103  NomeVariavel: nomeDaVariavel', '2019-05-13 11:41:24', 0),
+(369, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 104  NomeVariavel: nomeDaVariavel', '2019-05-13 11:43:27', 0),
+(370, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 105  NomeVariavel: nomeDaVariavel', '2019-05-13 11:48:26', 0),
+(371, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 106  NomeVariavel: nomeDaVariavel', '2019-05-13 11:55:57', 0),
+(372, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 107  NomeVariavel: nomeDaVariavel', '2019-05-13 11:58:15', 0),
+(373, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 108  NomeVariavel: nomeDaVariavel', '2019-05-13 11:59:36', 0),
+(374, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 109  NomeVariavel: nomeDaVariavel', '2019-05-13 12:19:55', 0),
+(375, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 110  NomeVariavel: nomeDaVariavel', '2019-05-13 12:20:56', 0),
+(376, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 111  NomeVariavel: nomeDaVariavel', '2019-05-13 12:24:33', 0);
 INSERT INTO `logs` (`logId`, `username`, `nomeTabela`, `comandoUsado`, `linhaAnterior`, `resultado`, `dataComando`, `exportado`) VALUES
-(376, 'root@localhost', 'cultura', 'INSERT', 'Não Aplicável', 'IdCultura: 12  NomeCultura: oioi  DescricaoCultura: asdfwedfwa  EmailInvestigador: inv@a.p', '2019-05-12 23:24:06', 0),
-(377, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', 'variaveis_medidas.IDCultura = 11 and medicoes.IdVariaveisMedidas = variaveis_medidas.IdVariaveisMedidas', '2019-05-12 23:25:59', 0),
-(378, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', 'variaveis_medidas.IDCultura = 11 and medicoes.IdVariaveisMedidas = variaveis_medidas.IdVariaveisMedidas', '2019-05-12 23:25:59', 0),
-(379, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', 'variaveis_medidas.IDCultura = 9 and medicoes.IdVariaveisMedidas = variaveis_medidas.IdVariaveisMedidas', '2019-05-12 23:26:00', 0),
-(380, 'root@localhost', 'medicoes', 'SELECT', 'Não Aplicável', 'variaveis_medidas.IDCultura = 9 and medicoes.IdVariaveisMedidas = variaveis_medidas.IdVariaveisMedidas', '2019-05-12 23:26:00', 0),
-(381, 'root@localhost', 'cultura', 'UPDATE', 'IdCultura: 12  NomeCultura: oioi  DescricaoCultura: asdfwedfwa  EmailInvestigador: inv@a.p', 'IdCultura: 12  NomeCultura: ooooiiii  DescricaoCultura: adfksaudfi i asdf i dfiua   EmailInvestigador: inv@a.p', '2019-05-12 23:28:30', 0),
-(382, 'root@localhost', 'cultura', 'DELETE', 'IdCultura: 12  NomeCultura: ooooiiii  DescricaoCultura: adfksaudfi i asdf i dfiua   EmailInvestigador: inv@a.p', 'Linha Eliminada', '2019-05-12 23:29:02', 0),
-(383, 'root@localhost', 'cultura', 'UPDATE', 'IdCultura: 11  NomeCultura: hum  DescricaoCultura: hummmmmm  EmailInvestigador: inv@a.p', 'IdCultura: 11  NomeCultura: hum  DescricaoCultura: hummmmmm  EmailInvestigador: inv@a.p', '2019-05-12 23:41:29', 0),
-(384, 'root@localhost', 'cultura', 'INSERT', 'Não Aplicável', 'IdCultura: 13  NomeCultura: asdf  DescricaoCultura: adsfdwsafdcv  EmailInvestigador: inv@a.p', '2019-05-12 23:44:00', 0),
-(385, 'root@localhost', 'cultura', 'DELETE', 'IdCultura: 13  NomeCultura: asdf  DescricaoCultura: adsfdwsafdcv  EmailInvestigador: inv@a.p', 'Linha Eliminada', '2019-05-12 23:44:04', 0);
+(377, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 112  NomeVariavel: nomeDaVariavel', '2019-05-13 12:24:56', 0),
+(378, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 113  NomeVariavel: nomeDaVariavel', '2019-05-13 12:25:38', 0),
+(379, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 114  NomeVariavel: nomeDaVariavel', '2019-05-13 12:26:05', 0),
+(380, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 115  NomeVariavel: nomeDaVariavel', '2019-05-13 12:26:49', 0),
+(381, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 116  NomeVariavel: nomeDaVariavel', '2019-05-13 12:27:41', 0),
+(382, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 117  NomeVariavel: nomeDaVariavel', '2019-05-13 12:29:50', 0),
+(383, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 118  NomeVariavel: nomeDaVariavel', '2019-05-13 12:35:21', 0),
+(384, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 119  NomeVariavel: nomeDaVariavel', '2019-05-13 12:36:03', 0),
+(385, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 120  NomeVariavel: nomeDaVariavel', '2019-05-13 12:36:52', 0),
+(386, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 121  NomeVariavel: nomeDaVariavel', '2019-05-13 12:41:29', 0),
+(387, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 122  NomeVariavel: nomeDaVariavel', '2019-05-13 17:44:27', 0),
+(388, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 123  NomeVariavel: nomeDaVariavel', '2019-05-13 17:47:12', 0),
+(389, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 124  NomeVariavel: nomeDaVariavel', '2019-05-13 17:50:51', 0),
+(390, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 125  NomeVariavel: nomeDaVariavel', '2019-05-14 00:03:19', 0),
+(391, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 126  NomeVariavel: nomeDaVariavel', '2019-05-14 00:05:41', 0),
+(392, 'root@localhost', 'sistema', 'UPDATE', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', '2019-05-14 00:05:41', 0),
+(393, 'root@localhost', 'sistema', 'UPDATE', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', '2019-05-14 00:05:41', 0),
+(394, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 127  NomeVariavel: nomeDaVariavel', '2019-05-14 00:44:38', 0),
+(395, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 128  NomeVariavel: nomeDaVariavel', '2019-05-14 12:00:27', 0),
+(396, 'root@localhost', 'cultura', 'INSERT', 'Não Aplicável', 'IdCultura: 8  NomeCultura: Bananas  DescricaoCultura: cultura hidro  EmailInvestigador: TesteInvestigador@gmail.com', '2019-05-14 12:00:27', 0),
+(397, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 129  NomeVariavel: nomeDaVariavel', '2019-05-14 12:01:18', 0),
+(398, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 130  NomeVariavel: nomeDaVariavel', '2019-05-14 12:01:47', 0),
+(399, 'root@localhost', 'cultura', 'DELETE', 'IdCultura: 8  NomeCultura: Bananas  DescricaoCultura: cultura hidro  EmailInvestigador: TesteInvestigador@gmail.com', 'Linha Eliminada', '2019-05-14 12:01:47', 0),
+(400, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 131  NomeVariavel: nomeDaVariavel', '2019-05-14 12:02:25', 0),
+(401, 'root@localhost', 'cultura', 'INSERT', 'Não Aplicável', 'IdCultura: 14  NomeCultura: Bananas  DescricaoCultura: cultura hidro  EmailInvestigador: TesteInvestigador@gmail.com', '2019-05-14 12:02:25', 0),
+(402, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 132  NomeVariavel: nomeDaVariavel', '2019-05-14 12:02:48', 0),
+(403, 'root@localhost', 'cultura', 'DELETE', 'IdCultura: 14  NomeCultura: Bananas  DescricaoCultura: cultura hidro  EmailInvestigador: TesteInvestigador@gmail.com', 'Linha Eliminada', '2019-05-14 12:02:48', 0),
+(404, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 27  DataHoraMedicao: 2019-05-14 19:19:42  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-14 19:19:42', 0),
+(405, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 24  DataHoraMedicao: 2019-05-12 22:55:48  ValorMedicao: 3.00  IdVariaveisMedidas: 2', 'Linha Eliminada', '2019-05-14 19:24:39', 0),
+(406, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 25  DataHoraMedicao: 2019-05-12 22:56:01  ValorMedicao: 2.00  IdVariaveisMedidas: 2', 'Linha Eliminada', '2019-05-14 19:24:39', 0),
+(407, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 26  DataHoraMedicao: 2019-05-12 22:56:01  ValorMedicao: 8.00  IdVariaveisMedidas: 2', 'Linha Eliminada', '2019-05-14 19:24:39', 0),
+(408, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 27  DataHoraMedicao: 2019-05-14 19:19:42  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-14 19:24:39', 0),
+(409, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 28  DataHoraMedicao: 2019-05-14 19:26:30  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-14 19:26:30', 0),
+(410, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 29  DataHoraMedicao: 2019-05-14 19:27:44  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-14 19:27:44', 0),
+(411, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 19:31:15  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-14 19:31:15', 0),
+(412, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 19:31:15  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 19:31:15  ValorMedicao: 4.56  IdVariaveisMedidas: 1', '2019-05-14 19:31:15', 0),
+(413, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 19:31:15  ValorMedicao: 4.56  IdVariaveisMedidas: 1', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 19:31:15  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-14 19:31:15', 0),
+(414, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 23  DataHoraMedicao: 2019-05-04 17:43:24  ValorMedicao: 1.58  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-14 19:32:24', 0),
+(415, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 28  DataHoraMedicao: 2019-05-14 19:26:30  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-14 19:32:24', 0),
+(416, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 29  DataHoraMedicao: 2019-05-14 19:27:44  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-14 19:32:24', 0),
+(417, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 19:31:15  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-14 19:32:24', 0),
+(418, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 19:32:41  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-14 19:32:41', 0),
+(419, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 19:32:41  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 19:32:41  ValorMedicao: 4.56  IdVariaveisMedidas: 1', '2019-05-14 19:32:41', 0),
+(420, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 19:32:41  ValorMedicao: 4.56  IdVariaveisMedidas: 1', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 19:32:41  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-14 19:32:41', 0),
+(421, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 19:32:41  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-14 19:33:36', 0),
+(422, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 19:34:00  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-14 19:34:00', 0),
+(423, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 19:34:00  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 19:34:00  ValorMedicao: 4.56  IdVariaveisMedidas: 1', '2019-05-14 19:34:00', 0),
+(424, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 19:34:00  ValorMedicao: 4.56  IdVariaveisMedidas: 1', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 19:34:00  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-14 19:34:00', 0),
+(425, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 19:34:00  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 19:35:35  ValorMedicao: 4.56  IdVariaveisMedidas: 1', '2019-05-14 19:35:35', 0),
+(426, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 19:35:35  ValorMedicao: 4.56  IdVariaveisMedidas: 1', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 19:35:35  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-14 19:35:35', 0),
+(427, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 19:35:35  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-14 19:35:48', 0),
+(428, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 19:36:58  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-14 19:36:58', 0),
+(429, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 19:36:58  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 19:36:58  ValorMedicao: 4.56  IdVariaveisMedidas: 1', '2019-05-14 19:36:58', 0),
+(430, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 19:36:58  ValorMedicao: 4.56  IdVariaveisMedidas: 1', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 19:36:58  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-14 19:36:58', 0),
+(431, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 19:36:58  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-14 19:36:58', 0),
+(432, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 19:44:28  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-14 19:44:28', 0),
+(433, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 19:44:28  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 19:44:28  ValorMedicao: 4.56  IdVariaveisMedidas: 1', '2019-05-14 19:44:28', 0),
+(434, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 19:44:28  ValorMedicao: 4.56  IdVariaveisMedidas: 1', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 19:44:28  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-14 19:44:28', 0),
+(435, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 19:44:28  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-14 19:44:28', 0),
+(436, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 19:45:37  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-14 19:45:37', 0),
+(437, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 19:45:37  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 19:45:37  ValorMedicao: 4.56  IdVariaveisMedidas: 1', '2019-05-14 19:45:37', 0),
+(438, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 19:45:37  ValorMedicao: 4.56  IdVariaveisMedidas: 1', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 19:45:37  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-14 19:45:37', 0),
+(439, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 19:45:37  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-14 19:45:37', 0),
+(440, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 20:50:20  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-14 20:50:20', 0),
+(441, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 20:50:20  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 20:50:20  ValorMedicao: 4.56  IdVariaveisMedidas: 1', '2019-05-14 20:50:20', 0),
+(442, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 20:50:20  ValorMedicao: 4.56  IdVariaveisMedidas: 1', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 20:50:20  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-14 20:50:20', 0),
+(443, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 20:50:20  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-14 20:50:20', 0),
+(444, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 20:51:10  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-14 20:51:10', 0),
+(445, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 20:51:10  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 20:51:10  ValorMedicao: 4.56  IdVariaveisMedidas: 1', '2019-05-14 20:51:10', 0),
+(446, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 20:51:10  ValorMedicao: 4.56  IdVariaveisMedidas: 1', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 20:51:10  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-14 20:51:10', 0),
+(447, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 20:51:10  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-14 20:51:10', 0),
+(448, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 21:02:56  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-14 21:02:56', 0),
+(449, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 21:02:56  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-14 21:29:52', 0),
+(450, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 21:30:12  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-14 21:30:12', 0),
+(451, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 21:30:12  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-14 21:31:14', 0),
+(452, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 21:32:07  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-14 21:32:07', 0),
+(453, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 21:32:07  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-14 23:01:33', 0),
+(454, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 23:14:46  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-14 23:14:46', 0),
+(455, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 23:14:46  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-14 23:14:46', 0),
+(456, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 23:15:16  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-14 23:15:16', 0),
+(457, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 23:15:16  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-14 23:15:16', 0),
+(458, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 23:18:09  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-14 23:18:09', 0),
+(459, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 23:18:09  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-14 23:18:09', 0),
+(460, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 23:28:01  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-14 23:28:01', 0),
+(461, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 23:28:01  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-14 23:28:01', 0),
+(462, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 23:28:39  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-14 23:28:39', 0),
+(463, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 23:28:39  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-14 23:28:39', 0),
+(464, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 23:33:28  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-14 23:33:28', 0),
+(465, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 23:33:28  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 23:33:28  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-14 23:33:28', 0),
+(466, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 23:33:28  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-14 23:33:28', 0),
+(467, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 23:34:00  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-14 23:34:00', 0),
+(468, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 23:34:00  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 23:34:00  ValorMedicao: 4.56  IdVariaveisMedidas: 1', '2019-05-14 23:34:00', 0),
+(469, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 23:34:00  ValorMedicao: 4.56  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-14 23:34:00', 0),
+(470, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 23:34:38  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-14 23:34:38', 0),
+(471, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 23:34:38  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 23:34:38  ValorMedicao: 4.56  IdVariaveisMedidas: 1', '2019-05-14 23:34:38', 0),
+(472, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 23:34:38  ValorMedicao: 4.56  IdVariaveisMedidas: 1', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 23:34:38  ValorMedicao: 4.56  IdVariaveisMedidas: 1', '2019-05-14 23:38:40', 0),
+(473, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 23:34:38  ValorMedicao: 4.56  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-14 23:38:40', 0),
+(474, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 23:40:20  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-14 23:40:20', 0),
+(475, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 23:40:20  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 23:40:20  ValorMedicao: 4.56  IdVariaveisMedidas: 1', '2019-05-14 23:40:20', 0),
+(476, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 23:40:20  ValorMedicao: 4.56  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-14 23:40:20', 0),
+(477, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 23:42:35  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-14 23:42:35', 0),
+(478, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 23:42:35  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 23:42:35  ValorMedicao: 4.56  IdVariaveisMedidas: 1', '2019-05-14 23:42:35', 0),
+(479, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 23:42:35  ValorMedicao: 4.56  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-14 23:42:35', 0),
+(480, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 23:44:05  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-14 23:44:05', 0),
+(481, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 23:44:05  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 23:44:05  ValorMedicao: 4.56  IdVariaveisMedidas: 1', '2019-05-14 23:44:05', 0),
+(482, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 23:44:05  ValorMedicao: 4.56  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-14 23:44:05', 0),
+(483, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 23:46:44  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-14 23:46:44', 0),
+(484, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 23:46:44  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 23:46:44  ValorMedicao: 4.56  IdVariaveisMedidas: 1', '2019-05-14 23:46:44', 0),
+(485, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 23:46:44  ValorMedicao: 4.56  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-14 23:46:44', 0),
+(486, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 23:48:18  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-14 23:48:18', 0),
+(487, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 23:48:18  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 23:48:18  ValorMedicao: 4.56  IdVariaveisMedidas: 1', '2019-05-14 23:48:18', 0),
+(488, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 23:48:18  ValorMedicao: 4.56  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-14 23:48:18', 0),
+(489, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 23:51:11  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-14 23:51:11', 0),
+(490, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 23:51:11  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 23:51:11  ValorMedicao: 4.56  IdVariaveisMedidas: 1', '2019-05-14 23:51:11', 0),
+(491, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-14 23:51:11  ValorMedicao: 4.56  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-14 23:51:11', 0),
+(492, 'root@localhost', 'cultura', 'INSERT', 'Não Aplicável', 'IdCultura: 8  NomeCultura: teste  DescricaoCultura: tdd  EmailInvestigador: lala@gmail.com', '2019-05-14 23:52:36', 0),
+(493, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 00:01:42  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-15 00:01:42', 0),
+(494, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 00:01:42  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 00:01:42  ValorMedicao: 4.56  IdVariaveisMedidas: 1', '2019-05-15 00:01:42', 0),
+(495, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 00:01:42  ValorMedicao: 4.56  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-15 00:01:42', 0),
+(496, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 00:05:19  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-15 00:05:19', 0),
+(497, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 00:05:19  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 00:05:19  ValorMedicao: 4.56  IdVariaveisMedidas: 1', '2019-05-15 00:05:19', 0),
+(498, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 00:05:19  ValorMedicao: 4.56  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-15 00:05:19', 0),
+(499, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 133  NomeVariavel: nomeDaVariavel', '2019-05-15 00:09:52', 0),
+(500, 'root@localhost', 'sistema', 'UPDATE', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', '2019-05-15 00:09:52', 0),
+(501, 'root@localhost', 'sistema', 'UPDATE', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', '2019-05-15 00:09:52', 0),
+(502, 'root@localhost', 'variaveis', 'INSERT', 'Não Aplicável', 'IDVariavel: 134  NomeVariavel: nomeDaVariavel', '2019-05-15 00:10:32', 0),
+(503, 'root@localhost', 'sistema', 'UPDATE', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', '2019-05-15 00:10:32', 0),
+(504, 'root@localhost', 'sistema', 'UPDATE', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', 'LimiteInferiorTemperatura: 19.00  LimiteSuperiorTemperatura: 30.00  LimiteInferiorLuz: 1.00  LimiteSuperiorLuz: 3.00', '2019-05-15 00:10:32', 0),
+(505, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 00:11:49  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-15 00:11:49', 0),
+(506, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 00:11:49  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 00:11:49  ValorMedicao: 4.56  IdVariaveisMedidas: 1', '2019-05-15 00:11:49', 0),
+(507, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 00:11:49  ValorMedicao: 4.56  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-15 00:11:49', 0),
+(508, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 00:17:14  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-15 00:17:14', 0),
+(509, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 00:17:14  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 00:17:14  ValorMedicao: 4.56  IdVariaveisMedidas: 1', '2019-05-15 00:17:14', 0),
+(510, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 00:17:14  ValorMedicao: 4.56  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-15 00:17:14', 0),
+(511, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 00:26:34  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-15 00:26:34', 0),
+(512, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 00:26:34  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 00:26:34  ValorMedicao: 4.56  IdVariaveisMedidas: 1', '2019-05-15 00:26:34', 0),
+(513, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 00:26:34  ValorMedicao: 4.56  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-15 00:26:34', 0),
+(514, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 00:28:08  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-15 00:28:08', 0),
+(515, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 00:28:08  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 00:28:08  ValorMedicao: 4.56  IdVariaveisMedidas: 1', '2019-05-15 00:28:08', 0),
+(516, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 00:28:08  ValorMedicao: 4.56  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-15 00:28:08', 0),
+(517, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 00:30:55  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-15 00:30:55', 0),
+(518, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 00:30:55  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 00:30:55  ValorMedicao: 4.56  IdVariaveisMedidas: 1', '2019-05-15 00:30:55', 0),
+(519, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 00:30:55  ValorMedicao: 4.56  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-15 00:30:56', 0),
+(520, 'root@localhost', 'investigador', 'INSERT', 'Não Aplicável', 'Email: testeapi@gmail.com  NomeInvestigador: TesteAPI  CategoriaProfissional: teste', '2019-05-15 00:34:23', 0),
+(521, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 00:34:23  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-15 00:34:23', 0),
+(522, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 00:34:23  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 00:34:23  ValorMedicao: 4.56  IdVariaveisMedidas: 1', '2019-05-15 00:34:23', 0),
+(523, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 00:34:23  ValorMedicao: 4.56  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-15 00:34:23', 0),
+(524, 'root@localhost', 'investigador', 'DELETE', 'Email: testeapi@gmail.com  NomeInvestigador: TesteAPI  CategoriaProfissional: teste', 'Linha Eliminada', '2019-05-15 00:37:23', 0),
+(525, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 00:37:23  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-15 00:37:23', 0),
+(526, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 00:37:23  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 00:37:23  ValorMedicao: 4.56  IdVariaveisMedidas: 1', '2019-05-15 00:37:23', 0),
+(527, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 00:37:23  ValorMedicao: 4.56  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-15 00:37:23', 0),
+(528, 'root@localhost', 'investigador', 'INSERT', 'Não Aplicável', 'Email: testeapi@gmail.com  NomeInvestigador: TesteAPI  CategoriaProfissional: teste', '2019-05-15 00:41:21', 0),
+(529, 'root@localhost', 'investigador', 'DELETE', 'Email: testeapi@gmail.com  NomeInvestigador: TesteAPI  CategoriaProfissional: teste', 'Linha Eliminada', '2019-05-15 00:41:21', 0),
+(530, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 00:41:21  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-15 00:41:21', 0),
+(531, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 00:41:21  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 00:41:21  ValorMedicao: 4.56  IdVariaveisMedidas: 1', '2019-05-15 00:41:21', 0),
+(532, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 00:41:21  ValorMedicao: 4.56  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-15 00:41:21', 0),
+(533, 'root@localhost', 'investigador', 'INSERT', 'Não Aplicável', 'Email: testeapi@gmail.com  NomeInvestigador: TesteAPI  CategoriaProfissional: teste', '2019-05-15 00:49:46', 0),
+(534, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 00:49:46  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-15 00:49:46', 0),
+(535, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 00:49:46  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 00:49:46  ValorMedicao: 4.56  IdVariaveisMedidas: 1', '2019-05-15 00:49:46', 0),
+(536, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 00:49:46  ValorMedicao: 4.56  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-15 00:49:46', 0),
+(537, 'root@localhost', 'investigador', 'DELETE', 'Email: testeapi@gmail.com  NomeInvestigador: TesteAPI  CategoriaProfissional: teste', 'Linha Eliminada', '2019-05-15 00:51:11', 0),
+(538, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 00:51:11  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-15 00:51:11', 0),
+(539, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 00:51:11  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 00:51:11  ValorMedicao: 4.56  IdVariaveisMedidas: 1', '2019-05-15 00:51:11', 0),
+(540, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 00:51:11  ValorMedicao: 4.56  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-15 00:51:11', 0),
+(541, 'root@localhost', 'investigador', 'INSERT', 'Não Aplicável', 'Email: testeapi@gmail.com  NomeInvestigador: TesteAPI  CategoriaProfissional: teste', '2019-05-15 00:52:51', 0),
+(542, 'root@localhost', 'investigador', 'DELETE', 'Email: testeapi@gmail.com  NomeInvestigador: TesteAPI  CategoriaProfissional: teste', 'Linha Eliminada', '2019-05-15 00:52:51', 0),
+(543, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 00:52:51  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-15 00:52:51', 0),
+(544, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 00:52:51  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 00:52:51  ValorMedicao: 4.56  IdVariaveisMedidas: 1', '2019-05-15 00:52:51', 0),
+(545, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 00:52:51  ValorMedicao: 4.56  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-15 00:52:51', 0),
+(546, 'root@localhost', 'investigador', 'INSERT', 'Não Aplicável', 'Email: testeapi@gmail.com  NomeInvestigador: TesteAPI  CategoriaProfissional: teste', '2019-05-15 00:58:50', 0),
+(547, 'root@localhost', 'investigador', 'UPDATE', 'Email: testeapi@gmail.com  NomeInvestigador: TesteAPI  CategoriaProfissional: teste', 'Email: testeapi@gmail.com  NomeInvestigador: TesteAPIES  CategoriaProfissional: teste', '2019-05-15 00:58:50', 0),
+(548, 'root@localhost', 'investigador', 'UPDATE', 'Email: testeapi@gmail.com  NomeInvestigador: TesteAPIES  CategoriaProfissional: teste', 'Email: testeapi@gmail.com  NomeInvestigador: TesteAPIES  CategoriaProfissional: testeteste', '2019-05-15 00:58:50', 0),
+(549, 'root@localhost', 'investigador', 'UPDATE', 'Email: testeapi@gmail.com  NomeInvestigador: TesteAPIES  CategoriaProfissional: testeteste', 'Email: testeapies@gmail.com  NomeInvestigador: TesteAPIES  CategoriaProfissional: testeteste', '2019-05-15 00:58:50', 0),
+(550, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 00:58:50  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-15 00:58:50', 0),
+(551, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 00:58:50  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 00:58:50  ValorMedicao: 4.56  IdVariaveisMedidas: 1', '2019-05-15 00:58:50', 0),
+(552, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 00:58:50  ValorMedicao: 4.56  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-15 00:58:50', 0),
+(553, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:02:18  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-15 01:02:18', 0),
+(554, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:02:18  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:02:18  ValorMedicao: 4.56  IdVariaveisMedidas: 1', '2019-05-15 01:02:18', 0),
+(555, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:02:18  ValorMedicao: 4.56  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-15 01:02:18', 0),
+(556, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:02:53  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-15 01:02:53', 0),
+(557, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:02:53  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:02:53  ValorMedicao: 4.56  IdVariaveisMedidas: 1', '2019-05-15 01:02:53', 0),
+(558, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:02:53  ValorMedicao: 4.56  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-15 01:02:53', 0),
+(559, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:03:01  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-15 01:03:01', 0),
+(560, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:03:01  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:03:01  ValorMedicao: 4.56  IdVariaveisMedidas: 1', '2019-05-15 01:03:01', 0),
+(561, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:03:01  ValorMedicao: 4.56  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-15 01:03:01', 0),
+(562, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:04:02  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-15 01:04:02', 0),
+(563, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:04:02  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:04:02  ValorMedicao: 4.56  IdVariaveisMedidas: 1', '2019-05-15 01:04:02', 0),
+(564, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:04:02  ValorMedicao: 4.56  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-15 01:04:02', 0),
+(565, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:04:41  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-15 01:04:41', 0),
+(566, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:04:41  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:04:41  ValorMedicao: 4.56  IdVariaveisMedidas: 1', '2019-05-15 01:04:41', 0),
+(567, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:04:41  ValorMedicao: 4.56  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-15 01:04:41', 0),
+(568, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:05:33  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-15 01:05:33', 0),
+(569, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:05:33  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:05:33  ValorMedicao: 4.56  IdVariaveisMedidas: 1', '2019-05-15 01:05:33', 0),
+(570, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:05:33  ValorMedicao: 4.56  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-15 01:05:33', 0),
+(571, 'root@localhost', 'investigador', 'DELETE', 'Email: testeapies@gmail.com  NomeInvestigador: TesteAPIES  CategoriaProfissional: testeteste', 'Linha Eliminada', '2019-05-15 01:06:16', 0),
+(572, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:07:06  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-15 01:07:06', 0),
+(573, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:07:06  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:07:06  ValorMedicao: 4.56  IdVariaveisMedidas: 1', '2019-05-15 01:07:06', 0),
+(574, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:07:06  ValorMedicao: 4.56  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-15 01:07:06', 0),
+(575, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:08:13  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-15 01:08:13', 0),
+(576, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:08:13  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:08:13  ValorMedicao: 4.56  IdVariaveisMedidas: 1', '2019-05-15 01:08:13', 0),
+(577, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:08:13  ValorMedicao: 4.56  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-15 01:08:13', 0),
+(578, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:08:41  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-15 01:08:41', 0),
+(579, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:08:41  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:08:41  ValorMedicao: 4.56  IdVariaveisMedidas: 1', '2019-05-15 01:08:41', 0),
+(580, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:08:41  ValorMedicao: 4.56  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-15 01:08:41', 0),
+(581, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:10:24  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-15 01:10:24', 0),
+(582, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:10:24  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:10:24  ValorMedicao: 4.56  IdVariaveisMedidas: 1', '2019-05-15 01:10:24', 0),
+(583, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:10:24  ValorMedicao: 4.56  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-15 01:10:24', 0),
+(584, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:11:33  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-15 01:11:33', 0),
+(585, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:11:33  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:11:34  ValorMedicao: 4.56  IdVariaveisMedidas: 1', '2019-05-15 01:11:34', 0),
+(586, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:11:34  ValorMedicao: 4.56  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-15 01:11:34', 0),
+(587, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:20:33  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-15 01:20:33', 0),
+(588, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:20:33  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:20:33  ValorMedicao: 4.56  IdVariaveisMedidas: 1', '2019-05-15 01:20:33', 0),
+(589, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:20:33  ValorMedicao: 4.56  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-15 01:20:33', 0),
+(590, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:22:00  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-15 01:22:00', 0),
+(591, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:22:00  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:22:00  ValorMedicao: 4.56  IdVariaveisMedidas: 1', '2019-05-15 01:22:00', 0),
+(592, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:22:00  ValorMedicao: 4.56  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-15 01:22:00', 0),
+(593, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:24:45  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-15 01:24:45', 0),
+(594, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:24:45  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:24:45  ValorMedicao: 4.56  IdVariaveisMedidas: 1', '2019-05-15 01:24:45', 0),
+(595, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:24:45  ValorMedicao: 4.56  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-15 01:24:45', 0),
+(596, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:25:04  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-15 01:25:04', 0),
+(597, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:25:04  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:25:04  ValorMedicao: 4.56  IdVariaveisMedidas: 1', '2019-05-15 01:25:04', 0),
+(598, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:25:04  ValorMedicao: 4.56  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-15 01:25:04', 0),
+(599, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:34:05  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-15 01:34:05', 0),
+(600, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:34:05  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:34:05  ValorMedicao: 4.56  IdVariaveisMedidas: 1', '2019-05-15 01:34:05', 0),
+(601, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:34:05  ValorMedicao: 4.56  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-15 01:34:05', 0),
+(602, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:34:55  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-15 01:34:55', 0),
+(603, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:34:55  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:34:55  ValorMedicao: 4.56  IdVariaveisMedidas: 1', '2019-05-15 01:34:55', 0),
+(604, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:34:55  ValorMedicao: 4.56  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-15 01:34:55', 0),
+(605, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:38:16  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-15 01:38:16', 0),
+(606, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:38:16  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:38:16  ValorMedicao: 4.56  IdVariaveisMedidas: 1', '2019-05-15 01:38:16', 0),
+(607, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:38:16  ValorMedicao: 4.56  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-15 01:38:16', 0),
+(608, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:42:22  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-15 01:42:22', 0),
+(609, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:42:22  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:42:22  ValorMedicao: 4.56  IdVariaveisMedidas: 1', '2019-05-15 01:42:22', 0),
+(610, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:42:22  ValorMedicao: 4.56  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-15 01:42:22', 0),
+(611, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:43:36  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-15 01:43:36', 0);
+INSERT INTO `logs` (`logId`, `username`, `nomeTabela`, `comandoUsado`, `linhaAnterior`, `resultado`, `dataComando`, `exportado`) VALUES
+(612, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:43:36  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:43:36  ValorMedicao: 4.56  IdVariaveisMedidas: 1', '2019-05-15 01:43:36', 0),
+(613, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:43:36  ValorMedicao: 4.56  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-15 01:43:36', 0),
+(614, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:43:52  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-15 01:43:52', 0),
+(615, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:43:52  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:43:52  ValorMedicao: 4.56  IdVariaveisMedidas: 1', '2019-05-15 01:43:52', 0),
+(616, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:43:52  ValorMedicao: 4.56  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-15 01:43:52', 0),
+(617, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:45:42  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-15 01:45:42', 0),
+(618, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:45:42  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:45:42  ValorMedicao: 4.56  IdVariaveisMedidas: 1', '2019-05-15 01:45:42', 0),
+(619, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:45:42  ValorMedicao: 4.56  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-15 01:45:42', 0),
+(620, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:46:16  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-15 01:46:16', 0),
+(621, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:46:16  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:46:16  ValorMedicao: 4.56  IdVariaveisMedidas: 1', '2019-05-15 01:46:16', 0),
+(622, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:46:16  ValorMedicao: 4.56  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-15 01:46:16', 0),
+(623, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:48:14  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-15 01:48:14', 0),
+(624, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:48:14  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:48:14  ValorMedicao: 4.56  IdVariaveisMedidas: 1', '2019-05-15 01:48:14', 0),
+(625, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:48:14  ValorMedicao: 4.56  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-15 01:48:14', 0),
+(626, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:49:09  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-15 01:49:09', 0),
+(627, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:49:09  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:49:09  ValorMedicao: 4.56  IdVariaveisMedidas: 1', '2019-05-15 01:49:09', 0),
+(628, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:49:09  ValorMedicao: 4.56  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-15 01:49:09', 0),
+(629, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:50:19  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-15 01:50:19', 0),
+(630, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:50:19  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:50:20  ValorMedicao: 4.56  IdVariaveisMedidas: 1', '2019-05-15 01:50:20', 0),
+(631, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:50:20  ValorMedicao: 4.56  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-15 01:50:20', 0),
+(632, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:51:06  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-15 01:51:06', 0),
+(633, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:51:06  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:51:06  ValorMedicao: 4.56  IdVariaveisMedidas: 1', '2019-05-15 01:51:06', 0),
+(634, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:51:06  ValorMedicao: 4.56  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-15 01:51:06', 0),
+(635, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:52:05  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-15 01:52:05', 0),
+(636, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:52:05  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:52:05  ValorMedicao: 4.56  IdVariaveisMedidas: 1', '2019-05-15 01:52:05', 0),
+(637, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:52:05  ValorMedicao: 4.56  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-15 01:52:05', 0),
+(638, 'root@localhost', 'medicoes', 'INSERT', 'Não Aplicável', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:54:03  ValorMedicao: 3.56  IdVariaveisMedidas: 1', '2019-05-15 01:54:03', 0),
+(639, 'root@localhost', 'medicoes', 'UPDATE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:54:03  ValorMedicao: 3.56  IdVariaveisMedidas: 1', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:54:03  ValorMedicao: 4.56  IdVariaveisMedidas: 1', '2019-05-15 01:54:03', 0),
+(640, 'root@localhost', 'medicoes', 'DELETE', 'NumeroMedicao: 40  DataHoraMedicao: 2019-05-15 01:54:03  ValorMedicao: 4.56  IdVariaveisMedidas: 1', 'Linha Eliminada', '2019-05-15 01:54:03', 0),
+(641, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 15  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(642, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 16  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(643, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 17  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(644, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 18  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(645, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 19  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(646, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 20  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(647, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 21  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(648, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 22  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(649, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 23  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(650, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 24  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(651, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 25  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(652, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 26  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(653, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 27  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(654, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 28  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(655, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 29  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(656, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 30  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(657, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 31  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(658, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 32  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(659, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 33  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(660, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 34  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(661, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 35  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(662, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 36  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(663, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 37  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(664, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 38  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(665, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 39  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(666, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 40  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(667, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 41  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(668, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 42  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(669, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 43  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(670, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 44  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(671, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 45  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(672, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 46  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(673, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 47  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(674, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 48  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(675, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 49  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(676, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 50  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(677, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 51  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(678, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 52  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(679, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 53  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(680, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 54  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(681, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 55  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(682, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 56  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(683, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 57  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(684, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 58  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(685, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 59  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(686, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 60  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(687, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 61  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(688, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 62  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(689, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 63  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(690, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 64  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(691, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 65  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(692, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 66  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(693, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 67  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(694, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 68  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(695, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 69  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(696, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 70  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(697, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 71  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(698, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 72  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(699, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 73  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(700, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 74  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(701, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 75  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(702, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 76  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(703, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 77  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(704, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 78  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(705, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 79  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(706, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 80  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(707, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 81  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(708, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 82  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(709, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 83  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(710, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 84  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(711, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 85  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(712, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 86  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(713, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 87  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(714, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 88  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(715, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 89  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(716, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 90  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(717, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 91  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(718, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 92  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(719, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 93  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(720, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 94  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(721, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 95  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(722, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 96  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(723, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 97  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(724, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 98  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(725, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 99  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(726, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 100  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(727, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 101  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(728, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 102  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(729, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 103  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(730, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 104  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(731, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 105  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(732, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 106  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(733, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 107  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(734, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 108  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(735, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 109  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(736, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 110  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(737, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 111  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(738, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 112  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(739, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 113  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(740, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 114  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(741, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 115  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(742, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 116  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(743, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 117  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(744, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 118  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(745, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 119  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(746, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 120  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(747, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 121  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(748, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 122  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(749, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 123  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(750, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 124  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(751, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 125  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(752, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 126  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(753, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 127  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(754, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 128  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(755, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 129  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(756, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 130  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(757, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 131  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(758, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 132  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(759, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 133  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(760, 'root@localhost', 'variaveis', 'DELETE', 'IDVariavel: 134  NomeVariavel: nomeDaVariavel', 'Linha Eliminada', '2019-05-15 01:57:54', 0),
+(761, 'root@localhost', 'cultura', 'DELETE', 'IdCultura: 8  NomeCultura: teste  DescricaoCultura: tdd  EmailInvestigador: lala@gmail.com', 'Linha Eliminada', '2019-05-15 01:58:18', 0);
 
 -- --------------------------------------------------------
 
@@ -776,9 +1162,7 @@ INSERT INTO `medicoes` (`NumeroMedicao`, `DataHoraMedicao`, `ValorMedicao`, `IdV
 (19, '2019-05-03 22:43:48', '2.86', 1),
 (20, '2019-05-03 22:44:29', '8.26', 1),
 (21, '2019-05-03 22:44:29', '8.24', 1),
-(22, '2019-05-04 16:42:48', '10.25', 1),
-(23, '2019-05-04 16:43:24', '1.58', 1),
-(26, '2019-05-12 22:22:56', '4.00', 3);
+(22, '2019-05-04 16:42:48', '10.25', 1);
 
 --
 -- Acionadores `medicoes`
@@ -934,15 +1318,16 @@ CREATE TABLE `sistema` (
   `MargemSegurancaLuz` decimal(8,2) NOT NULL,
   `PercentagemVariacaoTemperatura` decimal(8,2) NOT NULL,
   `PercentagemVariacaoLuz` decimal(8,2) NOT NULL,
-  `TempoEntreAlertasConsecutivos` decimal(8,2) NOT NULL
+  `TempoEntreAlertasConsecutivos` decimal(8,2) NOT NULL,
+  `TempoExport` decimal(8,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Extraindo dados da tabela `sistema`
 --
 
-INSERT INTO `sistema` (`LimiteInferiorTemperatura`, `LimiteSuperiorTemperatura`, `MargemSegurancaTemperatura`, `LimiteInferiorLuz`, `LimiteSuperiorLuz`, `MargemSegurancaLuz`, `PercentagemVariacaoTemperatura`, `PercentagemVariacaoLuz`, `TempoEntreAlertasConsecutivos`) VALUES
-('19.00', '30.00', '0.00', '1.00', '3.00', '0.00', '0.00', '0.00', '0.00');
+INSERT INTO `sistema` (`LimiteInferiorTemperatura`, `LimiteSuperiorTemperatura`, `MargemSegurancaTemperatura`, `LimiteInferiorLuz`, `LimiteSuperiorLuz`, `MargemSegurancaLuz`, `PercentagemVariacaoTemperatura`, `PercentagemVariacaoLuz`, `TempoEntreAlertasConsecutivos`, `TempoExport`) VALUES
+('19.00', '30.00', '0.00', '1.00', '3.00', '0.00', '0.00', '0.00', '0.00', '0.00');
 
 --
 -- Acionadores `sistema`
@@ -986,79 +1371,7 @@ INSERT INTO `variaveis` (`IDVariavel`, `NomeVariavel`) VALUES
 (11, 'nomeDaVariavel'),
 (12, 'nomeDaVariavel'),
 (13, 'Mercurio'),
-(14, 'nomeDaVariavel'),
-(15, 'nomeDaVariavel'),
-(16, 'nomeDaVariavel'),
-(17, 'nomeDaVariavel'),
-(18, 'nomeDaVariavel'),
-(19, 'nomeDaVariavel'),
-(20, 'nomeDaVariavel'),
-(21, 'nomeDaVariavel'),
-(22, 'nomeDaVariavel'),
-(23, 'nomeDaVariavel'),
-(24, 'nomeDaVariavel'),
-(25, 'nomeDaVariavel'),
-(26, 'nomeDaVariavel'),
-(27, 'nomeDaVariavel'),
-(28, 'nomeDaVariavel'),
-(29, 'nomeDaVariavel'),
-(30, 'nomeDaVariavel'),
-(31, 'nomeDaVariavel'),
-(32, 'nomeDaVariavel'),
-(33, 'nomeDaVariavel'),
-(34, 'nomeDaVariavel'),
-(35, 'nomeDaVariavel'),
-(36, 'nomeDaVariavel'),
-(37, 'nomeDaVariavel'),
-(38, 'nomeDaVariavel'),
-(39, 'nomeDaVariavel'),
-(40, 'nomeDaVariavel'),
-(41, 'nomeDaVariavel'),
-(42, 'nomeDaVariavel'),
-(43, 'nomeDaVariavel'),
-(44, 'nomeDaVariavel'),
-(45, 'nomeDaVariavel'),
-(46, 'nomeDaVariavel'),
-(47, 'nomeDaVariavel'),
-(48, 'nomeDaVariavel'),
-(49, 'nomeDaVariavel'),
-(50, 'nomeDaVariavel'),
-(51, 'nomeDaVariavel'),
-(52, 'nomeDaVariavel'),
-(53, 'nomeDaVariavel'),
-(54, 'nomeDaVariavel'),
-(55, 'nomeDaVariavel'),
-(56, 'nomeDaVariavel'),
-(57, 'nomeDaVariavel'),
-(58, 'nomeDaVariavel'),
-(59, 'nomeDaVariavel'),
-(60, 'nomeDaVariavel'),
-(61, 'nomeDaVariavel'),
-(62, 'nomeDaVariavel'),
-(63, 'nomeDaVariavel'),
-(64, 'nomeDaVariavel'),
-(65, 'nomeDaVariavel'),
-(66, 'nomeDaVariavel'),
-(67, 'nomeDaVariavel'),
-(68, 'nomeDaVariavel'),
-(69, 'nomeDaVariavel'),
-(70, 'nomeDaVariavel'),
-(71, 'nomeDaVariavel'),
-(72, 'nomeDaVariavel'),
-(73, 'nomeDaVariavel'),
-(74, 'nomeDaVariavel'),
-(75, 'nomeDaVariavel'),
-(76, 'nomeDaVariavel'),
-(77, 'nomeDaVariavel'),
-(78, 'nomeDaVariavel'),
-(79, 'nomeDaVariavel'),
-(80, 'nomeDaVariavel'),
-(81, 'nomeDaVariavel'),
-(82, 'nomeDaVariavel'),
-(83, 'nomeDaVariavel'),
-(84, 'nomeDaVariavel'),
-(85, 'nomeDaVariavel'),
-(86, 'nomeDaVariavel');
+(14, 'nomeDaVariavel');
 
 --
 -- Acionadores `variaveis`
@@ -1097,7 +1410,7 @@ CREATE TABLE `variaveis_medidas` (
 
 INSERT INTO `variaveis_medidas` (`IDVariavel`, `IDCultura`, `LimiteInferior`, `LimiteSuperior`, `MargemSegurancaVariavel`, `IdVariaveisMedidas`) VALUES
 (3, 4, '2.85', '8.25', '0.10', 1),
-(13, 9, '1.00', '10.00', '2.00', 3);
+(3, 7, '3.00', '4.00', '0.80', 2);
 
 --
 -- Acionadores `variaveis_medidas`
@@ -1197,25 +1510,25 @@ ALTER TABLE `variaveis_medidas`
 -- AUTO_INCREMENT for table `alertas`
 --
 ALTER TABLE `alertas`
-  MODIFY `idAlerta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `idAlerta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT for table `cultura`
 --
 ALTER TABLE `cultura`
-  MODIFY `IDCultura` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `IDCultura` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `logs`
 --
 ALTER TABLE `logs`
-  MODIFY `logId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=386;
+  MODIFY `logId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=762;
 
 --
 -- AUTO_INCREMENT for table `medicoes`
 --
 ALTER TABLE `medicoes`
-  MODIFY `NumeroMedicao` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `NumeroMedicao` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT for table `medicoes_luminosidade`
@@ -1245,13 +1558,13 @@ ALTER TABLE `medicoes_temperatura_incorretas`
 -- AUTO_INCREMENT for table `variaveis`
 --
 ALTER TABLE `variaveis`
-  MODIFY `IDVariavel` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=87;
+  MODIFY `IDVariavel` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=135;
 
 --
 -- AUTO_INCREMENT for table `variaveis_medidas`
 --
 ALTER TABLE `variaveis_medidas`
-  MODIFY `IdVariaveisMedidas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `IdVariaveisMedidas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Constraints for dumped tables
