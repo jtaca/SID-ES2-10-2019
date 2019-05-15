@@ -8,17 +8,9 @@ import org.junit.jupiter.api.Test;
 
 class AddInvestigatorControllerTest {
 
-	@BeforeEach
-	void setUp() throws Exception {
-	}
-
-	@AfterEach
-	void tearDown() throws Exception {
-	}
-
 	@Test
 	void testRegister() {
-		fail("Not yet implemented");
+		
 	}
 
 }

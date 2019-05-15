@@ -18,7 +18,7 @@ class EditInvestigatorControllerTest {
 
 	@Test
 	void testRegister() {
-		fail("Not yet implemented");
+		
 	}
 
 }

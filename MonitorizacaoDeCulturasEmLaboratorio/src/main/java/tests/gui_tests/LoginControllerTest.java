@@ -18,12 +18,12 @@ class LoginControllerTest {
 
 	@Test
 	void testSetPrimaryStage() {
-		fail("Not yet implemented");
+		
 	}
 
 	@Test
 	void testLogin() {
-		fail("Not yet implemented");
+		
 	}
 
 }

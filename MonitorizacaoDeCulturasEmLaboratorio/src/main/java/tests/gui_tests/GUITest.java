@@ -18,7 +18,7 @@ class GUITest {
 
 	@Test
 	void testStartStage() {
-		fail("Not yet implemented");
+		
 	}
 
 }

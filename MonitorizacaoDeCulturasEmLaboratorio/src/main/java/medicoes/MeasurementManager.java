@@ -143,10 +143,10 @@ public class MeasurementManager {
             cStmt.setString(2, ""+newMedicao.getValorMedicao());
 
             if(cStmt.execute()==false) {
-                System.out.println("A medição com id: " + oldMedicao.getNumeroMedicao() + " foi atualizada com sucesso.");
+                System.out.println("A mediï¿½ï¿½o com id: " + oldMedicao.getNumeroMedicao() + " foi atualizada com sucesso.");
             }
         } catch (SQLException e) {
-            System.out.println("Nao foi possível atualizar a medição pretendida. Exception: " + e.getMessage());
+            System.out.println("Nao foi possï¿½vel atualizar a mediï¿½ï¿½o pretendida. Exception: " + e.getMessage());
         }
 
         getDBMedicoes();

@@ -1,118 +1,37 @@
 package tests.api_tests;
 
 import static org.junit.jupiter.api.Assertions.*;
-
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.*;
-import java.util.*;
+
 
 import api.DatabaseConnection;
+import javafx.util.Pair;
 
 class DatabaseConnectionTest {
 	
-	private DatabaseConnection dbconn;
-		
-	@AfterEach
-	void tearDown() throws Exception {
-	}
-
-	@Test
-	void testGetInstance() {
-//		
-		try {
-			dbconn = DatabaseConnection.getInstance();
-			dbconn.getInstance();
-			assertNotNull(dbconn);
-		} catch (Exception e) {
-			fail(e.toString());
-		}
-		
-	}
-	
-	@Test
-	void testGetUserEmail() {
-		try {
-
-			dbconn.connect("", "");
-			dbconn.getUserEmail();
-			dbconn.connect(null, null);
-			dbconn.getUserEmail();
-			dbconn.connect("aa", "aa");
-			assertNotNull(dbconn.getUserEmail());
-			dbconn.connect("aaa", "aaa");
-			assertNotNull(dbconn.getUserEmail());
-
-			
-			
-		} catch (Exception e) {
-			fail(e.toString());
-		}
-	}
-
-	@Test
-	void testIsConnected() {
-		
-		try {
-			dbconn.connect("aa", "aa");
-			assertNotNull(dbconn.isConnected());
-			
-		} catch (Exception e) {
-			fail(e.toString());
-		}
-	}
+	private static DatabaseConnection dbconn = null;
 		
 	
-
 	@Test
-	void testConnect() {
-		try {
-
-			dbconn.connect("", "");
-			dbconn.connect(null, null);
-			dbconn.connect("aa", "aa");
-			dbconn.connect("aaa", "aaa");
+	void testDatabaseConnection() {
+		
+		dbconn = DatabaseConnection.getInstance();
+		assertTrue(dbconn != null);
+		
+		assertFalse(dbconn.isConnected());
 			
-		} catch (Exception e) {
-			fail(e.toString());
-		}
-		
-		
-
-		
+		DatabaseConnection db1 = DatabaseConnection.getInstance();
+        Pair<Boolean, String> connectionState1 = db1.connect("TesteInvestigador", "iscte");
+        assertTrue(db1.getUserEmail().equals("testeinvestigador@gmail.com"));
+        assertTrue(db1.getUserRole().equals("investigador"));
+        assertTrue(connectionState1.equals(new Pair<Boolean, String>(true, "investigador")));
+        
+        Pair<Boolean, String> connectionState2 = db1.connect("TesteInvestigador", "isc");
+        assertTrue(connectionState2.equals(new Pair<Boolean, String>(false, "Incorrect username or password.")));
+        
+        Pair<Boolean, String> connectionState3 = db1.connect("root", "");
+        
 	}
-		
 	
-
-	@Test
-	void testSelect() {
-		try {
-			dbconn.select("");
-			dbconn.select("Select * from");
-			dbconn.select("Insert into medicoes values 1");
-			dbconn.select("SELECT email from mysql.user");
-		} catch (Exception e) {
-			fail(e.toString());
-		}
-		
-		
-	}
-
-	@Test
-	void testInsert() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testGetConnection() {
-		try {
-			dbconn.connect("aa", "aa");
-			assertNotNull(dbconn.getConnection());
-			
-		} catch (Exception e) {
-			fail(e.toString());
-		}
-	}
 
 }

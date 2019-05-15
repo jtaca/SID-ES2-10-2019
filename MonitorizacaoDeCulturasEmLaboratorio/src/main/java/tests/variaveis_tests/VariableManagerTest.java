@@ -2,53 +2,32 @@ package tests.variaveis_tests;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import java.util.ArrayList;
 import org.junit.jupiter.api.Test;
+import variaveis.Variable;
+import variaveis.VariableManager;
 
 class VariableManagerTest {
 
-	@BeforeEach
-	void setUp() throws Exception {
-	}
-
-	@AfterEach
-	void tearDown() throws Exception {
-	}
-
+	private ArrayList<Variable> list = new ArrayList<Variable>();
+	
 	@Test
 	void testUpdateLocalVariables() {
-		fail("Not yet implemented");
-	}
 
-	@Test
-	void testGetVariables() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testAddVariable() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testCallStoredProcedure2Doubles() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testAlterarValorMedido() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testAlterarLimitesTemperatura() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testAlterarLimitesLuz() {
-		fail("Not yet implemented");
+		
+		VariableManager vm = new VariableManager();
+		
+		Variable var = new Variable(2, "Chumbo");
+		Variable newVar = new Variable("Chumbo++");
+		
+		vm.insertVariable(newVar);
+		
+		vm.getDBVariables();;
+		
+		list = vm.getVariables();
+		assertNotNull(list);
+		//vm.updateMedicoes(medicao, newMedicao1);
+		//vm.deleteMedicoes(medicao);
 	}
 
 }

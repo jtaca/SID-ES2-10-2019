@@ -1,62 +1,30 @@
 package tests.api_tests;
 
 import static org.junit.jupiter.api.Assertions.*;
-
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.jupiter.api.Test;
-
-import api.DatabaseConnection;
 import api.Investigador;
 import api.InvestigadorManager;
 
 class InvestigadorManagerTest {
-	private InvestigadorManager inv;
-	private DatabaseConnection dbconn;
-	private Investigador test;
 
-	@BeforeEach
-	void setUp() throws Exception {
-		 inv = new InvestigadorManager();
-		 dbconn.connect("aa", "aa");
-		 inv.insertInvestigador(test);
-		 
-	}
-
-	@AfterEach
-	void tearDown() throws Exception {
-		inv.deleteInvestigador(test);
-	}
-
-	@Test
-	void testInvestigadorManager() {
-		 inv.getDBInvestigador();
-	}
-
-	@Test
-	void testGetListOfInvestigadores() {
-		fail("Not yet implemented");
-	}
-
+	private static List<Investigador> list;
+	private boolean insert = false;
+	
 	@Test
 	void testGetDBInvestigador() {
-		fail("Not yet implemented");
+		
+		InvestigadorManager im = new InvestigadorManager();
+		
+		Investigador i = new Investigador("testeapi", "TesteAPI", "testeapi@gmail.com", "teste");
+		Investigador newi = new Investigador("testeapi", "TesteAPIES", "testeapies@gmail.com", "testeteste");
+		
+		im.insertInvestigador(i);
+		
+		im.getDBInvestigador();
+		list=im.getListOfInvestigadores();
+		assertNotNull(list);
+		
 	}
-
-	@Test
-	void testInsertInvestigador() {
-		test = new Investigador("pass","nome","email","role");
-		inv.insertInvestigador(test);
-	}
-
-	@Test
-	void testUpdateInvestigador() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testDeleteInvestigador() {
-		fail("Not yet implemented");
-	}
-
 }

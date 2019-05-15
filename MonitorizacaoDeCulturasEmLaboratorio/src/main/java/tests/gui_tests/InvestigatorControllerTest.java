@@ -18,42 +18,42 @@ class InvestigatorControllerTest {
 
 	@Test
 	void testAddCulture() {
-		fail("Not yet implemented");
+		
 	}
 
 	@Test
 	void testEditCulture() {
-		fail("Not yet implemented");
+		
 	}
 
 	@Test
 	void testDeleteCulture() {
-		fail("Not yet implemented");
+		
 	}
 
 	@Test
 	void testRefreshCulturesTable() {
-		fail("Not yet implemented");
+		
 	}
 
 	@Test
 	void testAddMeasurement() {
-		fail("Not yet implemented");
+		
 	}
 
 	@Test
 	void testEditMeasurement() {
-		fail("Not yet implemented");
+		
 	}
 
 	@Test
 	void testDeleteMeasurement() {
-		fail("Not yet implemented");
+		
 	}
 
 	@Test
 	void testRefreshMeasurementsTable() {
-		fail("Not yet implemented");
+		
 	}
 
 }

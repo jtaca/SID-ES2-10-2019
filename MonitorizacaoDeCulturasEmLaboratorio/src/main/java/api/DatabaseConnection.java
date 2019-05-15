@@ -8,8 +8,9 @@ public class DatabaseConnection {
 
     private static DatabaseConnection single_instance = null;
 	private static Connection conn = null;
-
+	private static String userRole = null;
 	private static String userEmail = null;
+	
 
     /**
      * Returns or creates an instance of database connection.
@@ -47,6 +48,15 @@ public class DatabaseConnection {
     public static String getUserEmail() {
         return userEmail;
     }
+    
+    /**
+     * Gets the User role attribute associated 
+     * @return String, that contains the user's roles
+     */
+    
+    public static String getUserRole() {
+    	return userRole;
+    }
 
     /**
      * Private constructor to prevent unwanted instantiation.
@@ -81,8 +91,8 @@ public class DatabaseConnection {
 		    System.out.println(new Pair<Boolean, String>(true, getRoleLogin()).toString());
 	        userEmail = getDBUserEmail();
 	        System.out.println(userEmail);
-
-		    return(new Pair<Boolean, String>(true, getRoleLogin()));
+	        userRole = getRoleLogin();
+		    return(new Pair<Boolean, String>(true, userRole));
 		} catch (Exception e) {
 			System.out.println("connect: "+e.toString());
 		}

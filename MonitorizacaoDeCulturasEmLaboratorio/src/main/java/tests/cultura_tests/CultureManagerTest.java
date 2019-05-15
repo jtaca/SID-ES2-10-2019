@@ -16,11 +16,10 @@ class CultureManagerTest {
 		
 		CultureManager cm = new CultureManager();
 		
-		Culture c1 = new Culture(2, "Alfaces", "Cultura", "teste@gmail.com");
-		Culture c2 = new Culture("Laranjas", "Cultura", "TesteInvestigador@gmail.com");
+		Culture c1 = new Culture(40, "Pimentos", "Cultura", "testeinvestigador@gmail.com");
+		Culture c2 = new Culture(null, "Laranjas", "Cultura", "testeinvestigador@gmail.com");
 		
 		cm.insertCulture(c2);
-		cm.deleteCulture(c1);
 		
 	}
 
