@@ -1,4 +1,3 @@
-package unitTests;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
@@ -19,7 +18,7 @@ class SistemaTest {
 		assertEquals(sis.getMargemSegurancaLuz()==0.5,true);
 		assertEquals(sis.getMargemSegurancaTemperatura()==0.5,true);
 		assertEquals(sis.getTempoEntreAlertasConsecutivos()==15,true);
-		assertEquals(sis.getTempoExport()==15,true);
+		assertEquals(sis.getTempoExport()==10,true);
 	}
 
 }
