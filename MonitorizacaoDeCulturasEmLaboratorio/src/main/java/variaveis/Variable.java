@@ -52,13 +52,17 @@ public class Variable {
      * @return Returns the query with or without the id of the variable. If return with id a variable is inserted into the database with the id specified by the user . If returned without id, the field in the database destined for this value is automatically attributed.
      */
 
-    @Override
-    public String toString() {
+    public String stringToInsert() {
         if(id == null) {
             return "(NULL, \"" + name +"\")";
         } else {
             return "(" + id + ",\"" + name +"\")";
         }
 
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }

@@ -110,14 +110,18 @@ public class Culture {
      * @return Returns the query with or without the id of the culture. If return with id a culture  is inserted into the database with the id specified by the user . If returned without id, the field in the database destined for this value is automatically attributed.
      */
 
-    @Override
-    public String toString() {
+    public String stringToInsert() {
 
         if(id == null) {
             return "(NULL, '" + cultureName + "', '" + cultureDescription + "', '" + investigatorEmail + "')";
         } else {
             return "(" + id + ", '" + cultureName + "', '" + cultureDescription + "', '" + investigatorEmail + "')";
         }
+    }
+
+    @Override
+    public String toString() {
+        return cultureName;
     }
 
 

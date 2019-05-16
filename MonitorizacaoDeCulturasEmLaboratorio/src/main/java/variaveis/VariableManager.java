@@ -78,7 +78,7 @@ public class VariableManager {
         DatabaseConnection db = DatabaseConnection.getInstance();
 
         if(db.isConnected()) {
-            db.insert(NOME_TABELA, variable.toString());
+            db.insert(NOME_TABELA, variable.stringToInsert());
         }
         getDBVariables();
     }

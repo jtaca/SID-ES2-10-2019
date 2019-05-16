@@ -65,7 +65,7 @@ public class InvestigatorController {
 
         timestamp.setCellValueFactory(new PropertyValueFactory<>("dataHoraMedicao"));
         measurementValue.setCellValueFactory(new PropertyValueFactory<>("valorMedicao"));
-        idMeasuredVariable.setCellValueFactory(new PropertyValueFactory<>("idVariaveisMedidas"));
+        idMeasuredVariable.setCellValueFactory(new PropertyValueFactory<>("variavel"));
     }
 
     public void setPrimaryStage(Stage primaryStage) {
@@ -167,6 +167,7 @@ public class InvestigatorController {
 
                 AddMeasurementController controller = loader.getController();
                 controller.setMeasurementManager(measurementManager);
+                controller.setCulture(cultureSelector.getSelectionModel().getSelectedItem());
 
                 dialog.setScene(new Scene(root));
                 dialog.show();
@@ -178,9 +179,42 @@ public class InvestigatorController {
     }
 
     public void editMeasurement(MouseEvent mouseEvent) {
+        Task<Void> task = new Task<Void>() {
+            @Override
+            public Void call() {
+                System.out.println("Opening editMeasurement modal...");
+                final Stage dialog = new Stage();
+                dialog.initModality(Modality.APPLICATION_MODAL);
+                dialog.initOwner(primaryStage);
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/editMeasurement.fxml"));
+                StackPane root;
+                try {
+                    root = loader.load();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return null;
+                }
+
+                EditMeasurementController controller = loader.getController();
+                controller.setMeasurementManager(measurementManager);
+                controller.setOldMeasurement(measurements_table.getSelectionModel().getSelectedItem());
+
+                dialog.setScene(new Scene(root));
+                dialog.show();
+
+                return null;
+            }
+        };
+        Platform.runLater(task);
     }
 
     public void deleteMeasurement(MouseEvent mouseEvent) {
+        Measurement selected = measurements_table.getSelectionModel().getSelectedItem();
+        if (selected != null) {
+            List<Measurement> list = measurementManager.deleteMedicoes(selected);
+            ObservableList<Measurement> measurementList = FXCollections.observableArrayList(list);
+            measurements_table.setItems(measurementList);
+        }
     }
 
     public void refreshMeasurementsTable(MouseEvent mouseEvent) {

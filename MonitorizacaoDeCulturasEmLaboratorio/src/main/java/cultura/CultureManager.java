@@ -75,7 +75,7 @@ public class CultureManager {
         DatabaseConnection DB = DatabaseConnection.getInstance();
 
         if(DB.isConnected()){
-            DB.insert(TABELA_CULTURA, culture.toString());
+            DB.insert(TABELA_CULTURA, culture.stringToInsert());
         }
 
         return getListOfCultures();
