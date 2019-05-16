@@ -1,8 +1,8 @@
-import static org.junit.jupiter.api.Assertions.*;
 
+package unitTests;
+import static org.junit.jupiter.api.Assertions.*;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.junit.jupiter.api.Test;
-
 import medicao.GestorDeMedicoes;
 import medicao.Medicao;
 import medicao.Sistema;
