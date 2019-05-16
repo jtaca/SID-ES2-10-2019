@@ -1,5 +1,8 @@
 package medicoes;
 
+import cultura.Culture;
+import variaveis.Variable;
+
 /**
  *Class that represents an measurement and the respective attributes that define it.
  */
@@ -10,26 +13,28 @@ public class Measurement {
     private String dataHoraMedicao;
     private double valorMedicao;
     private Integer idVariaveisMedidas;
-    private String nomeVariavel;
+    private Variable variavel;
+    private Culture cultura;
 
     /**
-     * Class constructer used mainly to deleted measurements in database.
+     * Class constructor used mainly to deleted measurements in database.
      * @param numeroMedicao the identifier number of measurement in the database.
      * @param dataHoraMedicao the date and time at which the measurement is inserted into the database.
      * @param valorMedicao the measured value.
      * @param idVariaveisMedidas the identifier of the variable-culture pair for which the measurement was made.
      */
 
-    public Measurement(Integer numeroMedicao, String dataHoraMedicao, double valorMedicao, Integer idVariaveisMedidas, String nomeVariavel){
+    public Measurement(Integer numeroMedicao, String dataHoraMedicao, double valorMedicao, Integer idVariaveisMedidas, Variable variavel, Culture cultura){
         this.numeroMedicao = numeroMedicao;
         this.dataHoraMedicao = dataHoraMedicao;
         this.valorMedicao = valorMedicao;
         this.idVariaveisMedidas = idVariaveisMedidas;
-        this.nomeVariavel = nomeVariavel;
+        this.variavel = variavel;
+        this.cultura = cultura;
     }
 
     /**
-     * Class constructer used mainly to register or update informations of the measurements in database.
+     * Class constructor used mainly to register or update informations of the measurements in database.
      * @param valorMedicao the measured or new measured value.
      * @param idVariaveisMedidas the identifier of the variable-culture pair for which the measurement was made.
      */
@@ -44,14 +49,39 @@ public class Measurement {
      * @return the identifier number.
      */
 
-    public String getNomeVariavel() {
-        return nomeVariavel;
+    public Variable getVariavel() {
+        return variavel;
+    }
+    
+    /**
+     * Changes the variable object associated with the measurement.
+     * @param newVariavel the new variable object.
+     */
+
+    public void setVariavel(Variable newVariavel) {
+        variavel = newVariavel;
+    }
+    
+    /**
+     * @return the culture object associated with the measurement.
+     */
+    
+    public Culture getCultura() {
+        return cultura;
+    }
+    
+    /**
+     * Changes the culture object associated with the measurement.
+     * @param newCultura the new culture object.
+     */
+
+    public void setCultura(Culture newCultura) {
+        cultura = newCultura;
     }
 
-    public void setNomeVariavel(String newNomeVariavel) {
-        nomeVariavel = newNomeVariavel;
-    }
-
+    /**
+     * @return the identification number of the measurement.
+     */
     public Integer getNumeroMedicao() {
         return numeroMedicao;
     }
@@ -81,6 +111,14 @@ public class Measurement {
 
     public Integer getIdVariaveisMedidas(){
         return idVariaveisMedidas;
+    }
+    
+    /**
+     * @param newIdVariaveisMedidas
+     */
+    
+    public void setIdVariaveisMedidas(int newIdVariaveisMedidas) {
+    	idVariaveisMedidas = newIdVariaveisMedidas;
     }
 
     /**

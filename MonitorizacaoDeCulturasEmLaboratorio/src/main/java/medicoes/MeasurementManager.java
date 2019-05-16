@@ -2,10 +2,8 @@ package medicoes;
 
 import api.DatabaseConnection;
 import cultura.Culture;
-
+import variaveis.Variable;
 import com.mysql.cj.jdbc.CallableStatement;
-
-import java.util.AbstractList;
 import java.util.List;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -30,35 +28,72 @@ public class MeasurementManager {
     }
 
     /**
-     * Method that obtains for each measurement extracted from the database the respective name of the variable that gave rise to it. For this it uses the variable culture pair id provided by each measurement.
+     * Method that obtains for each measurement extracted from the database the respective variable object that gave rise to it. For this it uses the variable culture pair id provided by each measurement.
      * @param idVariavelMedidas the id of the variable culture pair.
-     * @return the name of the variable that gave rise to the measurement.
+     * @return the variable object that gave rise to the measurement.
      * @throws SQLException
      */
 
-    private String addVariableName(int idVariavelMedidas) throws SQLException  {
+    private Variable addVariableToMeasurement(int idVariavelMedidas) throws SQLException  {
 
         DatabaseConnection DB = DatabaseConnection.getInstance();
-
-        String nome = "";
+        Variable variavel = null;
 
         if(DB.isConnected()) {
-            ResultSet ResultSet = DB.select("SELECT NomeVariavel FROM variaveis WHERE variaveis.IDVariavel IN (SELECT IDVariavel FROM variaveis_medidas WHERE variaveis_medidas.IdVariaveisMedidas=" + idVariavelMedidas + ")");
+            
+        	ResultSet ResultSet1 = DB.select("SELECT * FROM variaveis WHERE variaveis.IDVariavel IN (SELECT IDVariavel FROM variaveis_medidas WHERE variaveis_medidas.IdVariaveisMedidas=" + idVariavelMedidas + ")");
             try {
 
-                ResultSet.next();
-                nome = ResultSet.getString("NomeVariavel");
+                ResultSet1.next();
+                String nome = ResultSet1.getString("NomeVariavel");
+                int id = ResultSet1.getInt("IDVariavel");
+                
+                variavel = new Variable(id, nome);
+                
+            } catch (SQLException sqlException) {
+                sqlException.printStackTrace();
+            }
+        }
+
+        return variavel;
+    }
+    
+    /**
+     * Method that obtains for each measurement extracted from the database the respective culture object that gave rise to it. For this it uses the variable culture pair id provided by each measurement.
+     * @param idVariavelMedidas the id of the variable culture pair.
+     * @return the culture object that gave rise to the measurement.
+     * @throws SQLException
+     */
+    
+    private Culture addCultureToMeasurement(int idVariavelMedidas) throws SQLException  {
+
+        DatabaseConnection DB = DatabaseConnection.getInstance();
+        Culture cultura = null;
+
+        if(DB.isConnected()) {
+      
+            ResultSet ResultSet2 = DB.select("SELECT * FROM cultura WHERE cultura.IDCultura IN (SELECT IDCultura FROM variaveis_medidas WHERE variaveis_medidas.IdVariaveisMedidas=" + idVariavelMedidas + ")");
+            try {
+
+                ResultSet2.next();
+                String nome = ResultSet2.getString("NomeCultura");
+                int id = ResultSet2.getInt("IDCultura");
+                String des = ResultSet2.getString("DescricaoCultura");
+                String email = ResultSet2.getString("EmailInvestigador");
+                
+                cultura = new Culture(id, nome, des, email);
 
             } catch (SQLException sqlException) {
                 sqlException.printStackTrace();
             }
         }
 
-        return nome;
+        return cultura;
     }
 
+
     /**
-     * Extracts all records from the medicoes table measurements from the database.
+     * Extracts all records from the measurements table measurements from the database.
      */
     
     public void getDBMedicoes() {
@@ -80,9 +115,9 @@ public class MeasurementManager {
     }
     
     /**
-     * An auxiliary method that transforms the measurements obtained from the database into measurement objects and also adds the variable name that gave rise to the measurement using the addVariableName method.
-     * @param varMedicao represents the record of a medicao extrated from the data base for a post transformation.
-     * @return
+     * An auxiliary method that transforms the measurements obtained from the database into measurement objects and also adds the variable and culture objects that gave rise to the measurement using the addVariableToMeasurement and addCultureToMeasurement methods.
+     * @param varMedicao represents the record of a measurement extracted from the data base for a post transformation.
+     * @return the auxiliary array list of the measurements.
      * @throws SQLException
      */
 
@@ -95,7 +130,7 @@ public class MeasurementManager {
             int idVariaveisMedidas = varMedicao.getInt("idVariaveisMedidas");
 
             AuxlistOfMedicoes.add(new Measurement(numeroMedicao, dataHoraMedicao,
-                    valorMedicao, idVariaveisMedidas, addVariableName(idVariaveisMedidas)));
+                    valorMedicao, idVariaveisMedidas, addVariableToMeasurement(idVariaveisMedidas), addCultureToMeasurement(idVariaveisMedidas)));
 
         }
         return AuxlistOfMedicoes;
@@ -115,13 +150,29 @@ public class MeasurementManager {
     /**
      * Insert a new measure into the database. If the measure does not have an ID it will be assigned one automatically by the database auto-increment.
      * @param medicao the measure to be inserted.
+     * @throws SQLException 
      */
 
-    public void insertMedicoes (Measurement medicao) {
+    public void insertMedicoes (Measurement medicao){
 
         DatabaseConnection DB = DatabaseConnection.getInstance();
-
+        
+        int idVariavel = medicao.getVariavel().getId();
+        int idCultura = medicao.getCultura().getId();
+        
         if(DB.isConnected()) {
+        	
+        	listOfMedicoes.clear();
+            ResultSet resultSet = DB.select("SELECT IdVariaveisMedidas FROM  variaveis_medidas WHERE variaveis_medidas.IDCultura=" + idCultura + " AND variaveis_medidas.IDVariavel=" + idVariavel);
+        	int idVarMed = 0;
+			try {
+				resultSet.next();
+				idVarMed = resultSet.getInt("IdVariaveisMedidas");
+			} catch (SQLException e) {
+				System.out.println("Não é possivel incerir esta medição. Não existe uma variavel_medida que relacione este par variavel-cultura.");
+				return;
+			}
+            medicao.setIdVariaveisMedidas(idVarMed);
             DB.insert(TABELA_CULTURA, medicao.toString());
         }
 

@@ -12,7 +12,7 @@ public class Culture {
     private String investigatorEmail;
 
     /**
-     * Class constructer used mainly to deleted cultures in database.
+     * Class constructor used mainly to deleted cultures in database.
      * @param id the identifier number of culture in the database.
      * @param cultureName the name of culture.
      * @param cultureDescription the description of culture.
@@ -28,7 +28,7 @@ public class Culture {
     }
 
     /**
-     * Class constructer used mainly to register or update informations of the culture in database.
+     * Class constructor used mainly to register or update informations of the culture in database.
      * @param cultureName the new name of culture.
      * @param cultureDescription the new description of culture.
      * @param investigatorEmail the new email address of the investigator responsible for the culture.

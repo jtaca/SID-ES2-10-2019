@@ -55,7 +55,7 @@ public class Investigador {
 
     /**
      * Returns the investigator's professional category.
-     * @return the password.
+     * @return the category.
      */
 
     public String getCategory() {

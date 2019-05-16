@@ -10,14 +10,14 @@ import api.InvestigadorManager;
 class InvestigadorManagerTest {
 
 	private static List<Investigador> list;
-	private boolean insert = false;
+	
 	
 	@Test
 	void testGetDBInvestigador() {
 		
 		InvestigadorManager im = new InvestigadorManager();
 		
-		Investigador i = new Investigador("testeapi", "TesteAPI", "testeapi@gmail.com", "teste");
+		Investigador i = new Investigador("gbfso", "TesteAPI", "gbfsoapi@gmail.com", "teste");
 		Investigador newi = new Investigador("testeapi", "TesteAPIES", "testeapies@gmail.com", "testeteste");
 		
 		im.insertInvestigador(i);
@@ -25,6 +25,6 @@ class InvestigadorManagerTest {
 		im.getDBInvestigador();
 		list=im.getListOfInvestigadores();
 		assertNotNull(list);
-		
+
 	}
 }
