@@ -23,9 +23,7 @@ public class MongoConnection {
      * @return arraylist of read DBObjects
      * @throws InterruptedException if interrupted while waiting to read again
      */
-    public synchronized ArrayList<DBObject> read() throws InterruptedException {
-        wait(1000);
-
+    public ArrayList<DBObject> read() {
         ArrayList<DBObject> objects = new ArrayList<>();
 
         MongoClient mongoClient1 = new MongoClient("localhost", 27017);

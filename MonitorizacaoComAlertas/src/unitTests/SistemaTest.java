@@ -9,7 +9,7 @@ class SistemaTest {
 
 	@Test
 	void test() {
-		Sistema sis = new Sistema (0,20,0,300,0.5,0.5,0.5,0.5, 15);
+		Sistema sis = new Sistema (0,20,0,300,0.5,0.5,0.5,0.5, 15, 10);
 		assertEquals(sis.getLimiteInferiorTemperatura()==0,true);
 		assertEquals(sis.getLimiteSuperiorTemperatura()==20,true);
 		assertEquals(sis.getLimiteInferiorLuz()==0,true);
@@ -19,7 +19,7 @@ class SistemaTest {
 		assertEquals(sis.getMargemSegurancaLuz()==0.5,true);
 		assertEquals(sis.getMargemSegurancaTemperatura()==0.5,true);
 		assertEquals(sis.getTempoEntreAlertasConsecutivos()==15,true);
-		
+		assertEquals(sis.getTempoExport()==15,true);
 	}
 
 }

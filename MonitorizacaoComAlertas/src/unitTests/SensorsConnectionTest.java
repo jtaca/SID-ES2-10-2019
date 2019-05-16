@@ -1,4 +1,3 @@
-package unitTests;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
@@ -12,7 +11,7 @@ class SensorsConnectionTest {
 	@Test
 	void test() {
 		
-		Sistema sis = new Sistema (0,20,0,300,0.5,0.5,0.5,0.5, 15);
+		Sistema sis = new Sistema (0,20,0,300,0.5,0.5,0.5,0.5, 15,10);
 		
 		GestorDeMedicoes ges = new GestorDeMedicoes (sis);
 		

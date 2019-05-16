@@ -10,6 +10,7 @@ public class Sistema {
 	private double margemSegurancaLuz;
 	private double margemSegurancaTemperatura;
 	private double tempoEntreAlertasConsecutivos;
+	private double tempoExport;
 
     /**
 	 *  Creates the system that represents the greenhouse.
@@ -26,7 +27,7 @@ public class Sistema {
 
 	public Sistema(double limiteInferiorTemperatura, double limiteSuperiorTemperatura, double limiteInferiorLuz,
 			double limiteSuperiorLuz, double percentagemVariacaoTemperatura, double percentagemVariacaoLuz,
-			double margemSegurancaLuz, double margemSegurancaTemperatura, double tempoEntreAlertasConsecutivos) {
+			double margemSegurancaLuz, double margemSegurancaTemperatura, double tempoEntreAlertasConsecutivos, double tempoExport) {
 		super();
 		this.limiteInferiorTemperatura = limiteInferiorTemperatura;
 		this.limiteSuperiorTemperatura = limiteSuperiorTemperatura;
@@ -37,6 +38,7 @@ public class Sistema {
 		this.margemSegurancaLuz = margemSegurancaLuz;
 		this.margemSegurancaTemperatura = margemSegurancaTemperatura;
 		this.tempoEntreAlertasConsecutivos = tempoEntreAlertasConsecutivos;
+		this.tempoExport = tempoExport;
 	}
 
 	/**
@@ -110,4 +112,10 @@ public class Sistema {
         return tempoEntreAlertasConsecutivos;
     }
 
+    /**
+     * @return the time between exports
+     */
+    public double getTempoExport() {
+        return tempoExport;
+    }
 }

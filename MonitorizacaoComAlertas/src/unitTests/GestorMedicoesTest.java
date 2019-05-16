@@ -1,4 +1,3 @@
-package unitTests;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.eclipse.paho.client.mqttv3.MqttMessage;
@@ -12,7 +11,7 @@ class GestorMedicoesTest {
 
 	@Test
 	void test() {
-		Sistema sis = new Sistema (0,20,0,300,0.5,0.5,0.5,0.5, 15);
+		Sistema sis = new Sistema (0,20,0,300,0.5,0.5,0.5,0.5, 15,10);
 
 		GestorDeMedicoes ges = new GestorDeMedicoes (sis);
 
@@ -44,7 +43,7 @@ class GestorMedicoesTest {
 
 		assertEquals(ges.getBq().contains(med),true);
 
-		Sistema sis2 = new Sistema (20,27,300,500,0.2,0.2,0.3,0.2, 15);
+		Sistema sis2 = new Sistema (20,27,300,500,0.2,0.2,0.3,0.2, 15,10);
 
 		GestorDeMedicoes ges2 = new GestorDeMedicoes (sis2);
 		ges2.adiciona(med);
@@ -56,7 +55,7 @@ class GestorMedicoesTest {
 		assertEquals(med.getCausaLuminosidade().equals("O valor da medicao da luminosidade esta proximo do limite superior estabelecido."),true);
 
 
-		Sistema sis3 = new Sistema (27,30,500,700,0.2,0.2,0.3,0.2, 15);
+		Sistema sis3 = new Sistema (27,30,500,700,0.2,0.2,0.3,0.2, 15,10);
 
 		GestorDeMedicoes ges3 = new GestorDeMedicoes (sis3);
 		ges3.adiciona(med);
@@ -68,7 +67,7 @@ class GestorMedicoesTest {
 		assertEquals(med.getCausaLuminosidade().equals("O valor da medicao da luminosidade ultrapassou o limite inferior estabelecido."),true);
 
 
-		Sistema sis4 = new Sistema (26,28,400,600,0.2,0.2,0.3,0.25, 15);
+		Sistema sis4 = new Sistema (26,28,400,600,0.2,0.2,0.3,0.25, 15,10);
 
 		GestorDeMedicoes ges4 = new GestorDeMedicoes (sis4);
 		ges4.adiciona(med);

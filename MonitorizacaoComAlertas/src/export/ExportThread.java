@@ -41,7 +41,9 @@ public class ExportThread extends Thread {
 
             readFromMongo();
 
-            checkAlerts();
+            checkAlerts(lightAlerts);
+            checkAlerts(temperatureAlerts);
+            System.out.println(timeSinceLastLightAlert);
 
             // export measurements
             for(Measurement measurement: measurements) {
@@ -60,10 +62,8 @@ public class ExportThread extends Thread {
     /**
      * Checks if there are any alerts and adds them to the alerts lists
      */
-    private void checkAlerts() {
+    private void checkAlerts(ArrayList<AndroidAlert> lightAlerts) {
         if(lightAlerts.size() > 0) {
-            timeSinceLastLightAlert = 0;
-
             lightAlerts.forEach(alert -> {
                 try {
                     databaseConnection.insertAlert(alert);
@@ -74,20 +74,6 @@ public class ExportThread extends Thread {
 
             lightAlerts.clear();
         }
-
-        if(temperatureAlerts.size() > 0) {
-            timeSinceLastTemperatureAlert = 0;
-
-            temperatureAlerts.forEach(alert -> {
-                try {
-                    databaseConnection.insertAlert(alert);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            });
-
-            temperatureAlerts.clear();
-        }
     }
 
     /**
@@ -96,20 +82,25 @@ public class ExportThread extends Thread {
     private void calculateDeltas() {
         timeSinceLastTemperatureAlert += System.currentTimeMillis() - lastTimestamp;
         timeSinceLastLightAlert += System.currentTimeMillis() - lastTimestamp;
+        lastTimestamp = System.currentTimeMillis();
     }
 
     /**
      * Reads all values from the MongoDB database, interprets them, and adds them to the corresponding lists.
      */
     private void readFromMongo() {
-        // Read from mongo
-        ArrayList<DBObject> arrayList = new ArrayList<>();
+
         try {
-            arrayList = mongoConnection.read();
-            System.out.println("----| Starting export of " + arrayList.size() + " database objects |----");
+            sleep((long) (sistema.getTempoExport()*1000) );
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
+        // Read from mongo
+        ArrayList<DBObject> arrayList = new ArrayList<>();
+        arrayList = mongoConnection.read();
+        System.out.println("----| Starting export of " + arrayList.size() + " database objects |----");
+
 
         if(arrayList.size() == 0) {  // If there are no objects in the mongoDB database there is no point in continuing
             return;
@@ -166,8 +157,7 @@ public class ExportThread extends Thread {
             lightMeasurement = new Measurement(Measurement.MeasurementType.LIGHT, timestamp, light, lightReason, lightError);
 
             String lightAlert = (String) obj.get("alertaLuminosidade");
-            if(lightAlert != null && timeSinceLastLightAlert >= sistema.getTempoEntreAlertasConsecutivos()) {
-
+            if(lightAlert != null && timeSinceLastLightAlert >= (sistema.getTempoEntreAlertasConsecutivos()*1000)) {
                 lightAlerts.add(new AndroidAlert("luz", timestamp, sistema.getLimiteInferiorLuz(), sistema.getLimiteSuperiorLuz(), light, lightReason));
                 timeSinceLastLightAlert = 0;
             }
@@ -195,7 +185,7 @@ public class ExportThread extends Thread {
             temperatureMeasurement = new Measurement(Measurement.MeasurementType.TEMP, timestamp, temp, tempReason, tempError);
 
             String temperatureAlert = (String) obj.get("alertaTemperatura");
-            if(temperatureAlert != null && timeSinceLastTemperatureAlert > sistema.getTempoEntreAlertasConsecutivos()) {
+            if(temperatureAlert != null && timeSinceLastTemperatureAlert > (sistema.getTempoEntreAlertasConsecutivos()*1000)) {
                 temperatureAlerts.add(new AndroidAlert("temperatura", timestamp, sistema.getLimiteInferiorTemperatura(), sistema.getLimiteSuperiorTemperatura(), temp, tempReason));
                 timeSinceLastTemperatureAlert = 0;
             }
