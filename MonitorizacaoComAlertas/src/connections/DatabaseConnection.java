@@ -145,6 +145,7 @@ public class DatabaseConnection {
 
         System.out.println(query);
         executeStatement(stmt, query);
+        System.out.println("MYSQL After write Time: "+System.currentTimeMillis());
     }
 
     private void executeStatement(Statement stmt, String query) throws SQLException {
