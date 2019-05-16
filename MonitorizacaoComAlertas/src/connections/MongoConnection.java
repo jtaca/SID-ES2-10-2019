@@ -24,7 +24,7 @@ public class MongoConnection {
      * @throws InterruptedException if interrupted while waiting to read again
      */
     public synchronized ArrayList<DBObject> read() throws InterruptedException {
-        wait(15000);
+        wait(1000);
 
         ArrayList<DBObject> objects = new ArrayList<>();
 

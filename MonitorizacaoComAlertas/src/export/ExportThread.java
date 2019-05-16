@@ -111,6 +111,10 @@ public class ExportThread extends Thread {
             e.printStackTrace();
         }
 
+        if(arrayList.size() == 0) {  // If there are no objects in the mongoDB database there is no point in continuing
+            return;
+        }
+
         for (DBObject object : arrayList) {
             interpretJSON(object);
         }
