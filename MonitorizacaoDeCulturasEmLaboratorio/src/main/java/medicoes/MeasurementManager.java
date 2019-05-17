@@ -225,7 +225,7 @@ public class MeasurementManager {
             System.out.println("Nao foi possivel apagar a medicao pretendida. Exception: " + e.getMessage());
         }
 
-        return getListOfMedicoes();
+        return selectMedicoes(medicao.getCultura());
 
     }
 

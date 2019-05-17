@@ -163,7 +163,7 @@ public class AdministratorController {
             Task<Void> task = new Task<Void>() {
                 @Override
                 public Void call() {
-                    System.out.println("Opening addVariavel modal...");
+                    System.out.println("Opening editVariavel modal...");
                     final Stage dialog = new Stage();
                     dialog.initModality(Modality.APPLICATION_MODAL);
                     dialog.initOwner(primaryStage);

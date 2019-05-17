@@ -35,7 +35,7 @@ public class LoginController {
         Pair<Boolean, String> result = db.connect(username.getText(), password.getText());
 
         if (!result.getKey())
-            System.out.println("Erro no login");
+            System.out.println("Erro no login: " + result.getValue());
         else if (result.getKey() && result.getValue().equals("investigador"))
             startInvestigatorPanel();
         else if (result.getKey() && result.getValue().equals("administrador"))

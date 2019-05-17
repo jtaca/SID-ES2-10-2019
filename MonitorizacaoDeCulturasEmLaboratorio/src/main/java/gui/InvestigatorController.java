@@ -7,6 +7,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -61,7 +62,6 @@ public class InvestigatorController {
         cultures_table.setItems(cultureList);
 
         measurementManager = new MeasurementManager();
-        cultureSelector.getItems().addAll(cultureManager.getListOfCultures());
 
         timestamp.setCellValueFactory(new PropertyValueFactory<>("dataHoraMedicao"));
         measurementValue.setCellValueFactory(new PropertyValueFactory<>("valorMedicao"));
@@ -224,8 +224,17 @@ public class InvestigatorController {
     }
 
     public void getMeasurementsFromCulture(ActionEvent actionEvent) {
-        List<Measurement> list = measurementManager.selectMedicoes(cultureSelector.getSelectionModel().getSelectedItem());
-        ObservableList<Measurement> obsList = FXCollections.observableArrayList(list);
-        measurements_table.setItems(obsList);
+        Culture culture = cultureSelector.getSelectionModel().getSelectedItem();
+        if (culture != null) {
+            List<Measurement> list = measurementManager.selectMedicoes(culture);
+            ObservableList<Measurement> obsList = FXCollections.observableArrayList(list);
+            measurements_table.setItems(obsList);
+        }
+    }
+
+    public void loadCulturesToSelector(Event mouseEvent) {
+        ObservableList<Culture> obsList = FXCollections.observableArrayList(cultureManager.getListOfCultures());
+        cultureSelector.setItems(obsList);
+        cultureSelector.setVisibleRowCount(obsList.size());
     }
 }
