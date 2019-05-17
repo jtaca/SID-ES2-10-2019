@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
@@ -11,7 +15,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
-<TabPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="430.0" prefWidth="900.0" style="-fx-background-color: white;" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.InvestigatorController">
+<TabPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="430.0" prefWidth="900.0" style="-fx-background-color: white;" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.InvestigatorController">
   <tabs>
     <Tab style="-fx-background-color: white; -fx-border-style: solid; -fx-border-width: 1 1 0 1; -fx-border-color: rgb(210, 210, 210); -fx-focus-color: grey; -fx-faint-focus-color: white;" text="Cultures">
       <content>
@@ -57,7 +61,7 @@
                </children></AnchorPane>
       </content>
     </Tab>
-    <Tab style="-fx-background-color: white; -fx-border-style: solid; -fx-border-width: 1 1 0 1; -fx-border-color: rgb(210, 210, 210); -fx-focus-color: grey; -fx-faint-focus-color: white;" text="Measurements">
+    <Tab onSelectionChanged="#loadCulturesToSelector" style="-fx-background-color: white; -fx-border-style: solid; -fx-border-width: 1 1 0 1; -fx-border-color: rgb(210, 210, 210); -fx-focus-color: grey; -fx-faint-focus-color: white;" text="Measurements">
       <content>
         <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0">
                <children>

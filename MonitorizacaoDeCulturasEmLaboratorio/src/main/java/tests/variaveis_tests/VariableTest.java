@@ -18,8 +18,10 @@ class VariableTest {
 		assertTrue(v1.getId().equals(2));
 		assertTrue(v1.getName().equals("Chumbo"));
 	
-		assertTrue(v2.toString().equals("(NULL, \"" + "Chumbo" +"\")"));
-		assertTrue(v1.toString().equals("(2,\"" + "Chumbo" +"\")"));
+		assertTrue(v2.stringToInsert().equals("(NULL, \"" + "Chumbo" +"\")"));
+		assertTrue(v1.stringToInsert().equals("(2,\"" + "Chumbo" +"\")"));
+		
+		assertTrue(v2.toString().equals("Chumbo"));
 	
 	}
 }

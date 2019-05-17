@@ -34,6 +34,19 @@ public class Measurement {
     }
 
     /**
+     * Class constructor used mainly to deleted measurements in database.
+     * @param dataHoraMedicao the date and time at which the measurement is inserted into the database.
+     * @param valorMedicao the measured value.
+     */
+
+    public Measurement( String dataHoraMedicao, double valorMedicao, Variable variavel, Culture cultura){
+        this.dataHoraMedicao = dataHoraMedicao;
+        this.valorMedicao = valorMedicao;
+        this.variavel = variavel;
+        this.cultura = cultura;
+    }
+
+    /**
      * Class constructor used mainly to register or update informations of the measurements in database.
      * @param valorMedicao the measured or new measured value.
      * @param idVariaveisMedidas the identifier of the variable-culture pair for which the measurement was made.
