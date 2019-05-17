@@ -178,7 +178,7 @@ public class ExportThread extends Thread {
         Measurement temperatureMeasurement = null;
 
         if(tempObject != null) {
-            int temp = (int) Double.parseDouble((String) tempObject);
+            double temp = Double.parseDouble((String) tempObject);
             String tempReason = (String) obj.get("causaTemperatura");
             boolean tempError = Boolean.parseBoolean((String)obj.get("erroTemperatura"));
 
