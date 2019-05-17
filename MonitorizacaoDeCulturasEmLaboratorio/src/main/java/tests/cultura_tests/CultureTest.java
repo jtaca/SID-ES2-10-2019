@@ -22,8 +22,8 @@ class CultureTest {
 		assertTrue(c1.getId().equals(2));
 		assertTrue(c1.getInvestigatorEmail().equals("teste@gmail.com"));
 		
-		assertTrue(c2.toString().equals("(NULL, 'Laranjas', 'Cultura', 'testeteste@gmail.com')"));
-		assertTrue(c1.toString().equals("(2, 'Alfaces', 'Cultura', 'teste@gmail.com')"));
+		assertTrue(c2.stringToInsert().equals("(NULL, 'Laranjas', 'Cultura', 'testeteste@gmail.com')"));
+		assertTrue(c1.stringToInsert().equals("(2, 'Alfaces', 'Cultura', 'teste@gmail.com')"));
 		
 		c1.setCultureDescription("Cultura1");
 		c1.setCultureName("Pimentos");
@@ -31,6 +31,8 @@ class CultureTest {
 		assertTrue(c1.getCultureDescription().equals("Cultura1"));
 		assertTrue(c1.getCultureName().equals("Pimentos"));
 		assertTrue(c1.getInvestigatorEmail().equals("teste12@gmail.com"));
+		
+		assertTrue(c1.toString().equals("Pimentos"));
 		
 	}
 
