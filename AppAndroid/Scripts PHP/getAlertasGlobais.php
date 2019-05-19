@@ -2,6 +2,7 @@
 	$url="127.0.0.1";
 	$database="estufa";
     $conn = mysqli_connect($url,$_POST['username'],$_POST['password'],$database);
+
 	$data=$_POST['date'];
 	$sql = "select data,nomeVariavel,limiteInferiorVar,limiteSuperiorVar,valor,descricaoAlertas from alertas where nomeCultura='todas' and DATE(data)= '$data'";
 	$result = mysqli_query($conn, $sql);
