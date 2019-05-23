@@ -27,6 +27,8 @@ Deve fazer restart do seu PC.
 
 (To turn Hyper-V back on, run the command: bcdedit /set hypervisorlaunchtype auto)
 
+Deve verificar que a Network  (Devices > Netork> Network Settings... ) deve estar como modo bridged adapter e o Promiscuous mode deve estar como Allow VMs.
+
 Deve agora executar a o ficheiro "MSEdge - Win10.ova" e iniciar a maquina virtual associada.
 
 De seguida deve selecionar Login: IEUser e inserir a Password: Passw0rd!   .
@@ -57,11 +59,10 @@ Para aceder aos dados no Android, deve ativar a função de shared drag and drop
 
 Agora deve de verificar que o depuramento USB está ligado abrir a aplicação com um gestor de ficheiros e executa-la. (Caso não esteja deve ligalo através do debug mode do android, e quando conectar o disposivo à sua workstation, deverá haver uma notificação que premite fazer essa opção).
 
+Deve de iniciar o Intelij no projeto: MonitorizacaoComAlertas e executar: MongoSQLMain e SensorMongoMain. (para começar a migrar os dados do sensor do sensor para o mongo e do mongo para o SQL)
+
 De seguida abra uma nova instância do CMD.exe (no desktop) e insira: ipconfig. Deve ter acesso ao seu endereço de IP (2 linha, geralmente diz IPV4). 
-Agora copie o endereço de IP para as credenciais correspondentes no seu dispositivo movel. os restantes campos devem ser:
-
-
-
+Agora copie o endereço de IP para as credenciais correspondentes no seu dispositivo movel. os restantes campos devem ser: user joaoo, password: 123 porta 80 e IP que foi encontraado anteriormente.
 
 
 
@@ -69,14 +70,22 @@ Agora copie o endereço de IP para as credenciais correspondentes no seu disposi
     Para iniciar a interface do auditor, acesse através do edge a localhost/PHP_Migration/guiAuditor.php
     
     
+
+    
+    
         
 	Obrigado pela sua colaboração. 
 	Se encontrar algum bug associado à implementação, não hexite em contactar-nos.
 	
+
 	
-	
-	
+
+
+
+
 Nota: Decidimos fazer a entrega por Máquina virtual apóspassar várias horas a tentar integrar o software necessário nos containers. Fizemos diversos builds, mas por uma questão de pragmatismo tivemos de obtar pela VM para fazer a entrega no tempo previsto.
+
+
 
 
 ### Printscreens
