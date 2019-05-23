@@ -54,6 +54,8 @@ Para começar a correr a aplicação do Investigador ou administrador execute o 
 
 (nós geramos diversas versões dos jar independentes do ambiente de desenvolvimeto, mas todas tinham bugs associados, por isso acabámos por fazer a entrega assim. Não é de facto adequado para entregar ao cliente final, mas não foi falta de empenho)
 
+Para testar os users do tipo administrador usar as credenciais: user: admin pass: admin e para testar o user investigador: user: joaoo pass: 123
+
 
 Para aceder aos dados no Android, deve ativar a função de shared drag and drop (Menú da VM: Devices > Drag and Drop > Guest to Host). Copie o .apk para o seu desktop e descarregue no seu smartphone (Android inferior a 9.0).  
 
