@@ -61,7 +61,9 @@ Para aceder aos dados no Android, deve ativar a função de shared drag and drop
 
 Agora deve de verificar que o depuramento USB está ligado abrir a aplicação com um gestor de ficheiros e executa-la. (Caso não esteja deve ligá-lo através do debug mode do android, e quando conectar o disposivo à sua workstation, deverá haver uma notificação que premite fazer essa opção).
 
-Deve de iniciar o Intellij no projeto: MonitorizacaoComAlertas e executar: MongoSQLMain e SensorMongoMain. (para começar a migrar os dados do sensor para o mongo e do mongo para o SQL)
+Inicie o CMD.exe e vá até a diretoria desktop e execute: java -jar  SensorMongoMain.jar e numa nova janela java -jar MongoSQLMain.jar, de modo a ativar a migração do sensor para a base de dados.
+
+(caso não funcione deve de iniciar o Intellij no projeto: MonitorizacaoComAlertas e executar: MongoSQLMain e SensorMongoMain. (para começar a migrar os dados do sensor para o mongo e do mongo para o SQL)
 
 De seguida abra uma nova instância do CMD.exe (no desktop) e insira: ipconfig. Deve ter acesso ao seu endereço de IP (2 linhas, geralmente diz IPV4). 
 Agora copie o endereço de IP para as credenciais correspondentes no seu dispositivo movel. os restantes campos devem ser: user: joaoo, password: 123 porto 80 e IP que foi encontraado anteriormente.
@@ -70,9 +72,6 @@ Agora copie o endereço de IP para as credenciais correspondentes no seu disposi
 
     
     Para iniciar a interface do auditor, acesse através do edge a localhost/PHP_Migration/guiAuditor.php
-    
-    
-
     
     
         
