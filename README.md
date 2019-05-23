@@ -69,6 +69,11 @@ Agora copie o endereço de IP para as credenciais correspondentes no seu disposi
         
 	Obrigado pela sua colaboração. 
 	Se encontrar algum bug associado à implementação, não hexite em contactar-nos.
+	
+	
+	
+	
+Nota: Decidimos fazer a entrega por Máquina virtual apóspassar várias horas a tentar integrar o software necessário nos containers. Fizemos diversos builds, mas por uma questão de pragmatismo tivemos de obtar pela VM para fazer a entrega no tempo previsto.
 
 
 ### Printscreens
