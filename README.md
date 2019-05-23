@@ -29,7 +29,7 @@ Deve fazer restart do seu PC.
 
 Deve verificar que a Network  (Devices > Netork> Network Settings... ) deve estar como modo bridged adapter e o Promiscuous mode deve estar como Allow VMs.
 
-Deve agora executar a o ficheiro "MSEdge - Win10.ova" e iniciar a maquina virtual associada.
+Deve agora executar a o ficheiro "MSEdge - Win10.ova" e iniciar a máquina virtual associada.
 
 De seguida deve selecionar Login: IEUser e inserir a Password: Passw0rd!   .
 
@@ -37,7 +37,7 @@ De seguida deve selecionar Login: IEUser e inserir a Password: Passw0rd!   .
 ### Iniciar o MongoDB e XAMPP
 
 Para começar o servidor da Base de dados:
-Correr como administrador uma unstância do cmd.exe (disponivel no desktop)
+Correr como administrador uma instância do cmd.exe (disponível no desktop)
 e correr: 
 
 net start MongoDB
@@ -50,19 +50,19 @@ e corra os serviços: Apache e MySQL.
 ### Iniciar aplicação desktop do administrador e do investigador
 
 
-Para começar a corre a aplicação do Investigador ou administrador execute o IteliJ (no desktop) e execute o projeto simplesmente.
+Para começar a correr a aplicação do Investigador ou administrador execute o Intellij (no desktop) e execute o projeto (JavaAPPMCL).
 
-(nós geramos diversas versões dos jar independentes do ambiente de desenvolvimeto, mas todos tinham bugs associados, por isso acabamos por fazer a entrega assim. Não é de facto adequado para entregar ao cliente final, mas não foi falta de tentar)
+(nós geramos diversas versões dos jar independentes do ambiente de desenvolvimeto, mas todas tinham bugs associados, por isso acabámos por fazer a entrega assim. Não é de facto adequado para entregar ao cliente final, mas não foi falta de empenho)
 
 
-Para aceder aos dados no Android, deve ativar a função de shared drag and drop (Menu da VM: Devices > Drag and Drop > Guest to Host). Copie o .apk para o seu desktop e descarregue no seu smartphone (Android inferior a 9.0).  
+Para aceder aos dados no Android, deve ativar a função de shared drag and drop (Menú da VM: Devices > Drag and Drop > Guest to Host). Copie o .apk para o seu desktop e descarregue no seu smartphone (Android inferior a 9.0).  
 
-Agora deve de verificar que o depuramento USB está ligado abrir a aplicação com um gestor de ficheiros e executa-la. (Caso não esteja deve ligalo através do debug mode do android, e quando conectar o disposivo à sua workstation, deverá haver uma notificação que premite fazer essa opção).
+Agora deve de verificar que o depuramento USB está ligado abrir a aplicação com um gestor de ficheiros e executa-la. (Caso não esteja deve ligá-lo através do debug mode do android, e quando conectar o disposivo à sua workstation, deverá haver uma notificação que premite fazer essa opção).
 
-Deve de iniciar o Intelij no projeto: MonitorizacaoComAlertas e executar: MongoSQLMain e SensorMongoMain. (para começar a migrar os dados do sensor do sensor para o mongo e do mongo para o SQL)
+Deve de iniciar o Intellij no projeto: MonitorizacaoComAlertas e executar: MongoSQLMain e SensorMongoMain. (para começar a migrar os dados do sensor para o mongo e do mongo para o SQL)
 
-De seguida abra uma nova instância do CMD.exe (no desktop) e insira: ipconfig. Deve ter acesso ao seu endereço de IP (2 linha, geralmente diz IPV4). 
-Agora copie o endereço de IP para as credenciais correspondentes no seu dispositivo movel. os restantes campos devem ser: user joaoo, password: 123 porta 80 e IP que foi encontraado anteriormente.
+De seguida abra uma nova instância do CMD.exe (no desktop) e insira: ipconfig. Deve ter acesso ao seu endereço de IP (2 linhas, geralmente diz IPV4). 
+Agora copie o endereço de IP para as credenciais correspondentes no seu dispositivo movel. os restantes campos devem ser: user: joaoo, password: 123 porto 80 e IP que foi encontraado anteriormente.
 
 
 
@@ -75,7 +75,7 @@ Agora copie o endereço de IP para as credenciais correspondentes no seu disposi
     
         
 	Obrigado pela sua colaboração. 
-	Se encontrar algum bug associado à implementação, não hexite em contactar-nos.
+	Se encontrar algum bug associado à implementação, não hesite em contactar-nos.
 	
 
 	
@@ -83,7 +83,7 @@ Agora copie o endereço de IP para as credenciais correspondentes no seu disposi
 
 
 
-Nota: Decidimos fazer a entrega por Máquina virtual apóspassar várias horas a tentar integrar o software necessário nos containers. Fizemos diversos builds, mas por uma questão de pragmatismo tivemos de obtar pela VM para fazer a entrega no tempo previsto.
+Nota: Decidimos fazer a entrega por Máquina virtual após passar várias horas a tentar integrar o software necessário nos containers. Fizémos diversos builds, mas por uma questão de pragmatismo tivémos de obtar pela VM para fazer a entrega no tempo previsto.
 
 
 
