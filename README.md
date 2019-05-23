@@ -29,6 +29,9 @@ Deve fazer restart do seu PC.
 
 Deve agora executar a o ficheiro "MSEdge - Win10.ova" e iniciar a maquina virtual associada.
 
+De seguida deve selecionar Login: IEUser e inserir a Password: Passw0rd!   .
+
+
 ### Iniciar o MongoDB e XAMPP
 
 Para começar o servidor da Base de dados:
