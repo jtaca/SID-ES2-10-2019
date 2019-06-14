@@ -1,5 +1,9 @@
 # SID-ES2-10-2019
 
+[![technology used no. 1](https://img.shields.io/badge/built&nbsp;with-java-red.svg)](https://www.java.com/) 
+[![software used no. 1](https://img.shields.io/badge/software-eclipse&nbsp;ide-gold.svg)](https://www.eclipse.org/)
+[![software used no. 2](https://img.shields.io/badge/software-jetbrains&nbsp;intellij&nbsp;idea-gold.svg)](https://www.jetbrains.com/idea/)
+
 This repository, is dedicated to the project "Monitorização de Culturas em Laboratório" for the course Distributed Information Systems. The project is being developed according to the Standard Software Engineering principles studyed in Software Engineering I and II.
 
 ## Contributing 
